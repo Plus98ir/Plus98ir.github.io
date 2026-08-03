@@ -156,7 +156,15 @@ fetch('https://api.github.com/users/Plus98ir/repos')
                 <strong>${repo.name}</strong>
 
                 —
-                <a href="/${repo.name}" target="_blank">
+                li.innerHTML = `
+<strong>${repo.name}</strong>
+—
+<a href="/${repo.name}">
+View Project
+</a>
+<span style="color:#666">
+${repo.description || "No description"}
+</span>`;
                     View Project
                 </a>
 
