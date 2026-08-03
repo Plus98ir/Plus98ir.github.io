@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plus98 - DNS Server Setup</title>
-    <link rel="stylesheet" href="style.css"></head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
     <header>
         <div class="main-titles">
@@ -23,24 +24,27 @@
         </nav>
         
         <h2>us English Documentation</h2>
+        
         <section class="overview">
             <div class="important-note">
                 <span class="pin">📌</span>
-                <p>Important Note: Please be very careful when entering your password. If you enter the incorrect password twice, the system will automatically block your device's IP (the computer or phone you are connecting from) &mdash; meaning it is not the server's IP. If this happens, you will need to change your local internet IP to reconnect.</p>
-            }
-            <p>This script is an All-in-One Automated Setup for creating a secure, high-performance routing server. It automatically installs and configures essential tools for traffic routing, DNS management, bandwidth monitoring, and user access control. It is designed to be public and deployable on any server.</p>
+                <p><strong>Important Note:</strong> Please be very careful when entering your password. If you enter the incorrect password twice, the system will automatically block your device's IP (the computer or phone you are connecting from) &mdash; meaning it is not the server's IP. If this happens, you will need to change your local internet IP to reconnect.</p>
+            </div>
         </section>
 
-        <h3>Features & What It Does</h3>
+        <p>This script is an <strong>All-in-One Automated Setup</strong> for creating a secure, high-performance routing server. It automatically installs and configures essential tools for traffic routing, DNS management, bandwidth monitoring, and user access control. It is designed to be public and deployable on any server.</p>
+
+        <h3>🚀 Features & What It Does</h3>
         <p>When you run this script, it automatically performs the following tasks:</p>
         <ol>
-            <li><strong>System Update & Dependencies:</strong> Updates the OS and installs required packages (curl, wget, iptables, vnstat, ipset, iftop, nethogs, jq, etc.).</li>
-            <li><strong>Network Optimization (BBR):</strong> Enables and configures TCP BBR and fq_qdisc for optimal network congestion control and speed.</li>
+            <li><strong>System Update & Dependencies:</strong> Updates the OS and installs required packages (<code>curl</code>, <code>wget</code>, <code>iptables</code>, <code>vnstat</code>, <code>ipset</code>, <code>iftop</code>, <code>nethogs</code>, <code>jq</code>, etc.).</li>
+            <li><strong>Network Optimization (BBR):</strong> Enables and configures TCP BBR and <code>fq</code> qdisc for optimal network congestion control and speed.</li>
             <li><strong>X-UI (Sanaei) Installation:</strong> Automatically detects and installs the 3X-UI panel for proxy management if it's not already present.</li>
         </ol>
     </main>
 
     <footer>
+        <hr>
         <p>This site is open source. <a href="#">Improve this page</a>.</p>
     </footer>
 </body>
