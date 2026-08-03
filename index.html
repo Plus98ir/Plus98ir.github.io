@@ -3,155 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DNS-Server-Config | Plus98</title>
+
+    <title>Plus98ir Projects</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<main class="content">
+<header>
+    <h1>🚀 Plus98ir Projects</h1>
+    <p>My GitHub Projects</p>
+</header>
 
-    <section class="hero">
-        <h1>🛡️ DNS-Server-Config</h1>
 
-        <p class="subtitle">
-            Personal Server Setup & Automation Script
-        </p>
+<main>
 
-        <nav class="doc-links">
-            <a href="README.md">
-                🇺🇸 English Documentation
-            </a>
-
-            |
-
-            <a href="README-Fa.md">
-                🇮🇷 توضیحات فارسی
-            </a>
-        </nav>
-    </section>
-
-    <hr>
-
-    <section class="overview">
-
-        <div class="important-note">
-            <span class="pin">📌</span>
-
-            <p>
-                <strong>Important Note:</strong>
-
-                Please be very careful when entering your password.
-                If you enter the incorrect password twice, your own public IP
-                will be blocked automatically (not the server IP).
-                If this happens, simply reconnect using a different internet IP.
-            </p>
-        </div>
-
-    </section>
-
-    <p>
-        This script is an <strong>All-in-One Automated Setup</strong>
-        for building a secure and high-performance routing server.
-
-        It automatically installs and configures networking,
-        DNS management, monitoring tools, security components,
-        and user management services.
-    </p>
-
-    <h3>🚀 Features</h3>
-
-    <ol>
-        <li><strong>System Update & Dependencies</strong></li>
-        <li><strong>TCP BBR Optimization</strong></li>
-        <li><strong>3X-UI Installation</strong></li>
-        <li><strong>DNS Server Configuration</strong></li>
-        <li><strong>Traffic Monitoring</strong></li>
-        <li><strong>Firewall Hardening</strong></li>
-    </ol>
-
-    <hr>
-
-    <h2>📂 My Public Projects</h2>
-
-    <ul id="repos-list">
-        <li>Loading repositories...</li>
-    </ul>
+    <div id="projects">
+        Loading projects...
+    </div>
 
 </main>
 
+
 <footer>
-
-    <hr>
-
     <p>
-        Made with ❤️ by
-        <a href="https://github.com/Plus98ir">
-            Plus98
-        </a>
+        © 2026 Plus98ir
     </p>
-
 </footer>
 
-<script>
 
-const list = document.getElementById("repos-list");
-
-fetch("https://api.github.com/users/Plus98ir/repos")
-.then(async response => {
-
-    if(!response.ok){
-
-        throw new Error("GitHub API Error : " + response.status);
-
-    }
-
-    return await response.json();
-
-})
-
-.then(repos => {
-
-    list.innerHTML = "";
-
-    repos
-    .filter(repo => repo.name !== "Plus98ir.github.io")
-    .sort((a,b)=>a.name.localeCompare(b.name))
-    .forEach(repo=>{
-
-        const li=document.createElement("li");
-
-        li.innerHTML=`
-            <strong>${repo.name}</strong>
-            —
-            <a href="${repo.html_url}">
-                View Project
-            </a>
-            <span style="color:#666;">
-                ${repo.description || "No description"}
-            </span>
-        `;
-
-        list.appendChild(li);
-
-    });
-
-})
-
-.catch(error=>{
-
-    console.error(error);
-
-    list.innerHTML=`
-        <li style="color:red;">
-            Failed to load GitHub repositories.
-        </li>
-    `;
-
-});
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
