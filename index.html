@@ -134,37 +134,39 @@
 
 <script>
 
-fetch('https://api.github.com/users/Plus98ir/repos')
-
+fetch("https://api.github.com/users/Plus98ir/repos")
 .then(response => response.json())
-
 .then(data => {
 
-    const listContainer = document.getElementById('repos-list');
-
-    listContainer.innerHTML = '';
+    const list = document.getElementById("repos-list");
+    list.innerHTML = "";
 
     data
+        .filter(repo => repo.name !== "Plus98ir.github.io")
         .sort((a,b)=>a.name.localeCompare(b.name))
         .forEach(repo=>{
 
-            if(repo.name==="Plus98ir.github.io") return;
+            const li = document.createElement("li");
 
-            const li=document.createElement('li');
-
-            li.innerHTML=`
+            li.innerHTML = `
                 <strong>${repo.name}</strong>
-
                 —
-                li.innerHTML = `
-<strong>${repo.name}</strong>
-—
-<a href="/${repo.name}">
-View Project
-</a>
-<span style="color:#666">
-${repo.description || "No description"}
-</span>`;
+                <a href="/${repo.name}">View Project</a>
+                <span style="color:#666;">
+                    ${repo.description ?? "No description"}
+                </span>
+            `;
+
+            list.appendChild(li);
+
+        });
+
+})
+.catch(err => {
+    console.error(err);
+    document.getElementById("repos-list").innerHTML =
+        "<li>Could not load repositories.</li>";
+});
                     View Project
                 </a>
 
