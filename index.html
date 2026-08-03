@@ -3,77 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plus98 - Projects & Server Config</title>
+    <title>DNS-Server-Config | Plus98</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <header>
-        <div class="main-titles">
-            <h1 class="main-title">Plus98</h1>
-            <p class="main-repo">Plus98ir.github.io</p>
-        </div>
-        <hr>
-    </header>
 
-    <main class="content">
-        <h1>DNS-Server-Config</h1>
+<main class="content">
+
+    <section class="hero">
+
+        <h1>🛡️ DNS-Server-Config</h1>
+
+        <p class="subtitle">
+            Personal Server Setup & Automation Script
+        </p>
+
         <nav class="doc-links">
-            <a href="#"><img src="https://flagcdn.com/w20/us.png" alt="English flag"> [English Documentation]</a>
+            <a href="#">
+                <img src="https://flagcdn.com/w20/us.png">
+                English Documentation
+            </a>
+
             |
-            <a href="#"><img src="https://flagcdn.com/w20/ir.png" alt="Iran flag"> [توضیحات فارسی]</a>
+
+            <a href="#">
+                <img src="https://flagcdn.com/w20/ir.png">
+                توضیحات فارسی
+            </a>
         </nav>
-        
-        <h2>us English Documentation</h2>
-        
-        <section class="overview">
-            <div class="important-note">
-                <span class="pin">📌</span>
-                <p><strong>Important Note:</strong> Please be very careful when entering your password. If you enter the incorrect password twice, the system will automatically block your device's IP (the computer or phone you are connecting from) &mdash; meaning it is not the server's IP. If this happens, you will need to change your local internet IP to reconnect.</p>
-            </div>
-        </section>
 
-        <p>This script is an <strong>All-in-One Automated Setup</strong> for creating a secure, high-performance routing server. It automatically installs and configures essential tools for traffic routing, DNS management, bandwidth monitoring, and user access control. It is designed to be public and deployable on any server.</p>
+    </section>
 
-        <h3>🚀 Features & What It Does</h3>
-        <p>When you run this script, it automatically performs the following tasks:</p>
-        <ol>
-            <li><strong>System Update & Dependencies:</strong> Updates the OS and installs required packages (<code>curl</code>, <code>wget</code>, <code>iptables</code>, <code>vnstat</code>, <code>ipset</code>, <code>iftop</code>, <code>nethogs</code>, <code>jq</code>, etc.).</li>
-            <li><strong>Network Optimization (BBR):</strong> Enables and configures TCP BBR and <code>fq</code> qdisc for optimal network congestion control and speed.</li>
-            <li><strong>X-UI (Sanaei) Installation:</strong> Automatically detects and installs the 3X-UI panel for proxy management if it's not already present.</li>
-        </ol>
+    <hr>
 
-        <h2 style="margin-top: 40px;">📂 My Public Projects (Auto-Loaded)</h2>
-        <!-- این بخش به صورت خودکار با پروژه‌های گیت‌هاب شما پر میشه -->
-        <ul id="repos-list" class="projects-list">
-            <li>Loading repositories from GitHub...</li>
-        </ul>
-    </main>
+    <section class="overview">
 
-    <footer>
-        <hr>
-        <p>This site is open source. <a href="#">Improve this page</a>.</p>
-    </footer>
+        <div class="important-note">
 
-    <!-- اسکریپت هوشمند برای خواندن پروژه‌ها از گیت‌هاب -->
-    <script>
-        fetch('https://api.github.com/users/Plus98ir/repos')
-            .then(response => response.json())
-            .then(data => {
-                const listContainer = document.getElementById('repos-list');
-                listContainer.innerHTML = ''; // پاک کردن متن لودینگ
-                
-                // فیلتر کردن و نمایش ریپازیتوری‌ها (به جز خود سورس سایت)
-                data.forEach(repo => {
-                    if (repo.name !== 'Plus98ir.github.io') {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<strong>${repo.name}:</strong> <a href="/${repo.name}" target="_blank">View Project</a> <span style="color: #6a737d; font-size: 0.9em;">(${repo.description || 'No description'})</span>`;
-                        listContainer.appendChild(li);
-                    }
-                });
-            })
-            .catch(error => {
-                document.getElementById('repos-list').innerHTML = '<li>Could not load repositories automatically.</li>';
-            });
-    </script>
+            <span class="pin">📌</span>
+
+            <p>
+                <strong>Important Note:</strong>
+
+                Please be very careful when entering your password.
+                If you enter the incorrect password twice, your own public IP
+                will be blocked automatically (not the server IP).
+                If this happens, simply reconnect using a different internet IP.
+            </p>
+
+        </div>
+
+    </section>
+
+    <p>
+
+        This script is an <strong>All-in-One Automated Setup</strong>
+        for building a secure and high-performance routing server.
+
+        It automatically installs and configures networking,
+        DNS management, monitoring tools, security components,
+        and user management services.
+
+    </p>
+
+    <h3>🚀 Features</h3>
+
+    <p>Running this script automatically performs the following tasks:</p>
+
+    <ol>
+
+        <li>
+            <strong>System Update & Dependencies</strong><br>
+            Installs all required packages automatically.
+        </li>
+
+        <li>
+            <strong>TCP BBR Optimization</strong><br>
+            Enables BBR and optimizes Linux networking.
+        </li>
+
+        <li>
+            <strong>3X-UI Installation</strong><br>
+            Automatically installs the latest 3X-UI panel.
+        </li>
+
+        <li>
+            <strong>DNS Server</strong><br>
+            Configures DNS services automatically.
+        </li>
+
+        <li>
+            <strong>Traffic Monitoring</strong><br>
+            Installs vnStat, iftop, nethogs and monitoring tools.
+        </li>
+
+        <li>
+            <strong>Firewall</strong><br>
+            Applies iptables rules and server hardening.
+        </li>
+
+    </ol>
+
+    <hr style="margin:40px 0;">
+
+    <h2>📂 My Public Projects</h2>
+
+    <ul id="repos-list" class="projects-list">
+
+        <li>Loading repositories...</li>
+
+    </ul>
+
+</main>
+
+<footer>
+
+    <hr>
+
+    <p>
+
+        Made with ❤️ by
+        <a href="https://github.com/Plus98ir" target="_blank">
+            Plus98
+        </a>
+
+    </p>
+
+</footer>
+
+<script>
+
+fetch('https://api.github.com/users/Plus98ir/repos')
+
+.then(response => response.json())
+
+.then(data => {
+
+    const listContainer = document.getElementById('repos-list');
+
+    listContainer.innerHTML = '';
+
+    data
+        .sort((a,b)=>a.name.localeCompare(b.name))
+        .forEach(repo=>{
+
+            if(repo.name==="Plus98ir.github.io") return;
+
+            const li=document.createElement('li');
+
+            li.innerHTML=`
+                <strong>${repo.name}</strong>
+
+                —
+                <a href="/${repo.name}" target="_blank">
+                    View Project
+                </a>
+
+                <span style="color:#666;">
+                    ${repo.description || "No description"}
+                </span>
+            `;
+
+            listContainer.appendChild(li);
+
+        });
+
+})
+
+.catch(()=>{
+
+    document.getElementById('repos-list').innerHTML=
+        '<li>Unable to load repositories.</li>';
+
+});
+
+</script>
+
 </body>
 </html>
