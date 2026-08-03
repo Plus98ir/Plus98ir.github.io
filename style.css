@@ -1,34 +1,128 @@
-.hero{
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+    margin: 0;
+    background: #0d1117;
+    color: white;
+}
+
+
+header {
+
+    text-align: center;
+    padding: 40px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #161b22,
+        #21262d
+    );
+
+}
+
+
+header h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+
+main {
+
+    padding: 30px;
+}
+
+
+#projects {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap: 25px;
+
+}
+
+
+.card {
+
+    background:#161b22;
+
+    border:1px solid #30363d;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+
+.card:hover {
+
+    transform:translateY(-8px);
+
+    border-color:#58a6ff;
+
+}
+
+
+.card h2 {
+
+    color:#58a6ff;
+
+}
+
+
+.card p {
+
+    color:#c9d1d9;
+
+    min-height:50px;
+
+}
+
+
+.card a {
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:10px 20px;
+
+    background:#238636;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+}
+
+
+.card a:hover {
+
+    background:#2ea043;
+
+}
+
+
+
+footer {
+
     text-align:center;
-    margin:40px 0;
-}
 
-.hero h1{
-    font-size:42px;
-    margin-bottom:10px;
-}
+    padding:30px;
 
-.subtitle{
-    color:#666;
-    font-size:18px;
-    margin-bottom:25px;
-}
+    color:#8b949e;
 
-.doc-links{
-    margin-top:10px;
-}
-
-.doc-links img{
-    vertical-align:middle;
-    margin-right:4px;
-}
-
-footer{
-    text-align:center;
-    color:#777;
-    margin:50px 0 20px;
-}
-
-.projects-list li{
-    margin:10px 0;
 }
