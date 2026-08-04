@@ -5,18 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پروژه‌های من | Plus98ir</title>
     <style>
+        /* حالت پیش‌فرض (روشن) */
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --border: #30363d;
-            --accent-blue: #2196f3;
-            --accent-green: #00e676;
-            --white: #ffffff;
-            --glow-blue: rgba(33, 150, 243, 0.2);
-            --glow-green: rgba(0, 230, 118, 0.2);
+            --bg-color: #f6f8fa;
+            --card-bg: #ffffff;
+            --text-main: #24292f;
+            --text-muted: #57606a;
+            --border: #d0d7de;
+            --accent-blue: #0969da;
+            --accent-green: #1a7f37;
+            --heading-color: #24292f;
+            --glow-blue: rgba(9, 105, 218, 0.2);
+            --glow-green: rgba(26, 127, 55, 0.2);
+            --title-shadow: 0 0 10px rgba(9, 105, 218, 0.2);
+            --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --card-hover-shadow: 0 12px 25px var(--glow-blue), 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+
+        /* تغییر خودکار به حالت تاریک بر اساس سیستم کاربر */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0d1117;
+                --card-bg: #161b22;
+                --text-main: #c9d1d9;
+                --text-muted: #8b949e;
+                --border: #30363d;
+                --accent-blue: #2f81f7;
+                --accent-green: #2ea043;
+                --heading-color: #ffffff;
+                --glow-blue: rgba(47, 129, 247, 0.2);
+                --glow-green: rgba(46, 160, 67, 0.2);
+                --title-shadow: 0 0 10px var(--accent-blue), 0 0 20px var(--accent-green);
+                --card-shadow: none;
+                --card-hover-shadow: 0 12px 25px var(--glow-blue), 0 5px 15px rgba(255, 255, 255, 0.05);
+            }
+        }
+
         body {
             font-family: Tahoma, 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg-color);
@@ -24,6 +48,7 @@
             margin: 0;
             padding: 50px 20px;
             direction: ltr;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .container { 
             max-width: 1200px;
@@ -31,11 +56,12 @@
         }
         h1 {
             text-align: center;
-            color: var(--white);
-            text-shadow: 0 0 10px var(--accent-blue), 0 0 20px var(--accent-green);
+            color: var(--heading-color);
+            text-shadow: var(--title-shadow);
             margin-bottom: 60px;
             font-size: 2.8rem;
             letter-spacing: 2px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
         }
         .repo-grid {
             display: grid;
@@ -47,6 +73,7 @@
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 35px;
+            box-shadow: var(--card-shadow);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
@@ -66,7 +93,7 @@
         }
         .repo-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 25px var(--glow-blue), 0 5px 15px rgba(255, 255, 255, 0.05);
+            box-shadow: var(--card-hover-shadow);
             border-color: var(--accent-blue);
         }
         .repo-card:hover::before {
@@ -75,7 +102,7 @@
         .repo-title {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--white);
+            color: var(--heading-color);
             text-decoration: none;
             margin-bottom: 18px;
             display: flex;
@@ -108,14 +135,14 @@
         }
         .loader { 
             text-align: center; 
-            color: var(--white); 
+            color: var(--heading-color); 
             font-size: 1.3rem;
             animation: pulse 1.5s infinite;
         }
         @keyframes pulse {
-            0% { opacity: 0.6; text-shadow: 0 0 5px var(--accent-blue); }
-            50% { opacity: 1; text-shadow: 0 0 15px var(--accent-green); }
-            100% { opacity: 0.6; text-shadow: 0 0 5px var(--accent-blue); }
+            0% { opacity: 0.6; }
+            50% { opacity: 1; text-shadow: 0 0 10px var(--accent-blue); }
+            100% { opacity: 0.6; }
         }
     </style>
 </head>
@@ -149,12 +176,13 @@
                     
                     const stars = repo.stargazers_count > 0 ? `<span style="color: #ffd700;">⭐ ${repo.stargazers_count}</span>` : '';
 
-                    // سیستم هوشمند تشخیص آدرس سایت یا مخزن گیت‌هاب
+                    // سیستم هوشمند تشخیص آدرس
                     let projectUrl = repo.html_url; 
                     if (repo.homepage && repo.homepage !== "") {
                         projectUrl = repo.homepage;
                     } else if (repo.has_pages) {
-                        projectUrl = `https://plus98ir.dpdns.org/${repo.name}/`;
+                        // ارجاع مستقیم به index-en.html اعمال شد
+                        projectUrl = `https://plus98ir.dpdns.org/${repo.name}/index-en.html`;
                     }
 
                     card.innerHTML = `
