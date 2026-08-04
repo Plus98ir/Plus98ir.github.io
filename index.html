@@ -11,40 +11,45 @@
             --text-main: #c9d1d9;
             --text-muted: #8b949e;
             --border: #30363d;
-            --neon-accent: #00ff88;
-            --neon-glow: rgba(0, 255, 136, 0.2);
+            --accent-blue: #2196f3;
+            --accent-green: #00e676;
+            --white: #ffffff;
+            --glow-blue: rgba(33, 150, 243, 0.2);
+            --glow-green: rgba(0, 230, 118, 0.2);
         }
         body {
             font-family: Tahoma, 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 40px 20px;
+            padding: 50px 20px;
             direction: ltr;
         }
         .container { 
-            max-width: 1100px; 
+            max-width: 1200px; /* عرض کل صفحه رو بیشتر کردم */
             margin: 0 auto; 
         }
         h1 {
             text-align: center;
-            color: white;
-            text-shadow: 0 0 15px var(--neon-accent);
-            margin-bottom: 50px;
-            font-size: 2.5rem;
+            /* ترکیب رنگ سفید با سایه‌های آبی و سبز برای تیتر */
+            color: var(--white);
+            text-shadow: 0 0 10px var(--accent-blue), 0 0 20px var(--accent-green);
+            margin-bottom: 60px;
+            font-size: 2.8rem;
             letter-spacing: 2px;
         }
         .repo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            /* عرض کادرها از 320 به 450 پیکسل افزایش پیدا کرد تا بزرگ‌تر بشن */
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 30px;
         }
         .repo-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            transition: all 0.3s ease;
+            border-radius: 14px;
+            padding: 35px; /* پدینگ بیشتر برای بزرگ‌تر شدن کارت‌ها */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             position: relative;
@@ -55,60 +60,66 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 4px;
+            width: 5px;
             height: 100%;
-            background: var(--neon-accent);
+            /* گرادیانت جذاب آبی به سبز برای نوار کنار کادرها */
+            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-green));
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
         .repo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px var(--neon-glow);
-            border-color: var(--neon-accent);
+            transform: translateY(-8px);
+            /* سایه ترکیبی سفید و آبی هنگام رفتن موس روی کارت */
+            box-shadow: 0 12px 25px var(--glow-blue), 0 5px 15px rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-blue);
         }
         .repo-card:hover::before {
             opacity: 1;
         }
         .repo-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: var(--neon-accent);
+            color: var(--white); /* رنگ عنوان‌ها سفید شد */
             text-decoration: none;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            transition: color 0.3s ease;
+        }
+        .repo-card:hover .repo-title {
+            color: var(--accent-blue); /* هنگام هاور رنگ عنوان آبی میشه */
         }
         .repo-desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             flex-grow: 1;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 25px;
+            line-height: 1.7;
         }
         .repo-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            font-size: 0.9rem;
+            color: var(--text-main);
             border-top: 1px solid var(--border);
-            padding-top: 15px;
+            padding-top: 18px;
         }
         .repo-meta span { 
             display: flex; 
             align-items: center; 
-            gap: 6px; 
+            gap: 8px; 
         }
         .loader { 
             text-align: center; 
-            color: var(--neon-accent); 
-            font-size: 1.2rem;
+            color: var(--white); 
+            font-size: 1.3rem;
             animation: pulse 1.5s infinite;
         }
         @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            0% { opacity: 0.6; text-shadow: 0 0 5px var(--accent-blue); }
+            50% { opacity: 1; text-shadow: 0 0 15px var(--accent-green); }
+            100% { opacity: 0.6; text-shadow: 0 0 5px var(--accent-blue); }
         }
     </style>
 </head>
@@ -122,7 +133,6 @@
     <script>
         async function fetchRepos() {
             try {
-                // اتصال به API گیت‌هاب و دریافت پروژه‌ها بر اساس تاریخ آپدیت
                 const response = await fetch('https://api.github.com/users/Plus98ir/repos?sort=updated');
                 const repos = await response.json();
                 
@@ -130,24 +140,22 @@
                 document.getElementById('loading').style.display = 'none';
 
                 repos.forEach(repo => {
-                    // مخفی کردن ریپازیتوری خود سایت
                     if (repo.name.toLowerCase() === 'plus98ir.github.io') return;
 
                     const card = document.createElement('div');
                     card.className = 'repo-card';
                     
-                    // تنظیم رنگ نقطه‌ها بر اساس زبان برنامه‌نویسی
                     const langColor = repo.language === 'Python' ? '#3572A5' : 
                                       repo.language === 'Shell' ? '#89e051' : 
                                       repo.language === 'HTML' ? '#e34c26' : '#f1e05a';
                                       
-                    const langDot = repo.language ? `<span style="color:${langColor}; font-size: 1.2rem;">●</span> ${repo.language}` : '';
+                    const langDot = repo.language ? `<span style="color:${langColor}; font-size: 1.3rem;">●</span> ${repo.language}` : '';
                     
-                    const stars = repo.stargazers_count > 0 ? `<span>⭐ ${repo.stargazers_count}</span>` : '';
+                    const stars = repo.stargazers_count > 0 ? `<span style="color: #ffd700;">⭐ ${repo.stargazers_count}</span>` : '';
 
                     card.innerHTML = `
                         <a href="${repo.html_url}" target="_blank" class="repo-title">
-                            📁 ${repo.name}
+                            <span style="color: var(--accent-green);">📁</span> ${repo.name}
                         </a>
                         <div class="repo-desc">${repo.description || 'No description available for this project.'}</div>
                         <div class="repo-meta">
