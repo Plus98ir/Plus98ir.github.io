@@ -26,12 +26,11 @@
             direction: ltr;
         }
         .container { 
-            max-width: 1200px; /* عرض کل صفحه رو بیشتر کردم */
+            max-width: 1200px;
             margin: 0 auto; 
         }
         h1 {
             text-align: center;
-            /* ترکیب رنگ سفید با سایه‌های آبی و سبز برای تیتر */
             color: var(--white);
             text-shadow: 0 0 10px var(--accent-blue), 0 0 20px var(--accent-green);
             margin-bottom: 60px;
@@ -40,7 +39,6 @@
         }
         .repo-grid {
             display: grid;
-            /* عرض کادرها از 320 به 450 پیکسل افزایش پیدا کرد تا بزرگ‌تر بشن */
             grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
             gap: 30px;
         }
@@ -48,7 +46,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 35px; /* پدینگ بیشتر برای بزرگ‌تر شدن کارت‌ها */
+            padding: 35px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
@@ -62,14 +60,12 @@
             left: 0;
             width: 5px;
             height: 100%;
-            /* گرادیانت جذاب آبی به سبز برای نوار کنار کادرها */
             background: linear-gradient(to bottom, var(--accent-blue), var(--accent-green));
             opacity: 0;
             transition: opacity 0.4s ease;
         }
         .repo-card:hover {
             transform: translateY(-8px);
-            /* سایه ترکیبی سفید و آبی هنگام رفتن موس روی کارت */
             box-shadow: 0 12px 25px var(--glow-blue), 0 5px 15px rgba(255, 255, 255, 0.05);
             border-color: var(--accent-blue);
         }
@@ -79,7 +75,7 @@
         .repo-title {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--white); /* رنگ عنوان‌ها سفید شد */
+            color: var(--white);
             text-decoration: none;
             margin-bottom: 18px;
             display: flex;
@@ -88,7 +84,7 @@
             transition: color 0.3s ease;
         }
         .repo-card:hover .repo-title {
-            color: var(--accent-blue); /* هنگام هاور رنگ عنوان آبی میشه */
+            color: var(--accent-blue);
         }
         .repo-desc {
             color: var(--text-muted);
@@ -153,8 +149,16 @@
                     
                     const stars = repo.stargazers_count > 0 ? `<span style="color: #ffd700;">⭐ ${repo.stargazers_count}</span>` : '';
 
+                    // سیستم هوشمند تشخیص آدرس سایت یا مخزن گیت‌هاب
+                    let projectUrl = repo.html_url; 
+                    if (repo.homepage && repo.homepage !== "") {
+                        projectUrl = repo.homepage;
+                    } else if (repo.has_pages) {
+                        projectUrl = `https://plus98ir.dpdns.org/${repo.name}/`;
+                    }
+
                     card.innerHTML = `
-                        <a href="${repo.html_url}" target="_blank" class="repo-title">
+                        <a href="${projectUrl}" class="repo-title">
                             <span style="color: var(--accent-green);">📁</span> ${repo.name}
                         </a>
                         <div class="repo-desc">${repo.description || 'No description available for this project.'}</div>
