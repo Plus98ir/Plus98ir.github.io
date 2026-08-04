@@ -1,6 +1,5 @@
-<img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/31d7484e-d4f5-4b85-82bc-0e4f8bc18036" />
-<img width="800" height="533" alt="image" src="https://github.com/user-attachments/assets/5cbaefa7-5caa-4b9b-9080-335b98844816" />
-<img width="800" height="449" alt="image" src="https://github.com/user-attachments/assets/d7b4ccaa-944f-412c-8e7b-7cebc29ded76" />
+# Plus98ir.github.io Web Page
 
-
-# Plus98ir.github.io
+<img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/68cf5037-6444-4991-8857-a19f9aeae4be" />
+<img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/8c826859-db30-4066-8b2f-e62324680ed5" />
+<img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/6788452a-3790-487e-ad29-207afe5a65cf" />
