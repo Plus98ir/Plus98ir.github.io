@@ -1,6 +1,10 @@
-* **Plus98ir.github.io Web Page**
+* **Web Page**
 
-  [![Web Page](https://img.shields.io/badge/Website-Plus98ir.github.io-blue?style=for-the-badge&logo=google-chrome)](https://Plus98ir.github.io)
+ <p align="center">
+  <a href="https://Plus98ir.github.io">
+    <img src="https://img.shields.io/badge/Website-Plus98ir.github.io-blue?style=for-the-badge&logo=google-chrome" alt="Web Page">
+  </a>
+</p>
 
 <img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/6788452a-3790-487e-ad29-207afe5a65cf" />
 
