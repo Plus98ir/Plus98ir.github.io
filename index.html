@@ -1,189 +1,226 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en" dir="ltr" data-theme="auto">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PLUS98IR — Projects</title>
-<meta name="description" content="Open-source tools for servers, DNS, SSL and games.">
+<meta name="description" content="Open-source tools for servers, DNS, SSL, monitoring and games by Plus98ir.">
 <meta name="color-scheme" content="dark light">
+<meta property="og:title" content="PLUS98IR — Projects">
+<meta property="og:description" content="Open-source tools for servers, DNS, SSL, monitoring and games.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-512.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#05070d">
+<meta property="og:image" content="https://plus98ir.dpdns.org/icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ===== tokens : light is the base ===== */
+/* ===== tokens: light is the base, dark overrides ===== */
 :root{
-  --bg:#f4f6fa; --bg2:#eaeef5; --card:#ffffff; --card2:#fbfcfe;
-  --line:rgba(12,20,40,.09); --line2:rgba(12,20,40,.16);
-  --fg:#101828; --mut:#5a6a85; --dim:#8a97ab;
-  --a1:#0a8f7a; --a2:#0b63d6; --a3:#7c3aed;
-  --shadow:0 1px 2px rgba(16,24,40,.05), 0 12px 32px -16px rgba(16,24,40,.22);
-  --shadow-h:0 2px 4px rgba(16,24,40,.06), 0 28px 56px -22px rgba(11,99,214,.34);
-  --chip:rgba(12,20,40,.05);
-  --glow1:rgba(11,99,214,.13); --glow2:rgba(10,143,122,.12); --glow3:rgba(124,58,237,.10);
-  --imgbg:#e7ecf4;
+  --bg:#f5f7fb; --bg2:#eef2f8; --surface:#ffffff; --surface2:#f9fbfe;
+  --line:rgba(15,23,42,.08); --line2:rgba(15,23,42,.14);
+  --fg:#0b1222; --mut:#526079; --dim:#8794aa;
+  --a1:#0d9488; --a2:#2563eb; --a3:#7c3aed;
+  --grad:linear-gradient(100deg,#0d9488,#2563eb 55%,#7c3aed);
+  --shadow:0 1px 2px rgba(15,23,42,.05),0 10px 30px -14px rgba(15,23,42,.18);
+  --shadow-h:0 2px 6px rgba(15,23,42,.06),0 30px 60px -24px rgba(37,99,235,.35);
+  --chip:rgba(15,23,42,.045);
+  --dot:rgba(15,23,42,.07);
+  --glow1:rgba(37,99,235,.10); --glow2:rgba(13,148,136,.09); --glow3:rgba(124,58,237,.08);
+  --imgbg:#e6ebf3;
   --flag-g:#239f40; --flag-r:#da0000;
+  --font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --display:"Space Grotesk",Inter,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#070a12; --bg2:#0b1020; --card:#101725; --card2:#141c2d;
-    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
-    --fg:#eaf0fa; --mut:#93a2bb; --dim:#65748e;
-    --a1:#2ee6c5; --a2:#5a9bff; --a3:#a78bfa;
-    --shadow:0 1px 2px rgba(0,0,0,.5), 0 18px 44px -22px rgba(0,0,0,.9);
-    --shadow-h:0 1px 2px rgba(0,0,0,.5), 0 30px 64px -24px rgba(90,155,255,.42);
-    --chip:rgba(255,255,255,.07);
-    --glow1:rgba(90,155,255,.17); --glow2:rgba(46,230,197,.12); --glow3:rgba(167,139,250,.11);
-    --imgbg:#0b1120;
+    --bg:#05070d; --bg2:#090d17; --surface:#0c111c; --surface2:#101727;
+    --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.13);
+    --fg:#eef3fb; --mut:#94a3bd; --dim:#5e6c85;
+    --a1:#2dd4bf; --a2:#60a5fa; --a3:#a78bfa;
+    --grad:linear-gradient(100deg,#2dd4bf,#60a5fa 55%,#a78bfa);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -22px rgba(0,0,0,.9);
+    --shadow-h:0 1px 2px rgba(0,0,0,.4),0 34px 70px -26px rgba(96,165,250,.38);
+    --chip:rgba(255,255,255,.055);
+    --dot:rgba(255,255,255,.06);
+    --glow1:rgba(96,165,250,.14); --glow2:rgba(45,212,191,.10); --glow3:rgba(167,139,250,.10);
+    --imgbg:#0a0f1b;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#070a12; --bg2:#0b1020; --card:#101725; --card2:#141c2d;
-  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
-  --fg:#eaf0fa; --mut:#93a2bb; --dim:#65748e;
-  --a1:#2ee6c5; --a2:#5a9bff; --a3:#a78bfa;
-  --shadow:0 1px 2px rgba(0,0,0,.5), 0 18px 44px -22px rgba(0,0,0,.9);
-  --shadow-h:0 1px 2px rgba(0,0,0,.5), 0 30px 64px -24px rgba(90,155,255,.42);
-  --chip:rgba(255,255,255,.07);
-  --glow1:rgba(90,155,255,.17); --glow2:rgba(46,230,197,.12); --glow3:rgba(167,139,250,.11);
-  --imgbg:#0b1120;
+  --bg:#05070d; --bg2:#090d17; --surface:#0c111c; --surface2:#101727;
+  --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.13);
+  --fg:#eef3fb; --mut:#94a3bd; --dim:#5e6c85;
+  --a1:#2dd4bf; --a2:#60a5fa; --a3:#a78bfa;
+  --grad:linear-gradient(100deg,#2dd4bf,#60a5fa 55%,#a78bfa);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -22px rgba(0,0,0,.9);
+  --shadow-h:0 1px 2px rgba(0,0,0,.4),0 34px 70px -26px rgba(96,165,250,.38);
+  --chip:rgba(255,255,255,.055);
+  --dot:rgba(255,255,255,.06);
+  --glow1:rgba(96,165,250,.14); --glow2:rgba(45,212,191,.10); --glow3:rgba(167,139,250,.10);
+  --imgbg:#0a0f1b;
 }
+html[lang="fa"]{--font:Vazirmatn,Inter,system-ui,sans-serif;--display:Vazirmatn,"Space Grotesk",sans-serif}
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  background:var(--bg); color:var(--fg);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased;
-  min-height:100vh;
+  background:var(--bg);color:var(--fg);font-family:var(--font);
+  font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh;
   background-image:
-    radial-gradient(760px 420px at 12% -8%, var(--glow1), transparent 62%),
-    radial-gradient(680px 380px at 88% 0%, var(--glow2), transparent 62%),
-    radial-gradient(700px 460px at 50% 102%, var(--glow3), transparent 62%);
+    radial-gradient(900px 480px at 15% -10%,var(--glow1),transparent 60%),
+    radial-gradient(800px 440px at 85% -5%,var(--glow2),transparent 60%),
+    radial-gradient(900px 520px at 50% 110%,var(--glow3),transparent 60%);
   background-attachment:fixed;
 }
-.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+/* dotted grid behind the hero, fading out */
+.dots{position:absolute;inset:0 0 auto 0;height:620px;pointer-events:none;z-index:-1;
+  background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%);
+          mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%)}
+.wrap{max-width:1760px;margin:0 auto;padding:0 clamp(16px,3vw,40px)}
+a{color:inherit}
+button{font:inherit}
 
-/* ===== top ===== */
-.top{display:flex;align-items:center;gap:12px;padding:20px 0}
-.gh,.tg{
-  display:inline-flex;align-items:center;gap:7px;cursor:pointer;
-  border:1px solid var(--line2);background:var(--card);color:var(--fg);
-  border-radius:11px;padding:9px 13px;font:inherit;font-size:13px;font-weight:600;
-  text-decoration:none;transition:.16s;box-shadow:var(--shadow)
-}
-.gh:hover,.tg:hover{border-color:var(--a2);transform:translateY(-1px)}
-.gh svg,.tg svg{width:16px;height:16px;flex:0 0 auto}
+/* ===== nav ===== */
+.nav{position:sticky;top:0;z-index:40;border-bottom:1px solid transparent;transition:background .2s,border-color .2s}
+.nav.scrolled{background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(14px);border-color:var(--line)}
+@supports not (background:color-mix(in srgb,red,blue)){.nav.scrolled{background:var(--bg)}}
+.navin{display:flex;align-items:center;gap:10px;height:64px}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:17px;letter-spacing:-.3px}
+.brand svg{width:26px;height:auto;border-radius:3px;box-shadow:0 0 0 1px var(--line2)}
 .sp{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;height:38px;
+  border:1px solid var(--line2);background:var(--surface);color:var(--fg);border-radius:10px;padding:0 13px;
+  font-size:13px;font-weight:600;text-decoration:none;transition:.16s;white-space:nowrap}
+.btn:hover{border-color:var(--a2);transform:translateY(-1px)}
+.btn svg{width:16px;height:16px;flex:0 0 auto}
+.btn.icon{width:38px;padding:0}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--surface);height:38px}
+.seg button{border:0;background:none;color:var(--mut);padding:0 12px;cursor:pointer;font-size:13px;font-weight:600}
+.seg button.on{background:var(--fg);color:var(--bg)}
 
 /* ===== hero ===== */
-.hero{text-align:center;padding:34px 0 8px}
-.mark{
-  display:inline-flex;align-items:center;justify-content:center;gap:clamp(8px,1.6vw,16px);
-  font-family:"Space Grotesk",Inter,sans-serif;
-  font-size:clamp(38px,9vw,88px);font-weight:700;line-height:1;
-  letter-spacing:clamp(-2px,-.32vw,-1px);
-  margin-bottom:18px;
-}
-.mark .w{
-  background:linear-gradient(174deg,var(--fg) 30%,var(--mut));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  white-space:nowrap;
-}
-.flag{
-  width:clamp(30px,6.4vw,58px);height:auto;flex:0 0 auto;
-  border-radius:clamp(4px,.8vw,7px);
-  box-shadow:0 0 0 1px var(--line2), 0 6px 18px -8px rgba(0,0,0,.45);
-  display:block;
-}
-.tagline{color:var(--mut);font-size:clamp(14.5px,1.6vw,17px);max-width:560px;margin:0 auto 26px}
-.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
-.stat{
-  display:inline-flex;align-items:baseline;gap:7px;
-  padding:8px 15px;border-radius:999px;background:var(--card);border:1px solid var(--line);
-  box-shadow:var(--shadow);font-size:13px;color:var(--mut)
-}
-.stat b{font-family:"Space Grotesk",Inter,sans-serif;font-size:16px;color:var(--fg);font-weight:600}
+.hero{position:relative;text-align:center;padding:clamp(40px,7vw,84px) 0 clamp(28px,4vw,44px)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:999px;
+  border:1px solid var(--line2);background:color-mix(in srgb,var(--surface) 70%,transparent);
+  font-size:12.5px;font-weight:600;color:var(--mut);margin-bottom:26px}
+html[dir="rtl"] .eyebrow{padding:6px 8px 6px 14px}
+.eyebrow .live{width:8px;height:8px;border-radius:50%;background:var(--a1);box-shadow:0 0 0 4px color-mix(in srgb,var(--a1) 22%,transparent)}
+.mark{display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.8vw,18px);
+  font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(42px,9vw,104px);font-weight:700;line-height:1;
+  letter-spacing:clamp(-3px,-.35vw,-1px);margin-bottom:20px;direction:ltr}
+.mark .w{background:linear-gradient(176deg,var(--fg) 35%,color-mix(in srgb,var(--fg) 55%,var(--mut)));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.flag{width:clamp(32px,6.4vw,62px);height:auto;flex:0 0 auto;border-radius:clamp(4px,.8vw,8px);
+  box-shadow:0 0 0 1px var(--line2),0 8px 22px -8px rgba(0,0,0,.45);display:block}
+.tagline{color:var(--mut);font-size:clamp(15px,1.7vw,19px);max-width:640px;margin:0 auto 30px}
+.tagline b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:38px}
+.cta{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:12px;font-weight:600;font-size:14.5px;
+  text-decoration:none;border:1px solid var(--line2);background:var(--surface);transition:.18s}
+.cta:hover{transform:translateY(-2px)}
+.cta.primary{background:var(--grad);border:0;color:#fff;box-shadow:0 12px 30px -12px color-mix(in srgb,var(--a2) 70%,transparent)}
+.cta svg{width:17px;height:17px}
+html[dir="rtl"] .cta .arr{transform:scaleX(-1)}
+.stats{display:inline-grid;grid-auto-flow:column;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  background:color-mix(in srgb,var(--surface) 75%,transparent);box-shadow:var(--shadow)}
+.stat{padding:14px clamp(18px,3vw,34px);text-align:center;min-width:110px}
+.stat + .stat{border-inline-start:1px solid var(--line)}
+.stat b{display:block;font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(20px,2.4vw,26px);font-weight:700;line-height:1.2}
+.stat span{font-size:12px;color:var(--mut);font-weight:500}
 
-/* ===== toolbar ===== */
-.bar{
-  position:sticky;top:0;z-index:30;margin:30px 0 22px;padding:12px 0;
-  background:color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)
-}
-@supports not (background: color-mix(in srgb, red, blue)){ .bar{background:var(--bg)} }
+/* ===== section head + toolbar ===== */
+.head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:26px 0 16px}
+.head h2{font-family:var(--display);font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.4px;line-height:1.2}
+.head p{color:var(--mut);font-size:14px}
+.bar{position:sticky;top:64px;z-index:30;padding:10px 0;margin-bottom:22px;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+@supports not (background:color-mix(in srgb,red,blue)){.bar{background:var(--bg)}}
 .barin{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.search{position:relative;flex:1 1 240px;min-width:0}
+.search{position:relative;flex:1 1 260px;min-width:0}
 .search svg{position:absolute;inset-inline-start:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--dim);fill:none;stroke-width:2}
-.search input{
-  width:100%;padding:11px 14px 11px 38px;border-radius:12px;
-  background:var(--card);border:1px solid var(--line2);color:var(--fg);
-  font:inherit;font-size:14px;box-shadow:var(--shadow)
-}
+.search input{width:100%;height:42px;padding-inline:38px 14px;border-radius:11px;background:var(--surface);
+  border:1px solid var(--line2);color:var(--fg);font:inherit;font-size:14px}
 .search input::placeholder{color:var(--dim)}
 .search input:focus{outline:none;border-color:var(--a2);box-shadow:0 0 0 3px var(--glow1)}
-select{
-  padding:11px 34px 11px 13px;border-radius:12px;background:var(--card);
-  border:1px solid var(--line2);color:var(--fg);font:inherit;font-size:14px;
-  appearance:none;cursor:pointer;box-shadow:var(--shadow);
+.search kbd{position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);font:600 11px var(--font);color:var(--dim);
+  border:1px solid var(--line2);border-radius:6px;padding:1px 6px;background:var(--chip)}
+select{height:42px;padding-inline:13px 34px;border-radius:11px;background-color:var(--surface);border:1px solid var(--line2);color:var(--fg);
+  font:inherit;font-size:14px;appearance:none;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
-  background-position:calc(100% - 19px) 52%,calc(100% - 14px) 52%;
-  background-size:5px 5px,5px 5px;background-repeat:no-repeat
-}
+  background-position:calc(100% - 19px) 52%,calc(100% - 14px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+html[dir="rtl"] select{background-position:19px 52%,14px 52%}
 select:focus{outline:none;border-color:var(--a2)}
 .chips{display:flex;gap:7px;flex-wrap:wrap}
-.chip{
-  cursor:pointer;border:1px solid var(--line);background:var(--chip);color:var(--mut);
-  border-radius:999px;padding:8px 13px;font:inherit;font-size:12.5px;font-weight:600;transition:.15s
-}
+.chip{cursor:pointer;border:1px solid var(--line);background:var(--chip);color:var(--mut);height:34px;
+  border-radius:999px;padding:0 13px;font-size:12.5px;font-weight:600;transition:.15s;display:inline-flex;align-items:center;gap:6px}
 .chip:hover{color:var(--fg);border-color:var(--line2)}
-.chip.on{background:var(--a2);border-color:var(--a2);color:#fff}
-.chip .d{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:6px;vertical-align:-1px}
+.chip.on{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.chip .d{width:8px;height:8px;border-radius:50%}
+.chip .n{opacity:.6;font-weight:500}
 
-/* ===== grid ===== */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;padding-bottom:20px}
-.card{
-  background:linear-gradient(180deg,var(--card2),var(--card));
-  border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
-  display:flex;flex-direction:column;overflow:hidden;text-decoration:none;color:inherit;
-  transition:transform .32s cubic-bezier(.16,1,.3,1), box-shadow .32s, border-color .32s;
-  min-width:0
-}
-.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-h);border-color:var(--line2)}
-.shot{position:relative;aspect-ratio:16/9;background:var(--imgbg);overflow:hidden;border-bottom:1px solid var(--line)}
-.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.16,1,.3,1);opacity:0}
+/* ===== grid + cards ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:22px;padding-bottom:20px}
+.card{position:relative;background:linear-gradient(180deg,var(--surface2),var(--surface));border:1px solid var(--line);border-radius:20px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;text-decoration:none;color:inherit;min-width:0;
+  transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,border-color .35s}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:var(--grad);opacity:0;transition:opacity .35s;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:2}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-h)}
+.card:hover::before{opacity:1}
+.card:focus-visible{outline:2px solid var(--a2);outline-offset:3px}
+.shot{position:relative;aspect-ratio:16/9;background:var(--imgbg);overflow:hidden;isolation:isolate}
+.shot .ph{position:absolute;inset:0;display:grid;place-items:center;z-index:0;
+  font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:30px;color:var(--dim);letter-spacing:-.5px;
+  background:linear-gradient(135deg,var(--glow1),var(--glow3))}
+.shot img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;display:block;opacity:0;
+  transition:opacity .4s,transform .6s cubic-bezier(.16,1,.3,1)}
 .shot img.in{opacity:1}
-.card:hover .shot img{transform:scale(1.06)}
-.shot .ph{
-  position:absolute;inset:0;display:grid;place-items:center;
-  font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:26px;color:var(--dim);
-  background:linear-gradient(135deg,var(--glow1),var(--glow3));letter-spacing:-.5px
-}
-.body{padding:20px;display:flex;flex-direction:column;flex:1;min-width:0}
-.name{
-  font-family:"Space Grotesk",Inter,sans-serif;font-size:19px;font-weight:600;letter-spacing:-.3px;
-  margin-bottom:8px;display:flex;align-items:center;gap:8px;min-width:0
-}
-.name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.name svg{width:17px;height:17px;flex:0 0 auto;stroke:var(--a1);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.desc{color:var(--mut);font-size:14px;flex:1;margin-bottom:18px;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.shot::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;z-index:1;pointer-events:none;
+  background:linear-gradient(to top,color-mix(in srgb,var(--surface) 55%,transparent),transparent)}
+.card:hover .shot img{transform:scale(1.05)}
+.tags .kind{color:var(--a1);font-weight:600}
+.go{position:absolute;top:12px;inset-inline-end:12px;z-index:2;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:rgba(5,8,15,.62);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);
+  opacity:0;transform:translateY(-4px);transition:.25s}
+.go svg{width:15px;height:15px}
+html[dir="rtl"] .go svg{transform:scaleX(-1)}
+.card:hover .go{opacity:1;transform:none}
+.body{padding:18px 20px 18px;display:flex;flex-direction:column;flex:1;min-width:0}
+.name{font-family:"Space Grotesk",Inter,sans-serif;font-size:19px;font-weight:600;letter-spacing:-.3px;margin-bottom:7px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:start}
+html[dir="rtl"] .name{text-align:right}
+.desc{color:var(--mut);font-size:14px;flex:1;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.topics{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 14px}
+.topic{font-size:11px;font-weight:600;color:var(--a2);background:var(--glow1);padding:2px 9px;border-radius:999px}
 .meta{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--line)}
-.tags{display:flex;gap:7px;flex-wrap:wrap;min-width:0}
-.tag{
-  background:var(--chip);border:1px solid var(--line);padding:4px 10px;border-radius:999px;
-  font-size:11.5px;font-weight:600;color:var(--mut);display:inline-flex;align-items:center;gap:5px;white-space:nowrap
+.tags{display:flex;gap:12px;flex-wrap:wrap;min-width:0;font-size:12.5px;color:var(--mut);font-weight:500}
+.tags span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tags .d{width:9px;height:9px;border-radius:50%}
+.tags svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.hits{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:12.5px;font-weight:600}
+.hits svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* featured: newest project, wide, cover beside the text */
+@media (min-width:900px){
+  .card.feat{grid-column:span 2;flex-direction:row}
+  .card.feat .shot{flex:0 0 58%;aspect-ratio:auto;min-height:100%}
+  .card.feat .shot::after{inset:0 0 0 auto;width:30%;height:auto;background:linear-gradient(to left,color-mix(in srgb,var(--surface) 60%,transparent),transparent)}
+  html[dir="rtl"] .card.feat .shot::after{inset:0 auto 0 0;background:linear-gradient(to right,color-mix(in srgb,var(--surface) 60%,transparent),transparent)}
+  .card.feat .body{padding:26px 28px;justify-content:center}
+  .card.feat .name{font-size:26px;white-space:normal}
+  .card.feat .desc{font-size:15px;-webkit-line-clamp:5}
 }
-.tag .d{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
-.hits{
-  flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
-  background:var(--glow1);color:var(--a2);padding:5px 12px;border-radius:999px;
-  font-size:12.5px;font-weight:700;transition:.2s
-}
-.hits svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2}
-.card:hover .hits{background:var(--a2);color:#fff}
+.badge{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.3px;
+  text-transform:uppercase;color:var(--a1);margin-bottom:10px}
+html[lang="fa"] .badge{text-transform:none;letter-spacing:0}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--a1)}
 
 /* skeletons + states */
-.sk{border-radius:20px;border:1px solid var(--line);background:var(--card);overflow:hidden}
+.sk{border-radius:20px;border:1px solid var(--line);background:var(--surface);overflow:hidden}
 .sk .a{aspect-ratio:16/9;background:var(--chip)}
 .sk .b{padding:20px}
 .sk .l{height:12px;border-radius:6px;background:var(--chip);margin-bottom:11px}
@@ -192,106 +229,133 @@ select:focus{outline:none;border-color:var(--a2)}
 .sk .l:nth-child(4){width:40%}
 .sk,.sk *{animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+.rise{animation:rise .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-.msg{text-align:center;padding:50px 20px;color:var(--mut)}
+.msg{text-align:center;padding:56px 20px;color:var(--mut);border:1px dashed var(--line2);border-radius:20px}
 .msg b{display:block;color:var(--fg);font-size:17px;font-weight:600;margin-bottom:8px}
 .msg a{color:var(--a2)}
 
-footer{border-top:1px solid var(--line);margin-top:40px;padding:26px 0 48px;text-align:center;color:var(--dim);font-size:13px}
+footer{border-top:1px solid var(--line);margin-top:48px;padding:30px 0 46px;color:var(--dim);font-size:13px}
+.footin{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
 footer a{color:var(--mut);text-decoration:none}
 footer a:hover{color:var(--a2)}
+.foot-links{display:flex;gap:18px}
 
 @media(max-width:700px){
   body{font-size:14.5px}
-  .wrap{padding:0 16px}
-  .hero{padding:18px 0 4px}
-  .grid{grid-template-columns:1fr;gap:16px}
-  .bar{margin:22px 0 16px}
-  .chips{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;flex-wrap:nowrap}
+  .navin{height:58px}
+  .bar{top:58px}
+  .btn .lbl{display:none}
+  .btn{width:38px;padding:0}
+  .stats{grid-auto-flow:row;grid-template-columns:repeat(2,1fr);width:100%}
+  .stat{min-width:0}
+  .stat:nth-child(3){border-inline-start:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .chips{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:2px}
   .chip{flex:0 0 auto}
   select{flex:1 1 auto}
-  .stat{font-size:12.5px;padding:7px 13px}
-  .body{padding:17px}
+  .search kbd{display:none}
+  .body{padding:16px}
 }
 </style>
 </head>
 <body>
+<div class="dots" aria-hidden="true"></div>
 
-<div class="wrap">
+<!-- Iran flag, reused by the brand and the hero mark -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="fc"><rect width="36" height="24" rx="2.4"/></clipPath>
+    <symbol id="iran" viewBox="0 0 36 24">
+      <g clip-path="url(#fc)">
+        <rect width="36" height="8" fill="var(--flag-g)"/>
+        <rect y="8" width="36" height="8" fill="#fff"/>
+        <rect y="16" width="36" height="8" fill="var(--flag-r)"/>
+        <g fill="var(--flag-r)">
+          <rect x="17.15" y="6.9" width="1.7" height="10.2" rx=".85"/>
+          <rect x="15.2" y="7.4" width="5.6" height="1.35" rx=".67"/>
+          <path d="M14.75 9.6c-1.25 1.6-1.25 3.2 0 4.8.55-1.6.55-3.2 0-4.8z"/>
+          <path d="M21.25 9.6c1.25 1.6 1.25 3.2 0 4.8-.55-1.6-.55-3.2 0-4.8z"/>
+          <path d="M12.5 10.5c-1.05 1.1-1.05 2.4 0 3.5.4-1.15.4-2.35 0-3.5z"/>
+          <path d="M23.5 10.5c1.05 1.1 1.05 2.4 0 3.5-.4-1.15-.4-2.35 0-3.5z"/>
+        </g>
+      </g>
+    </symbol>
+  </defs>
+</svg>
 
-  <div class="top">
-    <a class="gh" href="https://github.com/Plus98ir" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1a2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C16.9 4.7 18 5 18 5c.6 1.7.2 2.9.1 3.2.7.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
-      GitHub
+<header class="nav" id="nav">
+  <div class="wrap navin">
+    <a class="brand" href="#" aria-label="PLUS98IR">
+      <svg viewBox="0 0 36 24"><use href="#iran"/></svg>PLUS98IR
     </a>
     <div class="sp"></div>
-    <button class="tg" id="theme" type="button" aria-label="Toggle theme">
-      <svg id="themeicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg>
-      <span id="themelabel">Theme</span>
-    </button>
-  </div>
-
-  <div class="hero">
-    <h1 class="mark">
-      <!-- Iran flag stands in for the dots of .PLUS98IR. -->
-      <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Iran">
-        <defs><clipPath id="fc"><rect width="36" height="24" rx="2.4"/></clipPath></defs>
-        <g clip-path="url(#fc)">
-          <rect width="36" height="8" fill="var(--flag-g)"/>
-          <rect y="8" width="36" height="8" fill="#fff"/>
-          <rect y="16" width="36" height="8" fill="var(--flag-r)"/>
-          <g fill="var(--flag-r)">
-            <rect x="17.15" y="6.9" width="1.7" height="10.2" rx=".85"/>
-            <rect x="15.2" y="7.4" width="5.6" height="1.35" rx=".67"/>
-            <path d="M14.75 9.6c-1.25 1.6-1.25 3.2 0 4.8.55-1.6.55-3.2 0-4.8z"/>
-            <path d="M21.25 9.6c1.25 1.6 1.25 3.2 0 4.8-.55-1.6-.55-3.2 0-4.8z"/>
-            <path d="M12.5 10.5c-1.05 1.1-1.05 2.4 0 3.5.4-1.15.4-2.35 0-3.5z"/>
-            <path d="M23.5 10.5c1.05 1.1 1.05 2.4 0 3.5-.4-1.15-.4-2.35 0-3.5z"/>
-          </g>
-        </g>
-      </svg>
-      <span class="w">PLUS98IR</span>
-      <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Iran">
-        <g clip-path="url(#fc)">
-          <rect width="36" height="8" fill="var(--flag-g)"/>
-          <rect y="8" width="36" height="8" fill="#fff"/>
-          <rect y="16" width="36" height="8" fill="var(--flag-r)"/>
-          <g fill="var(--flag-r)">
-            <rect x="17.15" y="6.9" width="1.7" height="10.2" rx=".85"/>
-            <rect x="15.2" y="7.4" width="5.6" height="1.35" rx=".67"/>
-            <path d="M14.75 9.6c-1.25 1.6-1.25 3.2 0 4.8.55-1.6.55-3.2 0-4.8z"/>
-            <path d="M21.25 9.6c1.25 1.6 1.25 3.2 0 4.8-.55-1.6-.55-3.2 0-4.8z"/>
-            <path d="M12.5 10.5c-1.05 1.1-1.05 2.4 0 3.5.4-1.15.4-2.35 0-3.5z"/>
-            <path d="M23.5 10.5c1.05 1.1 1.05 2.4 0 3.5-.4-1.15-.4-2.35 0-3.5z"/>
-          </g>
-        </g>
-      </svg>
-    </h1>
-    <p class="tagline" id="tagline">Open-source tooling for servers, DNS, SSL and games.</p>
-    <div class="stats" id="stats"></div>
-  </div>
-
-  <div class="bar"><div class="wrap barin" style="padding:0">
-    <div class="search">
-      <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-      <input id="q" type="search" placeholder="Search projects…" autocomplete="off">
+    <div class="seg" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button><button type="button" data-lang="fa">فا</button>
     </div>
-    <select id="sort">
-      <option value="updated">Recently updated</option>
-      <option value="stars">Most stars</option>
-      <option value="hits">Most opened</option>
-      <option value="name">Name A–Z</option>
-    </select>
-    <div class="chips" id="chips"></div>
-  </div></div>
+    <button class="btn icon" id="theme" type="button" aria-label="Toggle theme">
+      <svg id="themeicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg>
+    </button>
+    <a class="btn" href="https://github.com/Plus98ir" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1a2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C16.9 4.7 18 5 18 5c.6 1.7.2 2.9.1 3.2.7.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
+      <span class="lbl">GitHub</span>
+    </a>
+  </div>
+</header>
 
-  <div class="grid" id="grid"></div>
-  <div id="state"></div>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow"><i class="live"></i><span data-i="eyebrow">Open source · built in Iran</span></div>
+    <h1 class="mark">
+      <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Iran"><use href="#iran"/></svg>
+      <span class="w">PLUS98IR</span>
+      <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Iran"><use href="#iran"/></svg>
+    </h1>
+    <p class="tagline" data-i="tagline" data-html="1">Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.</p>
+    <div class="ctas">
+      <a class="cta primary" href="#projects"><span data-i="browse">Browse projects</span>
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="cta" href="https://github.com/Plus98ir" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1a2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C16.9 4.7 18 5 18 5c.6 1.7.2 2.9.1 3.2.7.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
+        <span data-i="profile">GitHub profile</span></a>
+    </div>
+    <div class="stats" id="stats"></div>
+  </section>
 
-  <footer>
-    <div>Built by <a href="https://github.com/Plus98ir" target="_blank" rel="noopener">Plus98ir</a> · project covers are picked up automatically from each repository</div>
-  </footer>
-</div>
+  <section id="projects">
+    <div class="head">
+      <div>
+        <h2 data-i="projects">Projects</h2>
+        <p data-i="projects_sub">Every public repository, newest first. Click a card to open its site or source.</p>
+      </div>
+    </div>
+    <div class="bar"><div class="barin">
+      <label class="search">
+        <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" type="search" placeholder="Search projects…" autocomplete="off" data-ph="search">
+        <kbd>/</kbd>
+      </label>
+      <select id="sort" aria-label="Sort">
+        <option value="updated" data-i="s_updated">Recently updated</option>
+        <option value="stars" data-i="s_stars">Most stars</option>
+        <option value="hits" data-i="s_hits">Most opened</option>
+        <option value="name" data-i="s_name">Name A–Z</option>
+      </select>
+      <div class="chips" id="chips"></div>
+    </div></div>
+
+    <div class="grid" id="grid"></div>
+    <div id="state"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footin">
+    <div><span data-i="built">Built by</span> <a href="https://github.com/Plus98ir" target="_blank" rel="noopener">Plus98ir</a> · <span data-i="covers">project covers are picked up automatically from each repository</span></div>
+    <div class="foot-links"><a href="https://github.com/Plus98ir" target="_blank" rel="noopener">GitHub</a><a href="#" id="totop" data-i="top">Back to top</a></div>
+  </div>
+</footer>
 
 <script>
 "use strict";
@@ -322,6 +386,46 @@ var COVER = {
 };
 
 /* =====================================================================
+   text (EN / FA)
+   ===================================================================== */
+var T = {
+  en: {
+    eyebrow:"Open source · built in Iran",
+    tagline:"Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.",
+    browse:"Browse projects", profile:"GitHub profile",
+    projects:"Projects", projects_sub:"Every public repository, newest first. Click a card to open its site or source.",
+    search:"Search projects…", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most opened", s_name:"Name A–Z",
+    all:"All", st_projects:"projects", st_stars:"stars", st_langs:"languages", st_updated:"last update",
+    site:"Website", repo:"Source", featured:"Latest update", nodesc:"No description yet.",
+    opened:"opened", archived:"archived", fork:"fork",
+    today:"today", yesterday:"yesterday", d:"d ago", mo:"mo ago", y:"y ago",
+    none_b:"Nothing matches that", none:"Try a different word, or clear the filters.",
+    rate_b:"GitHub is rate-limiting this network",
+    rate:"Unauthenticated requests are capped at 60 per hour per IP. Try again in a few minutes, or open ",
+    err_b:"Could not load the project list", err:"Check the connection, then reload. Everything is still at ",
+    built:"Built by", covers:"project covers are picked up automatically from each repository", top:"Back to top",
+    light:"Light mode", dark:"Dark mode"
+  },
+  fa: {
+    eyebrow:"متن‌باز · ساخت ایران",
+    tagline:"ابزارهای متن‌باز برای <b>سرور، DNS، SSL، مانیتورینگ و بازی</b>، با نصب یک‌مرحله‌ای.",
+    browse:"دیدن پروژه‌ها", profile:"پروفایل گیت‌هاب",
+    projects:"پروژه‌ها", projects_sub:"همهٔ ریپوهای عمومی، جدیدترین اول. روی هر کارت بزنید تا سایت یا سورسش باز شود.",
+    search:"جستجوی پروژه…", s_updated:"آخرین به‌روزرسانی", s_stars:"بیشترین ستاره", s_hits:"بیشترین بازدید", s_name:"نام (A–Z)",
+    all:"همه", st_projects:"پروژه", st_stars:"ستاره", st_langs:"زبان برنامه‌نویسی", st_updated:"آخرین به‌روزرسانی",
+    site:"وب‌سایت", repo:"سورس", featured:"آخرین به‌روزرسانی", nodesc:"هنوز توضیحی ندارد.",
+    opened:"بازدید", archived:"بایگانی", fork:"فورک",
+    today:"امروز", yesterday:"دیروز", d:" روز پیش", mo:" ماه پیش", y:" سال پیش",
+    none_b:"چیزی پیدا نشد", none:"کلمهٔ دیگری امتحان کنید یا فیلترها را پاک کنید.",
+    rate_b:"گیت‌هاب درخواست‌های این شبکه را محدود کرده",
+    rate:"درخواست بدون ورود، ساعتی ۶۰ بار برای هر IP مجاز است. چند دقیقهٔ دیگر امتحان کنید یا مستقیم بروید به ",
+    err_b:"فهرست پروژه‌ها بارگذاری نشد", err:"اتصال را بررسی کنید و صفحه را دوباره باز کنید. همه‌چیز در این آدرس هست: ",
+    built:"ساخته‌شده توسط", covers:"تصویر هر پروژه خودکار از ریپوی خودش برداشته می‌شود", top:"بازگشت به بالا",
+    light:"حالت روشن", dark:"حالت تیره"
+  }
+};
+
+/* =====================================================================
    small helpers
    ===================================================================== */
 var $ = function(s){ return document.querySelector(s); };
@@ -335,22 +439,55 @@ function ls(k, v){
   } catch(e){ return null; }
 }
 
+var LANG_UI = (function(){
+  var q = (location.search.match(/[?&]lang=(en|fa)/) || [])[1];
+  return q || ls("p98_lang") || ((navigator.language || "").indexOf("fa") === 0 ? "fa" : "en");
+})();
+function t(k){ return (T[LANG_UI] && T[LANG_UI][k]) || T.en[k] || k; }
+
 var LANG_COLOR = {
-  Python:"#3572A5", Shell:"#89e051", HTML:"#e34c26", JavaScript:"#f1e05a",
-  CSS:"#563d7c", TypeScript:"#3178c6", Go:"#00ADD8", Rust:"#dea584",
-  C:"#555555", "C++":"#f34b7d", Java:"#b07219", PHP:"#4F5D95",
-  Dockerfile:"#384d54", Lua:"#000080", Ruby:"#701516", Batchfile:"#C1F12E"
+  Python:"#3572A5", Shell:"#89e051", HTML:"#e34c26", JavaScript:"#f1e05a", Dart:"#00B4AB",
+  CSS:"#563d7c", TypeScript:"#3178c6", Go:"#00ADD8", Rust:"#dea584", Kotlin:"#A97BFF",
+  C:"#555555", "C++":"#f34b7d", "C#":"#178600", Java:"#b07219", PHP:"#4F5D95",
+  Dockerfile:"#384d54", Lua:"#000080", Ruby:"#701516", Batchfile:"#C1F12E", PowerShell:"#012456"
 };
 function langColor(l){ return LANG_COLOR[l] || "#8a97ab"; }
 
 function ago(iso){
   var d = (Date.now() - new Date(iso).getTime()) / 86400000;
-  if (d < 1) return "today";
-  if (d < 2) return "yesterday";
-  if (d < 30) return Math.round(d) + "d ago";
-  if (d < 365) return Math.round(d / 30) + "mo ago";
-  return Math.round(d / 365) + "y ago";
+  if (d < 1) return t("today");
+  if (d < 2) return t("yesterday");
+  if (d < 30) return Math.round(d) + t("d");
+  if (d < 365) return Math.round(d / 30) + t("mo");
+  return Math.round(d / 365) + t("y");
 }
+
+/* =====================================================================
+   language
+   ===================================================================== */
+function applyLang(){
+  var html = document.documentElement;
+  html.lang = LANG_UI;
+  html.dir = LANG_UI === "fa" ? "rtl" : "ltr";
+  var els = document.querySelectorAll("[data-i]");
+  for (var i = 0; i < els.length; i++){
+    var k = els[i].getAttribute("data-i");
+    if (els[i].getAttribute("data-html")) els[i].innerHTML = t(k); else els[i].textContent = t(k);
+  }
+  $("#q").placeholder = t("search");
+  var b = document.querySelectorAll(".seg button");
+  for (i = 0; i < b.length; i++) b[i].classList.toggle("on", b[i].getAttribute("data-lang") === LANG_UI);
+  paintTheme();
+  if (REPOS.length){ buildStats(); buildChips(); render(); }
+}
+(function(){
+  var b = document.querySelectorAll(".seg button");
+  for (var i = 0; i < b.length; i++){
+    b[i].addEventListener("click", function(){
+      LANG_UI = this.getAttribute("data-lang"); ls("p98_lang", LANG_UI); applyLang();
+    });
+  }
+})();
 
 /* =====================================================================
    theme
@@ -359,15 +496,15 @@ var SUN = '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2M12 19.6v2M2.4 12h
 var MOON = '<path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.6 8.6 0 1 0 11 11z"/>';
 
 function darkNow(){
-  var t = document.documentElement.getAttribute("data-theme");
-  if (t === "dark") return true;
-  if (t === "light") return false;
+  var a = document.documentElement.getAttribute("data-theme");
+  if (a === "dark") return true;
+  if (a === "light") return false;
   return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 function paintTheme(){
   var d = darkNow();
   $("#themeicon").innerHTML = d ? SUN : MOON;
-  $("#themelabel").textContent = d ? "Light" : "Dark";
+  $("#theme").title = d ? t("light") : t("dark");
 }
 (function(){
   var saved = ls("p98_theme");
@@ -384,7 +521,14 @@ if (window.matchMedia){
   var mq = window.matchMedia("(prefers-color-scheme: dark)");
   if (mq.addEventListener) mq.addEventListener("change", paintTheme);
 }
-paintTheme();
+
+/* nav gets a background once the page scrolls */
+function onScroll(){ $("#nav").classList.toggle("scrolled", window.scrollY > 8); }
+window.addEventListener("scroll", onScroll, {passive:true});
+$("#totop").addEventListener("click", function(e){ e.preventDefault(); window.scrollTo({top:0, behavior:"smooth"}); });
+document.addEventListener("keydown", function(e){
+  if (e.key === "/" && document.activeElement !== $("#q")){ e.preventDefault(); $("#q").focus(); }
+});
 
 /* =====================================================================
    automatic cover discovery
@@ -453,7 +597,7 @@ function bumpHits(name){
    data
    ===================================================================== */
 var REPOS = [], FILTER = "", LANG = "", SORT = "updated";
-var CACHE_KEY = "p98_repos_v1", CACHE_TTL = 6 * 60 * 1000;
+var CACHE_KEY = "p98_repos_v2", CACHE_TTL = 6 * 60 * 1000;
 
 function targetUrl(r){
   if (r.homepage) return r.homepage;
@@ -516,9 +660,10 @@ function load(){
         } catch(e){}
       }
       $("#grid").innerHTML = "";
+      var link = '<a href="https://github.com/' + OWNER + '" target="_blank" rel="noopener">github.com/' + OWNER + "</a>";
       $("#state").innerHTML = (String(err.message) === "rate")
-        ? '<div class="msg"><b>GitHub is rate-limiting this network</b>Unauthenticated requests are capped at 60 per hour per IP. Try again in a few minutes, or open <a href="https://github.com/' + OWNER + '" target="_blank" rel="noopener">github.com/' + OWNER + '</a>.</div>'
-        : '<div class="msg"><b>Could not load the project list</b>Check the connection, then reload. Everything is still at <a href="https://github.com/' + OWNER + '" target="_blank" rel="noopener">github.com/' + OWNER + '</a>.</div>';
+        ? '<div class="msg"><b>' + t("rate_b") + "</b>" + t("rate") + link + ".</div>"
+        : '<div class="msg"><b>' + t("err_b") + "</b>" + t("err") + link + ".</div>";
     });
 }
 
@@ -530,16 +675,17 @@ function ready(list){
 }
 
 function buildStats(){
-  var stars = 0, langs = {}, i;
+  var stars = 0, langs = {}, last = 0, i;
   for (i = 0; i < REPOS.length; i++){
     stars += REPOS[i].stargazers_count || 0;
     if (REPOS[i].language) langs[REPOS[i].language] = 1;
+    last = Math.max(last, new Date(REPOS[i].pushed_at || REPOS[i].updated_at || 0).getTime());
   }
-  var n = 0; for (var k in langs) if (langs.hasOwnProperty(k)) n++;
   $("#stats").innerHTML =
-    '<span class="stat"><b>' + REPOS.length + "</b> projects</span>" +
-    '<span class="stat"><b>' + stars + "</b> stars</span>" +
-    '<span class="stat"><b>' + n + "</b> languages</span>";
+    '<div class="stat"><b>' + REPOS.length + "</b><span>" + t("st_projects") + "</span></div>" +
+    '<div class="stat"><b>' + stars + "</b><span>" + t("st_stars") + "</span></div>" +
+    '<div class="stat"><b>' + Object.keys(langs).length + "</b><span>" + t("st_langs") + "</span></div>" +
+    '<div class="stat"><b>' + (last ? esc(ago(new Date(last).toISOString())) : "–") + "</b><span>" + t("st_updated") + "</span></div>";
 }
 
 function buildChips(){
@@ -549,10 +695,10 @@ function buildChips(){
     if (l) counts[l] = (counts[l] || 0) + 1;
   }
   var langs = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; });
-  var h = '<button class="chip on" data-l="">All</button>';
+  var h = '<button class="chip' + (LANG ? "" : " on") + '" data-l="">' + t("all") + ' <span class="n">' + REPOS.length + "</span></button>";
   for (i = 0; i < langs.length; i++){
-    h += '<button class="chip" data-l="' + esc(langs[i]) + '"><i class="d" style="background:' +
-         langColor(langs[i]) + '"></i>' + esc(langs[i]) + "</button>";
+    h += '<button class="chip' + (LANG === langs[i] ? " on" : "") + '" data-l="' + esc(langs[i]) + '"><i class="d" style="background:' +
+         langColor(langs[i]) + '"></i>' + esc(langs[i]) + ' <span class="n">' + counts[langs[i]] + "</span></button>";
   }
   $("#chips").innerHTML = h;
 
@@ -587,46 +733,57 @@ function render(){
   var rows = visible(), grid = $("#grid");
   grid.innerHTML = "";
   $("#state").innerHTML = rows.length ? "" :
-    '<div class="msg"><b>Nothing matches that</b>Try a different word, or clear the filters.</div>';
-
-  for (var i = 0; i < rows.length; i++) grid.appendChild(cardFor(rows[i]));
+    '<div class="msg"><b>' + t("none_b") + "</b>" + t("none") + "</div>";
+  // the newest project gets a wide card while nothing is filtered
+  var feature = SORT === "updated" && !LANG && !FILTER.trim() && rows.length > 2;
+  for (var i = 0; i < rows.length; i++){
+    var c = cardFor(rows[i], feature && i === 0);
+    c.style.animationDelay = Math.min(i, 8) * 45 + "ms";
+    grid.appendChild(c);
+  }
 }
 
-function cardFor(r){
+var ICON_SITE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+var ICON_CODE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>';
+var ICON_GO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+
+function cardFor(r, feat){
   var url = targetUrl(r), initials = r.name.replace(/[^A-Za-z0-9]/g,"").slice(0,2).toUpperCase();
+  var isSite = url !== r.html_url;
 
   var a = document.createElement("a");
-  a.className = "card";
+  a.className = "card rise" + (feat ? " feat" : "");
   a.href = url;
   if (/^https?:\/\//.test(url) && url.indexOf(location.origin) !== 0){
     a.target = "_blank"; a.rel = "noopener";
   }
 
-  var tags = "";
+  var tags = '<span class="kind">' + (isSite ? ICON_SITE + t("site") : ICON_CODE + t("repo")) + "</span>";
   if (r.language){
-    tags += '<span class="tag"><i class="d" style="background:' + langColor(r.language) +
-            '"></i>' + esc(r.language) + "</span>";
+    tags += '<span><i class="d" style="background:' + langColor(r.language) + '"></i>' + esc(r.language) + "</span>";
   }
-  if (r.stargazers_count) tags += '<span class="tag">&#9733; ' + r.stargazers_count + "</span>";
-  if (r.archived)         tags += '<span class="tag">archived</span>';
-  else if (r.fork)        tags += '<span class="tag">fork</span>';
-  if (!r.stargazers_count && !r.archived && !r.fork && (r.pushed_at || r.updated_at)){
-    tags += '<span class="tag">' + esc(ago(r.pushed_at || r.updated_at)) + "</span>";
+  if (r.stargazers_count) tags += '<span><svg viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg>' + r.stargazers_count + "</span>";
+  if (r.archived)         tags += "<span>" + t("archived") + "</span>";
+  else if (r.fork)        tags += "<span>" + t("fork") + "</span>";
+  if (r.pushed_at || r.updated_at){
+    tags += '<span><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
+            esc(ago(r.pushed_at || r.updated_at)) + "</span>";
   }
+  var topics = (r.topics || []).slice(0, feat ? 5 : 3).map(function(x){ return '<span class="topic">' + esc(x) + "</span>"; }).join("");
 
   a.innerHTML =
     '<div class="shot"><div class="ph">' + esc(initials) + '</div>' +
       '<img alt="' + esc(r.name) + '" loading="lazy" decoding="async">' +
-    '</div>' +
+      '<span class="go">' + ICON_GO + "</span>" +
+    "</div>" +
     '<div class="body">' +
-      '<div class="name">' +
-        '<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>' +
-        "<span>" + esc(r.name) + "</span>" +
-      "</div>" +
-      '<div class="desc">' + esc(r.description || "No description yet.") + "</div>" +
+      (feat ? '<span class="badge">' + t("featured") + "</span>" : "") +
+      '<div class="name" title="' + esc(r.name) + '">' + esc(r.name) + "</div>" +
+      '<div class="desc" dir="auto">' + esc(r.description || t("nodesc")) + "</div>" +
+      (topics ? '<div class="topics">' + topics + "</div>" : "") +
       '<div class="meta">' +
         '<div class="tags">' + tags + "</div>" +
-        '<div class="hits"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">' +
+        '<div class="hits" title="' + t("opened") + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">' +
           '<path d="M1.5 12S5 5.5 12 5.5 22.5 12 22.5 12 19 18.5 12 18.5 1.5 12 1.5 12z"/>' +
           '<circle cx="12" cy="12" r="3"/></svg><b>' + hitsOf(r.name) + "</b></div>" +
       "</div>" +
@@ -659,6 +816,8 @@ $("#q").addEventListener("input", function(){
 });
 $("#sort").addEventListener("change", function(){ SORT = this.value; render(); });
 
+applyLang();
+onScroll();
 load();
 </script>
 </body>
