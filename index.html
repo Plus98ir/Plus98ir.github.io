@@ -13,6 +13,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#05070d">
 <meta property="og:image" content="https://plus98ir.dpdns.org/icon-512.png">
+<!-- GoatCounter: privacy-friendly visit stats, one row per page/project -->
+<script>window.goatcounter={path:function(){var p=location.pathname.replace(/[^\/]*\.html?$/,"");return /\/$/.test(p)?p:p+"/"}};</script>
+<script data-goatcounter="https://plus98.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -65,6 +68,7 @@
 html[lang="fa"]{--font:Vazirmatn,Inter,system-ui,sans-serif;--display:Vazirmatn,"Space Grotesk",sans-serif}
 
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
   background:var(--bg);color:var(--fg);font-family:var(--font);
@@ -369,6 +373,10 @@ var OWNER = "Plus98ir";
 var PAGES_BASE = "https://plus98ir.dpdns.org";
 var PAGES_FILE = "index-en.html";
 
+/* GoatCounter site: real visit counts on the cards and in the hero. */
+var GC = "https://plus98.goatcounter.com";
+var SITE_HOSTS = ["plus98ir.dpdns.org", "plus98ir.github.io"];
+
 /* Repos to leave out of the grid. */
 var HIDE = ["plus98ir.github.io", "plus98ir"];
 
@@ -394,10 +402,10 @@ var T = {
     tagline:"Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.",
     browse:"Browse projects", profile:"GitHub profile",
     projects:"Projects", projects_sub:"Every public repository, newest first. Click a card to open its site or source.",
-    search:"Search projects…", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most opened", s_name:"Name A–Z",
+    search:"Search projects…", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most viewed", s_name:"Name A–Z",
     all:"All", st_projects:"projects", st_stars:"stars", st_langs:"languages", st_updated:"last update",
     site:"Website", repo:"Source", featured:"Latest update", nodesc:"No description yet.",
-    opened:"opened", archived:"archived", fork:"fork",
+    opened:"views", st_views:"total views", archived:"archived", fork:"fork",
     today:"today", yesterday:"yesterday", d:"d ago", mo:"mo ago", y:"y ago",
     none_b:"Nothing matches that", none:"Try a different word, or clear the filters.",
     rate_b:"GitHub is rate-limiting this network",
@@ -414,7 +422,7 @@ var T = {
     search:"جستجوی پروژه…", s_updated:"آخرین به‌روزرسانی", s_stars:"بیشترین ستاره", s_hits:"بیشترین بازدید", s_name:"نام (A–Z)",
     all:"همه", st_projects:"پروژه", st_stars:"ستاره", st_langs:"زبان برنامه‌نویسی", st_updated:"آخرین به‌روزرسانی",
     site:"وب‌سایت", repo:"سورس", featured:"آخرین به‌روزرسانی", nodesc:"هنوز توضیحی ندارد.",
-    opened:"بازدید", archived:"بایگانی", fork:"فورک",
+    opened:"بازدید", st_views:"بازدید کل", archived:"بایگانی", fork:"فورک",
     today:"امروز", yesterday:"دیروز", d:" روز پیش", mo:" ماه پیش", y:" سال پیش",
     none_b:"چیزی پیدا نشد", none:"کلمهٔ دیگری امتحان کنید یا فیلترها را پاک کنید.",
     rate_b:"گیت‌هاب درخواست‌های این شبکه را محدود کرده",
@@ -584,13 +592,70 @@ function findCover(repo, onFound){
 }
 
 /* =====================================================================
-   click counter (per browser)
+   visit counts (GoatCounter)
+   ---------------------------------------------------------------------
+   Each project page reports itself as "/<Repo>/". The cards read those
+   counts back from the public counter API; TOTAL is the whole site.
+   Counts are cached for 10 minutes. If the API is unreachable the
+   numbers are simply hidden.
    ===================================================================== */
-function hitsOf(name){ return parseInt(ls("p98_hits_" + name), 10) || 0; }
-function bumpHits(name){
-  var v = hitsOf(name) + 1;
-  ls("p98_hits_" + name, v);
-  return v;
+var HITS = {}, HITS_KEY = "p98_gc_v1", HITS_TTL = 10 * 60 * 1000;
+
+function gcPath(url){
+  try {
+    var u = new URL(url, location.href);
+    if (SITE_HOSTS.indexOf(u.hostname.toLowerCase()) === -1) return "";
+    var p = u.pathname.replace(/[^\/]*\.html?$/, "");
+    return /\/$/.test(p) ? p : p + "/";
+  } catch(e){ return ""; }
+}
+function hitsOf(name){ return HITS[name] || 0; }
+
+function gcCount(path){
+  return fetch(GC + "/counter/" + encodeURIComponent(path) + ".json")
+    .then(function(res){
+      if (res.status === 404) return 0;               // no visits yet
+      if (!res.ok) throw new Error("gc " + res.status);
+      return res.json().then(function(j){ return parseInt(String(j.count).replace(/\D/g, ""), 10) || 0; });
+    });
+}
+
+function loadHits(){
+  var c = null;
+  try { c = JSON.parse(ls(HITS_KEY) || "null"); } catch(e){}
+  if (c && c.at && Date.now() - c.at < HITS_TTL && c.hits){ HITS = c.hits; paintHits(); return; }
+
+  var jobs = [], names = [];
+  for (var i = 0; i < REPOS.length; i++){
+    var p = gcPath(targetUrl(REPOS[i]));
+    if (!p) continue;
+    names.push(REPOS[i].name);
+    jobs.push(gcCount(p).catch(function(){ return -1; }));
+  }
+  names.push("TOTAL");
+  jobs.push(gcCount("TOTAL").catch(function(){ return -1; }));
+
+  Promise.all(jobs).then(function(vals){
+    var h = {}, ok = false;
+    for (var j = 0; j < vals.length; j++){ if (vals[j] >= 0){ h[names[j]] = vals[j]; ok = true; } }
+    if (!ok) return;                                   // counter API off or blocked
+    HITS = h;
+    ls(HITS_KEY, JSON.stringify({at:Date.now(), hits:h}));
+    paintHits();
+  });
+}
+
+function fmt(n){ try { return n.toLocaleString(LANG_UI === "fa" ? "fa-IR" : "en-US"); } catch(e){ return String(n); } }
+
+function paintHits(){
+  var els = document.querySelectorAll(".hits[data-n]");
+  for (var i = 0; i < els.length; i++){
+    var n = els[i].getAttribute("data-n");
+    if (n in HITS){ els[i].querySelector("b").textContent = fmt(HITS[n]); els[i].hidden = false; }
+  }
+  var tv = $("#st-views");
+  if (tv && "TOTAL" in HITS){ tv.querySelector("b").textContent = fmt(HITS.TOTAL); tv.hidden = false; }
+  if (SORT === "hits") render();
 }
 
 /* =====================================================================
@@ -672,6 +737,7 @@ function ready(list){
   buildStats();
   buildChips();
   render();
+  loadHits();
 }
 
 function buildStats(){
@@ -685,7 +751,8 @@ function buildStats(){
     '<div class="stat"><b>' + REPOS.length + "</b><span>" + t("st_projects") + "</span></div>" +
     '<div class="stat"><b>' + stars + "</b><span>" + t("st_stars") + "</span></div>" +
     '<div class="stat"><b>' + Object.keys(langs).length + "</b><span>" + t("st_langs") + "</span></div>" +
-    '<div class="stat"><b>' + (last ? esc(ago(new Date(last).toISOString())) : "–") + "</b><span>" + t("st_updated") + "</span></div>";
+    '<div class="stat"><b>' + (last ? esc(ago(new Date(last).toISOString())) : "–") + "</b><span>" + t("st_updated") + "</span></div>" +
+    '<div class="stat" id="st-views"' + ("TOTAL" in HITS ? "" : " hidden") + '><b>' + fmt(HITS.TOTAL || 0) + "</b><span>" + t("st_views") + "</span></div>";
 }
 
 function buildChips(){
@@ -783,9 +850,9 @@ function cardFor(r, feat){
       (topics ? '<div class="topics">' + topics + "</div>" : "") +
       '<div class="meta">' +
         '<div class="tags">' + tags + "</div>" +
-        '<div class="hits" title="' + t("opened") + '"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">' +
+        '<div class="hits" data-n="' + esc(r.name) + '" title="' + t("opened") + '"' + (r.name in HITS ? "" : " hidden") + '><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">' +
           '<path d="M1.5 12S5 5.5 12 5.5 22.5 12 22.5 12 19 18.5 12 18.5 1.5 12 1.5 12z"/>' +
-          '<circle cx="12" cy="12" r="3"/></svg><b>' + hitsOf(r.name) + "</b></div>" +
+          '<circle cx="12" cy="12" r="3"/></svg><b>' + fmt(hitsOf(r.name)) + "</b></div>" +
       "</div>" +
     "</div>";
 
@@ -796,11 +863,13 @@ function cardFor(r, feat){
     if (img.complete && img.naturalWidth) img.classList.add("in");
   });
 
-  a.addEventListener("click", function(ev){
-    // let ctrl/cmd/middle-click open a new tab untouched
-    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button !== 0) { bumpHits(r.name); return; }
-    a.querySelector(".hits b").textContent = bumpHits(r.name);
-  });
+  // record which card was opened (listed as an event in GoatCounter)
+  function track(){
+    if (window.goatcounter && window.goatcounter.count)
+      window.goatcounter.count({path:"open-" + r.name, title:r.name, event:true});
+  }
+  a.addEventListener("click", track);
+  a.addEventListener("auxclick", function(ev){ if (ev.button === 1) track(); });
 
   return a;
 }
