@@ -481,7 +481,27 @@ $("#logout").addEventListener("click", function(){
 /* =====================================================================
    API
    ===================================================================== */
+/* GoatCounter allows 4 API requests per second: run them one by one,
+   about 3 a second, and wait + retry when a 429 still comes back */
+var QUEUE = [], BUSY = false, GAP = 340;
+function wait(ms){ return new Promise(function(ok){ setTimeout(ok, ms); }); }
 function api(path, params){
+  return new Promise(function(ok, no){ QUEUE.push({ path:path, params:params, ok:ok, no:no }); pump(); });
+}
+function pump(){
+  if (BUSY || !QUEUE.length) return;
+  BUSY = true;
+  var j = QUEUE.shift();
+  apiTry(j.path, j.params, 0).then(j.ok, j.no);
+  setTimeout(function(){ BUSY = false; pump(); }, GAP);
+}
+function apiTry(path, params, n){
+  return apiOnce(path, params).catch(function(e){
+    if (e.message === "rate" && n < 4) return wait(e.retry || 1200 * (n + 1)).then(function(){ return apiTry(path, params, n + 1); });
+    throw e;
+  });
+}
+function apiOnce(path, params){
   var q = [];
   for (var k in params) if (params[k] !== undefined && params[k] !== "") q.push(k + "=" + encodeURIComponent(params[k]));
   return fetch(GC + "/api/v0" + path + (q.length ? "?" + q.join("&") : ""), {
@@ -489,7 +509,11 @@ function api(path, params){
   }).then(function(res){
     if (res.status === 401) throw new Error("auth");
     if (res.status === 403) throw new Error("verify");
-    if (res.status === 429) throw new Error("rate");
+    if (res.status === 429){
+      var err = new Error("rate"), s = parseInt(res.headers.get("Retry-After") || res.headers.get("X-Rate-Limit-Reset"), 10);
+      if (s > 0) err.retry = s * 1000 + 200;
+      throw err;
+    }
     if (!res.ok) throw new Error("http " + res.status);
     return res.json();
   });

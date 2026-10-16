@@ -176,14 +176,11 @@ select:focus{outline:none;border-color:var(--a2)}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-h)}
 .card:hover::before{opacity:1}
 .card:focus-visible{outline:2px solid var(--a2);outline-offset:3px}
-.shot{position:relative;aspect-ratio:16/9;background:var(--imgbg);overflow:hidden;isolation:isolate}
+.shot{position:relative;aspect-ratio:16/10;background:var(--imgbg);overflow:hidden;isolation:isolate}
 .shot .ph{position:absolute;inset:0;display:grid;place-items:center;z-index:0;
   font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:30px;color:var(--dim);letter-spacing:-.5px;
   background:linear-gradient(135deg,var(--glow1),var(--glow3))}
-.shot .bg{position:absolute;inset:-24px;z-index:0;background:var(--cover) center/cover no-repeat;filter:blur(22px) saturate(1.2) brightness(.55);
-  opacity:0;transition:opacity .4s}
-.shot.has .bg{opacity:1}
-.shot img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:contain;display:block;opacity:0;
+.shot img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:fill;display:block;opacity:0;
   transition:opacity .4s,transform .6s cubic-bezier(.16,1,.3,1)}
 .shot img.in{opacity:1}
 .shot::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;z-index:1;pointer-events:none;
@@ -215,6 +212,10 @@ html[dir="rtl"] .name{text-align:right}
 @media (min-width:900px){
   .card.feat{grid-column:span 2;flex-direction:row}
   .card.feat .shot{flex:0 0 58%;aspect-ratio:auto;min-height:100%}
+  /* the wide card is taller than its cover: keep the cover's proportions, a blurred copy fills the rest */
+  .card.feat .shot img{object-fit:contain}
+  .card.feat .shot .bg{position:absolute;inset:-30px;z-index:0;background:var(--cover) center/cover no-repeat;
+    filter:blur(26px) saturate(1.2) brightness(.6)}
   .card.feat .shot::after{inset:0 0 0 auto;width:30%;height:auto;background:linear-gradient(to left,color-mix(in srgb,var(--surface) 60%,transparent),transparent)}
   html[dir="rtl"] .card.feat .shot::after{inset:0 auto 0 0;background:linear-gradient(to right,color-mix(in srgb,var(--surface) 60%,transparent),transparent)}
   .card.feat .body{padding:26px 28px;justify-content:center}
@@ -842,7 +843,7 @@ function cardFor(r, feat){
   var topics = (r.topics || []).slice(0, feat ? 5 : 3).map(function(x){ return '<span class="topic">' + esc(x) + "</span>"; }).join("");
 
   a.innerHTML =
-    '<div class="shot"><div class="ph">' + esc(initials) + '</div><div class="bg"></div>' +
+    '<div class="shot"><div class="ph">' + esc(initials) + '</div>' + (feat ? '<div class="bg"></div>' : "") +
       '<img alt="' + esc(r.name) + '" loading="lazy" decoding="async">' +
       '<span class="go">' + ICON_GO + "</span>" +
     "</div>" +
@@ -860,12 +861,11 @@ function cardFor(r, feat){
     "</div>";
 
   var img = a.querySelector("img");
-  var shot = a.querySelector(".shot");
   findCover(r, function(src){
-    shot.style.setProperty("--cover", 'url("' + src.replace(/"/g, "%22") + '")');
-    img.onload = function(){ img.classList.add("in"); shot.classList.add("has"); };
+    if (feat) a.querySelector(".shot").style.setProperty("--cover", 'url("' + src.replace(/"/g, "%22") + '")');
+    img.onload = function(){ img.classList.add("in"); };
     img.src = src;
-    if (img.complete && img.naturalWidth){ img.classList.add("in"); shot.classList.add("has"); }
+    if (img.complete && img.naturalWidth) img.classList.add("in");
   });
 
   // record which card was opened (listed as an event in GoatCounter)
