@@ -84,7 +84,7 @@ body{
   background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;
   -webkit-mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%);
           mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%)}
-.wrap{max-width:1760px;margin:0 auto;padding:0 clamp(16px,3vw,40px)}
+.wrap{width:100%;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
 a{color:inherit}
 button{font:inherit}
 
@@ -94,7 +94,7 @@ button{font:inherit}
 @supports not (background:color-mix(in srgb,red,blue)){.nav.scrolled{background:var(--bg)}}
 .navin{display:flex;align-items:center;gap:10px;height:64px}
 .brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:17px;letter-spacing:-.3px}
-.brand svg{width:26px;height:auto;border-radius:3px;box-shadow:0 0 0 1px var(--line2)}
+.brand .flag{width:28px}
 .sp{flex:1}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;height:38px;
   border:1px solid var(--line2);background:var(--surface);color:var(--fg);border-radius:10px;padding:0 13px;
@@ -118,8 +118,13 @@ html[dir="rtl"] .eyebrow{padding:6px 8px 6px 14px}
   letter-spacing:clamp(-3px,-.35vw,-1px);margin-bottom:20px;direction:ltr}
 .mark .w{background:linear-gradient(176deg,var(--fg) 35%,color-mix(in srgb,var(--fg) 55%,var(--mut)));
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
-.flag{width:clamp(32px,6.4vw,62px);height:auto;flex:0 0 auto;border-radius:clamp(4px,.8vw,8px);
-  box-shadow:0 0 0 1px var(--line2),0 8px 22px -8px rgba(0,0,0,.45);display:block}
+/* Iran flag cut into vertical strips that wave like cloth */
+.flag{display:block;width:clamp(40px,7.6vw,80px);aspect-ratio:7/4;flex:0 0 auto;overflow:visible}
+.flag g{transform-box:view-box;--a:calc(4px + var(--i)/var(--n)*22px);animation:wave 2.6s ease-in-out infinite;animation-delay:calc(var(--i)/var(--n)*-2s)}
+.flag g rect{fill:#000;opacity:0;animation:shade 2.6s ease-in-out infinite;animation-delay:inherit}
+.flag.sm g{--a:calc(3px + var(--i)/var(--n)*16px)}
+@keyframes wave{0%,100%{transform:translateY(calc(var(--a)*-1))}50%{transform:translateY(var(--a))}}
+@keyframes shade{0%,100%{opacity:0}50%{opacity:.22}}
 .tagline{color:var(--mut);font-size:clamp(15px,1.7vw,19px);max-width:640px;margin:0 auto 30px}
 .tagline b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
 .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:38px}
@@ -239,7 +244,9 @@ html[lang="fa"] .badge{text-transform:none;letter-spacing:0}
 @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 .rise{animation:rise .6s cubic-bezier(.16,1,.3,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  .flag g{animation:wave 2.6s ease-in-out infinite!important;animation-delay:calc(var(--i)/var(--n)*-2s)!important}
+  .flag g rect{animation:shade 2.6s ease-in-out infinite!important;animation-delay:inherit!important}}
 .msg{text-align:center;padding:56px 20px;color:var(--mut);border:1px dashed var(--line2);border-radius:20px}
 .msg b{display:block;color:var(--fg);font-size:17px;font-weight:600;margin-bottom:8px}
 .msg a{color:var(--a2)}
@@ -270,33 +277,43 @@ footer a:hover{color:var(--a2)}
 </head>
 <body>
 <div class="dots" aria-hidden="true"></div>
-
-<!-- Iran flag, reused by the brand and the hero mark -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <clipPath id="fc"><rect width="36" height="24" rx="2.4"/></clipPath>
-    <symbol id="iran" viewBox="0 0 36 24">
-      <g clip-path="url(#fc)">
-        <rect width="36" height="8" fill="var(--flag-g)"/>
-        <rect y="8" width="36" height="8" fill="#fff"/>
-        <rect y="16" width="36" height="8" fill="var(--flag-r)"/>
-        <g fill="var(--flag-r)">
-          <rect x="17.15" y="6.9" width="1.7" height="10.2" rx=".85"/>
-          <rect x="15.2" y="7.4" width="5.6" height="1.35" rx=".67"/>
-          <path d="M14.75 9.6c-1.25 1.6-1.25 3.2 0 4.8.55-1.6.55-3.2 0-4.8z"/>
-          <path d="M21.25 9.6c1.25 1.6 1.25 3.2 0 4.8-.55-1.6-.55-3.2 0-4.8z"/>
-          <path d="M12.5 10.5c-1.05 1.1-1.05 2.4 0 3.5.4-1.15.4-2.35 0-3.5z"/>
-          <path d="M23.5 10.5c1.05 1.1 1.05 2.4 0 3.5-.4-1.15-.4-2.35 0-3.5z"/>
-        </g>
-      </g>
-    </symbol>
-  </defs>
-</svg>
+<!-- Flag of Iran (Wikimedia Commons, public domain); cut into waving strips by the script at the end -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="flagdefs"><symbol id="ir" viewBox="0 0 630 360">
+<rect width="630" height="360" fill="#da0000"/>
+<rect width="630" height="240" fill="#fff"/>
+<rect width="630" height="120" fill="#239f40"/>
+<g transform="translate(8.4,100.4)">
+<g id="tb4">
+<g id="tb1" fill="none" stroke="#fff" stroke-width="2">
+<path id="tbp1" d="M0,1H26M1,10V5H9V9H17V5H12M4,9H6M26,9H21V5H29M29,0V9H37V0M33,0V9" transform="scale(1.4)"/>
+<path id="tbp2" d="M0,7H9M10,7H19" transform="scale(2.8)"/>
+<use href="#tbp2" y="120"/>
+<use href="#tbp1" y="145.2"/>
+</g>
+<g id="tb3">
+<use href="#tb1" x="56"/>
+<use href="#tb1" x="112"/>
+<use href="#tb1" x="168"/>
+</g>
+</g>
+<use href="#tb3" x="168"/>
+<use href="#tb4" x="392"/>
+</g>
+<g fill="#da0000" transform="matrix(45,0,0,45,315,180)">
+<g id="emblem_half">
+<path d="M 1.015679,-0.01556 A 0.77528237,0.7752862 0 0 1 0.60199011,0.67052066 1.0040699,1.0040749 0 0 0 0.44435035,-0.74067818 q -0.0221518,-0.0177005 -0.0452767,-0.0341288 A 0.77575926,0.7757631 0 0 1 1.015679,-0.01556 Z"/>
+<path d="m 0.65590144,-0.04683837 a 0.92689013,0.92689472 0 0 1 -1.21301321,0.88105983 q 0.0245198,0.00118 0.0492749,0.001178 a 1.0158759,1.0158809 0 0 0 0.84183925,-1.58419413 0.92423346,0.92423804 0 0 1 0.32189906,0.7019563 z"/>
+<path d="M 0.26154437,-0.94393072 A 0.14154065,0.14154135 0 0 1 1.7299476e-6,-0.86887791 L -0.01707249,-0.88602911 1.7299476e-6,-0.96931462 A 0.1321491,0.13214975 0 0 0 0.24983482,-1.0002001 a 0.14021999,0.14022068 0 0 1 0.0117096,0.0562694 z"/>
+<path d="M 0.11992727,-0.71445117 A 0.31475286,0.31475442 0 0 1 1.2855032e-6,-0.81025163 L -0.0506876,-0.01642556 1.2855032e-6,1.0001998 0.07882572,0.89166862 0.0891995,0.64144186 0.09996594,0.3809197 l 0.0014156,-0.0334002 4.7111e-4,-0.0124172 0.002279,-0.0541474 0.006758,-0.1640148 0.005501,-0.13242286 0.001571,-0.03827263 0.002042,-0.04872535 V -0.71445117 Z M 1.2855032e-6,-0.54965037 9.0174383e-5,-0.54949481 1.2855032e-6,-0.54933925 Z m 0,0.86447753 V 0.3145916 L 3.946188e-4,0.31468049 Z"/>
+</g>
+<use href="#emblem_half" transform="scale(-1,1)"/>
+</g>
+</symbol></defs></svg>
 
 <header class="nav" id="nav">
   <div class="wrap navin">
     <a class="brand" href="#" aria-label="PLUS98IR">
-      <svg viewBox="0 0 36 24"><use href="#iran"/></svg>PLUS98IR
+      <svg class="flag sm" data-n="16" viewBox="0 0 630 360" aria-hidden="true"></svg>PLUS98IR
     </a>
     <div class="sp"></div>
     <div class="seg" role="group" aria-label="Language">
@@ -316,9 +333,9 @@ footer a:hover{color:var(--a2)}
   <section class="hero">
     <div class="eyebrow"><i class="live"></i><span data-i="eyebrow">Open source · built in Iran</span></div>
     <h1 class="mark">
-      <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Iran"><use href="#iran"/></svg>
+      <svg class="flag" viewBox="0 0 630 360" role="img" aria-label="Iran"></svg>
       <span class="w">PLUS98IR</span>
-      <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Iran"><use href="#iran"/></svg>
+      <svg class="flag" viewBox="0 0 630 360" role="img" aria-label="Iran"></svg>
     </h1>
     <p class="tagline" data-i="tagline" data-html="1">Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.</p>
     <div class="ctas">
@@ -366,6 +383,13 @@ footer a:hover{color:var(--a2)}
 </footer>
 
 <script>
+(function(){var NS="http://www.w3.org/2000/svg",defs=document.getElementById("flagdefs"),made={};
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+document.querySelectorAll(".flag").forEach(function(f){var n=+f.dataset.n||36,w=630/n;f.style.setProperty("--n",n);
+  for(var i=0;i<n;i++){var id="fs"+n+"-"+i;
+    if(!made[id]){made[id]=1;var r=i==0||i==n-1?36:0;el("rect",{x:i*w-(i?.6:0),width:w+(i?.6:0)+(i<n-1?.6:0),height:360,rx:r},el("clipPath",{id:id},defs))}
+    var g=el("g",{"clip-path":"url(#"+id+")",style:"--i:"+i},f);el("use",{href:"#ir"},g);el("rect",{width:630,height:360},g)}});
+})();
 "use strict";
 
 /* =====================================================================
