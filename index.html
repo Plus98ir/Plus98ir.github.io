@@ -849,9 +849,7 @@ function cardFor(r, feat){
   var a = document.createElement("a");
   a.className = "card rise" + (feat ? " feat" : "");
   a.href = url;
-  if (/^https?:\/\//.test(url) && url.indexOf(location.origin) !== 0){
-    a.target = "_blank"; a.rel = "noopener";
-  }
+  a.target = "_blank"; a.rel = "noopener";
 
   var tags = '<span class="kind">' + (isSite ? ICON_SITE + t("site") : ICON_CODE + t("repo")) + "</span>";
   if (r.language){
