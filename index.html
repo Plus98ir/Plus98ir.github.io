@@ -18,7 +18,8 @@
 <script data-goatcounter="https://plus98.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&family=Great+Vibes&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap&text=%20.%D8%8C%D8%A7%D8%A8%D8%AE%D8%AF%D8%B1%D8%B2%D8%B3%D8%B4%D8%B5%D9%82%D9%85%D9%86%D9%87%D9%88%DA%AF%DB%8C%E2%80%94" rel="stylesheet">
 <style>
 /* ===== tokens: light is the base, dark overrides ===== */
 :root{
@@ -80,7 +81,7 @@ body{
   background-attachment:fixed;
 }
 /* dotted grid behind the hero, fading out */
-.dots{position:absolute;inset:0 0 auto 0;height:620px;pointer-events:none;z-index:-1;
+.dots{position:absolute;inset:0 0 auto 0;height:520px;pointer-events:none;z-index:-1;
   background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;
   -webkit-mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%);
           mask-image:radial-gradient(ellipse 70% 80% at 50% 0%,#000 30%,transparent 75%)}
@@ -106,40 +107,81 @@ button{font:inherit}
 .seg button{border:0;background:none;color:var(--mut);padding:0 12px;cursor:pointer;font-size:13px;font-weight:600}
 .seg button.on{background:var(--fg);color:var(--bg)}
 
-/* ===== hero ===== */
-.hero{position:relative;text-align:center;padding:clamp(40px,7vw,84px) 0 clamp(28px,4vw,44px)}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:999px;
-  border:1px solid var(--line2);background:color-mix(in srgb,var(--surface) 70%,transparent);
-  font-size:12.5px;font-weight:600;color:var(--mut);margin-bottom:26px}
-html[dir="rtl"] .eyebrow{padding:6px 8px 6px 14px}
-.eyebrow .live{width:8px;height:8px;border-radius:50%;background:var(--a1);box-shadow:0 0 0 4px color-mix(in srgb,var(--a1) 22%,transparent)}
-.mark{display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.8vw,18px);
-  font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(42px,9vw,104px);font-weight:700;line-height:1;
-  letter-spacing:clamp(-3px,-.35vw,-1px);margin-bottom:20px;direction:ltr}
-.mark .w{background:linear-gradient(176deg,var(--fg) 35%,color-mix(in srgb,var(--fg) 55%,var(--mut)));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+/* ===== hero: red ribbon with the name, pointing at a screen of rotating project covers ===== */
+.hero{position:relative;padding:clamp(18px,3vw,36px) 0 clamp(16px,2.4vw,26px)}
+.hgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center}
+.hl{position:relative;z-index:2;min-width:0}
+.rwrap{margin-inline:calc(-1*clamp(16px,4vw,32px)) -56px;filter:drop-shadow(0 18px 30px rgba(220,38,38,.35))}
+.ribbon{position:relative;padding-block:clamp(14px,1.8vw,22px);padding-inline:clamp(16px,4vw,32px) 96px;color:#fff;
+  background:linear-gradient(100deg,#7f1d1d,#c81e1e 40%,#ef3b3b 75%,#ff7a45);
+  clip-path:polygon(0 0,calc(100% - 64px) 0,100% 50%,calc(100% - 64px) 100%,0 100%)}
+html[dir="rtl"] .ribbon{background:linear-gradient(260deg,#7f1d1d,#c81e1e 40%,#ef3b3b 75%,#ff7a45);
+  clip-path:polygon(64px 0,100% 0,100% 100%,64px 100%,0 50%)}
+.ribbon::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent 55%);pointer-events:none}
+.mark{display:flex;align-items:center;gap:clamp(8px,1.2vw,14px);font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(38px,5.6vw,74px);
+  font-weight:700;line-height:1;letter-spacing:clamp(-2.5px,-.3vw,-1px);direction:ltr;width:max-content;max-width:100%}
+html[dir="rtl"] .mark{margin-inline-start:0}
+.mark .w{white-space:nowrap;text-shadow:0 3px 0 rgba(0,0,0,.14)}
+.rsub{position:relative;font-size:clamp(14px,1.4vw,18px);font-weight:500;opacity:.92;margin-top:8px}
 /* Iran flag cut into vertical strips that wave like cloth */
-.flag{display:block;width:clamp(40px,7.6vw,80px);aspect-ratio:7/4;flex:0 0 auto;overflow:visible}
-.flag g{transform-box:view-box;--a:calc(4px + var(--i)/var(--n)*22px);animation:wave 2.6s ease-in-out infinite;animation-delay:calc(var(--i)/var(--n)*-2s)}
+.flag{display:block;width:clamp(34px,4.4vw,58px);aspect-ratio:7/4;flex:0 0 auto;overflow:visible}
+.flag g{transform-box:view-box;--a:calc(3px + var(--i)/var(--n)*16px);animation:wave 2.6s ease-in-out infinite;animation-delay:calc(var(--i)/var(--n)*-2s)}
 .flag g rect{fill:#000;opacity:0;animation:shade 2.6s ease-in-out infinite;animation-delay:inherit}
 .flag.sm g{--a:calc(3px + var(--i)/var(--n)*16px)}
 @keyframes wave{0%,100%{transform:translateY(calc(var(--a)*-1))}50%{transform:translateY(var(--a))}}
 @keyframes shade{0%,100%{opacity:0}50%{opacity:.22}}
-.tagline{color:var(--mut);font-size:clamp(15px,1.7vw,19px);max-width:640px;margin:0 auto 30px}
+.tagline{color:var(--mut);font-size:15px;max-width:580px;margin:20px 0 16px}
 .tagline b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
-.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:38px}
-.cta{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:12px;font-weight:600;font-size:14.5px;
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.cta{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:11px;font-weight:600;font-size:13.5px;
   text-decoration:none;border:1px solid var(--line2);background:var(--surface);transition:.18s}
 .cta:hover{transform:translateY(-2px)}
-.cta.primary{background:var(--grad);border:0;color:#fff;box-shadow:0 12px 30px -12px color-mix(in srgb,var(--a2) 70%,transparent)}
-.cta svg{width:17px;height:17px}
+.cta.primary{background:var(--grad);border:0;color:#fff;box-shadow:0 10px 24px -12px color-mix(in srgb,var(--a2) 70%,transparent)}
+.cta svg{width:16px;height:16px}
 html[dir="rtl"] .cta .arr{transform:scaleX(-1)}
-.stats{display:inline-grid;grid-auto-flow:column;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  background:color-mix(in srgb,var(--surface) 75%,transparent);box-shadow:var(--shadow)}
-.stat{padding:14px clamp(18px,3vw,34px);text-align:center;min-width:110px}
-.stat + .stat{border-inline-start:1px solid var(--line)}
-.stat b{display:block;font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(20px,2.4vw,26px);font-weight:700;line-height:1.2}
-.stat span{font-size:12px;color:var(--mut);font-weight:500}
+/* stats as check pills */
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.stat{display:inline-flex;align-items:center;gap:8px;padding-block:5px;padding-inline:5px 14px;border-radius:999px;font-size:13.5px;
+  background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line2)}
+.stat .ck{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--bg);flex:0 0 auto}
+.stat .ck svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.stat b{font-weight:700}
+.stat span{color:var(--mut)}
+/* a classic signed line */
+.sig{padding-inline-start:16px;border-inline-start:2px solid var(--a1);max-width:580px}
+.sig p{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-size:clamp(16px,1.5vw,19px);line-height:1.5;opacity:.92}
+.sig cite{display:block;font-family:"Great Vibes",cursive;font-style:normal;font-size:clamp(26px,2.4vw,32px);line-height:1.25;color:var(--a1)}
+html[lang="fa"] .sig p{font-family:"Noto Nastaliq Urdu",Vazirmatn,serif;font-style:normal;line-height:2.3}
+html[lang="fa"] .sig cite{font-family:"Noto Nastaliq Urdu",Vazirmatn,serif;font-size:20px;line-height:2.3}
+/* the screen */
+.screen{position:relative;z-index:1;display:block;text-decoration:none;color:inherit;width:100%;max-width:780px;justify-self:end}
+.bezel{position:relative;border-radius:22px;padding:0 10px 10px;background:linear-gradient(160deg,#1c2230,#07090f);border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 70px -24px color-mix(in srgb,var(--a1) 70%,transparent);transition:transform .35s}
+.screen:hover .bezel{transform:translateY(-4px)}
+.sbar{display:flex;align-items:center;gap:6px;height:32px;padding:0 6px;color:#9aa4b5;font:600 11.5px/1 var(--font)}
+.sbar i{width:9px;height:9px;border-radius:50%;background:#3a4252}
+.sbar i:nth-child(1){background:#ff5f57}.sbar i:nth-child(2){background:#febc2e}.sbar i:nth-child(3){background:#28c840}
+.sbar span{flex:1;text-align:center;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-inline-end:40px}
+.slides{position:relative;aspect-ratio:2/1;border-radius:14px;overflow:hidden;background:#0a0f1b}
+.slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .9s ease,transform 4s ease}
+.slides img.on{opacity:1;transform:none}
+.slides::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+.slides::after{content:"";position:absolute;inset:0 0 auto;height:35%;z-index:2;pointer-events:none;transform:translateY(-110%);
+  background:linear-gradient(180deg,transparent,rgba(255,77,77,.28),transparent)}
+.screen.flip .slides::after{animation:sweep .9s ease}
+@keyframes sweep{to{transform:translateY(300%)}}
+.scap{position:absolute;bottom:12px;inset-inline-start:12px;z-index:3;padding:4px 12px;border-radius:999px;color:#fff;
+  background:rgba(5,8,15,.72);backdrop-filter:blur(6px);font:600 12.5px/1.6 var(--font);direction:ltr}
+.scap:empty{display:none}
+.sdots{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.sdots i{width:7px;height:7px;border-radius:99px;background:var(--line2);transition:.3s}
+.sdots i.on{width:22px;background:var(--a1)}
+@media(max-width:900px){
+  .hgrid{grid-template-columns:1fr;gap:22px}
+  .rwrap{margin-inline-end:calc(-1*clamp(16px,4vw,32px))}
+  .screen{justify-self:stretch;max-width:none}
+}
 
 /* ===== section head + toolbar ===== */
 .head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:26px 0 16px}
@@ -226,20 +268,12 @@ html[dir="rtl"] .more svg{transform:scaleX(-1)}
 .tray .kind{color:var(--a1)}
 .tray .d{width:9px;height:9px;border-radius:50%}
 .tray svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
-/* round sticker: "NEW" on the newest project, a pin on pinned ones */
-.stk{position:absolute;top:-16px;inset-inline-end:-10px;z-index:4;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;
-  background:var(--grad);color:#fff;font:800 14px/1 "Space Grotesk",Inter,sans-serif;letter-spacing:.3px;transform:rotate(-14deg);
-  box-shadow:0 10px 26px -8px color-mix(in srgb,var(--a1) 80%,transparent),inset 0 -3px 0 rgba(0,0,0,.18);border:2px solid rgba(255,255,255,.35)}
-html[lang="fa"] .stk{font-family:Vazirmatn,sans-serif;font-size:13px}
-.stk svg{width:22px;height:22px;fill:currentColor;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
-
 /* first card (top pin, else newest) takes the whole row, hero-sized */
 .card.feat{grid-column:1/-1;padding:clamp(18px,2.4vw,34px)}
 .card.feat .shot{flex-basis:48%}
 .card.feat .name{font-size:clamp(22px,2.6vw,34px)}
 .card.feat .sub{font-size:clamp(16px,1.7vw,23px)}
 .card.feat .desc{font-size:15px;-webkit-line-clamp:4;max-width:70ch}
-.card.feat .stk{width:72px;height:72px;font-size:16px}
 
 /* admin: pin controls on cards + bottom bar (only with ?admin) */
 .pinctl{position:absolute;top:10px;inset-inline-start:24px;z-index:3;display:none;gap:6px}
@@ -280,6 +314,8 @@ body.admin footer{padding-bottom:120px}
 .rise{animation:rise .6s cubic-bezier(.16,1,.3,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  .slides img{transition:opacity .9s ease!important}
+  .screen.flip .slides::after{animation:sweep .9s ease!important}
   .flag g{animation:wave 2.6s ease-in-out infinite!important;animation-delay:calc(var(--i)/var(--n)*-2s)!important}
   .flag g rect{animation:shade 2.6s ease-in-out infinite!important;animation-delay:inherit!important}}
 .msg{text-align:center;padding:56px 20px;color:var(--mut);border:1px dashed var(--line2);border-radius:20px}
@@ -298,17 +334,12 @@ footer a:hover{color:var(--a2)}
   .bar{top:58px}
   .btn .lbl{display:none}
   .btn{width:38px;padding:0}
-  .stats{grid-auto-flow:row;grid-template-columns:repeat(2,1fr);width:100%}
-  .stat{min-width:0}
-  .stat:nth-child(3){border-inline-start:0}
-  .stat:nth-child(n+3){border-top:1px solid var(--line)}
   .chips{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:2px}
   .chip{flex:0 0 auto}
   select{flex:1 1 auto}
   .search kbd{display:none}
   .card{flex-direction:column;align-items:stretch}
   .shot{flex:none!important;width:100%}
-  .stk{inset-inline-end:-4px;width:52px!important;height:52px!important;font-size:12px!important}
   .sk{flex-direction:column}
   .sk .a{flex:none;width:100%}
 }
@@ -370,21 +401,35 @@ footer a:hover{color:var(--a2)}
 
 <main class="wrap">
   <section class="hero">
-    <div class="eyebrow"><i class="live"></i><span data-i="eyebrow">Open source · built in Iran</span></div>
-    <h1 class="mark">
-      <svg class="flag" viewBox="0 0 630 360" role="img" aria-label="Iran"></svg>
-      <span class="w">PLUS98IR</span>
-      <svg class="flag" viewBox="0 0 630 360" role="img" aria-label="Iran"></svg>
-    </h1>
-    <p class="tagline" data-i="tagline" data-html="1">Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.</p>
-    <div class="ctas">
-      <a class="cta primary" href="#projects"><span data-i="browse">Browse projects</span>
-        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="cta" href="https://github.com/Plus98ir" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1a2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C16.9 4.7 18 5 18 5c.6 1.7.2 2.9.1 3.2.7.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
-        <span data-i="profile">GitHub profile</span></a>
+   <div class="hgrid">
+    <div class="hl">
+      <div class="rwrap"><div class="ribbon">
+        <h1 class="mark">
+          <svg class="flag" viewBox="0 0 630 360" role="img" aria-label="Iran"></svg>
+          <span class="w">PLUS98IR</span>
+          <svg class="flag" viewBox="0 0 630 360" role="img" aria-label="Iran"></svg>
+        </h1>
+        <div class="rsub" data-i="eyebrow">Open source · built in Iran</div>
+      </div></div>
+      <p class="tagline" data-i="tagline" data-html="1">Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.</p>
+      <div class="ctas">
+        <a class="cta primary" href="#projects"><span data-i="browse">Browse projects</span>
+          <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="cta" href="https://github.com/Plus98ir" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1a2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C16.9 4.7 18 5 18 5c.6 1.7.2 2.9.1 3.2.7.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
+          <span data-i="profile">GitHub profile</span></a>
+      </div>
+      <div class="stats" id="stats"></div>
+      <blockquote class="sig"><p data-i="quote">Good tools should be free, simple and built to last.</p><cite data-i="sign">— Sadegh</cite></blockquote>
     </div>
-    <div class="stats" id="stats"></div>
+    <a class="screen" id="screen" href="#projects" target="_blank" rel="noopener">
+      <div class="bezel">
+        <div class="sbar"><i></i><i></i><i></i><span id="scr-url">plus98ir.dpdns.org</span></div>
+        <div class="slides" id="slides"><span class="scap" id="scr-cap"></span></div>
+      </div>
+      <div class="sdots" id="sdots"></div>
+    </a>
+   </div>
   </section>
 
   <section id="projects">
@@ -488,6 +533,7 @@ var T = {
     err_b:"Could not load the project list", err:"Check the connection, then reload. Everything is still at ",
     built:"Built by", covers:"project covers are picked up automatically from each repository", top:"Back to top",
     light:"Light mode", dark:"Dark mode",
+    quote:"Good tools should be free, simple and built to last.", sign:"— Sadegh",
     open_site:"Open website", open_src:"View source", new:"NEW",
     pinned:"Pinned", pin:"Pin / unpin", move:"Move earlier",
     ad_title:"Admin", ad_token:"GitHub token (contents: write on " + OWNER + ".github.io)", ad_save:"Save pins", ad_exit:"Exit",
@@ -511,6 +557,7 @@ var T = {
     err_b:"فهرست پروژه‌ها بارگذاری نشد", err:"اتصال را بررسی کنید و صفحه را دوباره باز کنید. همه‌چیز در این آدرس هست: ",
     built:"ساخته‌شده توسط", covers:"تصویر هر پروژه خودکار از ریپوی خودش برداشته می‌شود", top:"بازگشت به بالا",
     light:"حالت روشن", dark:"حالت تیره",
+    quote:"ابزار خوب باید رایگان، ساده و ماندگار باشد.", sign:"— صادق",
     open_site:"باز کردن سایت", open_src:"دیدن سورس", new:"جدید",
     pinned:"پین‌شده", pin:"پین / برداشتن پین", move:"جابه‌جایی به جلو",
     ad_title:"مدیریت", ad_token:"توکن گیت‌هاب (دسترسی contents: write روی " + OWNER + ".github.io)", ad_save:"ذخیرهٔ پین‌ها", ad_exit:"خروج",
@@ -825,22 +872,69 @@ function ready(list){
   buildStats();
   buildChips();
   render();
+  buildScreen();
   loadHits();
 }
 
 function buildStats(){
-  var stars = 0, langs = {}, last = 0, i;
+  var stars = 0, langs = {}, i;
   for (i = 0; i < REPOS.length; i++){
     stars += REPOS[i].stargazers_count || 0;
     if (REPOS[i].language) langs[REPOS[i].language] = 1;
-    last = Math.max(last, new Date(REPOS[i].pushed_at || REPOS[i].updated_at || 0).getTime());
+  }
+  function pill(n, k, id){
+    return '<div class="stat"' + (id || "") + '><i class="ck">' + ICON_CHECK + "</i><b>" + n + "</b><span>" + t(k) + "</span></div>";
   }
   $("#stats").innerHTML =
-    '<div class="stat"><b>' + REPOS.length + "</b><span>" + t("st_projects") + "</span></div>" +
-    '<div class="stat"><b>' + stars + "</b><span>" + t("st_stars") + "</span></div>" +
-    '<div class="stat"><b>' + Object.keys(langs).length + "</b><span>" + t("st_langs") + "</span></div>" +
-    '<div class="stat"><b>' + (last ? esc(ago(new Date(last).toISOString())) : "–") + "</b><span>" + t("st_updated") + "</span></div>" +
-    '<div class="stat" id="st-views"' + (HITS.TOTAL > 0 ? "" : " hidden") + '><b>' + fmt(HITS.TOTAL || 0) + "</b><span>" + t("st_views") + "</span></div>";
+    pill(REPOS.length, "st_projects") + pill(stars, "st_stars") + pill(Object.keys(langs).length, "st_langs") +
+    pill(fmt(HITS.TOTAL || 0), "st_views", ' id="st-views"' + (HITS.TOTAL > 0 ? "" : " hidden"));
+}
+var ICON_CHECK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+/* the screen in the hero: covers of the pinned (then newest) projects, one after another */
+var SLIDES = [], SLIDE_I = 0, SLIDE_T = null, SLIDE_MS = 3800;
+
+function buildScreen(){
+  clearInterval(SLIDE_T); SLIDE_T = null;
+  var box = $("#slides"), cap = $("#scr-cap");
+  for (var k = 0; k < SLIDES.length; k++) box.removeChild(SLIDES[k].img);
+  SLIDES = []; SLIDE_I = 0; $("#sdots").innerHTML = "";
+  var rows = REPOS.slice().sort(function(a,b){
+    var pa = pinIdx(a.name), pb = pinIdx(b.name);
+    if (pa !== pb) return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb);
+    return new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at);
+  }).slice(0, 8);
+  var gen = buildScreen.gen = (buildScreen.gen || 0) + 1;
+  rows.forEach(function(r){
+    findCover(r, function(src){
+      if (gen !== buildScreen.gen) return;
+      var img = document.createElement("img");
+      img.alt = r.name; img.referrerPolicy = "no-referrer";
+      // add a slide only once its image is ready, so the screen never shows a blank frame
+      img.onload = function(){
+        if (gen !== buildScreen.gen) return;
+        box.insertBefore(img, cap);
+        SLIDES.push({r:r, img:img});
+        $("#sdots").appendChild(document.createElement("i"));
+        if (SLIDES.length === 1) showSlide(0);
+        if (SLIDES.length === 2) SLIDE_T = setInterval(nextSlide, SLIDE_MS);
+      };
+      img.src = src;
+    });
+  });
+}
+function nextSlide(){ if (!$("#screen").matches(":hover")) showSlide((SLIDE_I + 1) % SLIDES.length); }
+function showSlide(i){
+  SLIDE_I = i;
+  var s = SLIDES[i], url = targetUrl(s.r), dots = $("#sdots").children, scr = $("#screen");
+  for (var k = 0; k < SLIDES.length; k++){
+    SLIDES[k].img.classList.toggle("on", k === i);
+    if (dots[k]) dots[k].classList.toggle("on", k === i);
+  }
+  $("#scr-cap").textContent = s.r.name;
+  $("#scr-url").textContent = url.replace(/^https?:\/\//, "").replace(/\/index-en\.html$/, "");
+  scr.href = url;
+  scr.classList.remove("flip"); void scr.offsetWidth; scr.classList.add("flip");
 }
 
 function buildChips(){
@@ -950,9 +1044,7 @@ function cardFor(r, feat){
           '<path d="M1.5 12S5 5.5 12 5.5 22.5 12 22.5 12 19 18.5 12 18.5 1.5 12 1.5 12z"/>' +
           '<circle cx="12" cy="12" r="3"/></svg><b>' + fmt(hitsOf(r.name)) + "</b></span>" +
       "</div>" +
-    "</div>" +
-    (pinned ? '<span class="stk" title="' + t("pinned") + '">' + ICON_PIN + "</span>" :
-     feat ? '<span class="stk" title="' + t("featured") + '">' + t("new") + "</span>" : "");
+    "</div>";
 
   var img = a.querySelector("img");
   findCover(r, function(src){
@@ -1007,7 +1099,7 @@ function pinIdx(name){ return PINS.indexOf(name); }
 
 function setPins(list){
   PINS = Array.isArray(list) ? list.filter(function(x){ return typeof x === "string"; }) : [];
-  if (REPOS.length) render();
+  if (REPOS.length){ render(); buildScreen(); }
 }
 
 function loadPins(){
