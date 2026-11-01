@@ -1,3 +1,12 @@
 {
-  "pins": []
+  "pins": [
+    "Reality-Scanner",
+    "Saila",
+    "Smart-Caddy",
+    "Filter-Checker",
+    "DNS-Tunnel-Scanner",
+    "CDN-Clean-Scanner",
+    "Auto_SSL",
+    "Remote-Server-Control"
+  ]
 }
