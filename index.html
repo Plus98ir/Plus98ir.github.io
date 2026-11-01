@@ -457,6 +457,7 @@ footer a:hover{color:var(--a2)}
         <kbd>/</kbd>
       </label>
       <select id="sort" aria-label="Sort">
+        <option value="pinned" data-i="s_pinned">Pinned first</option>
         <option value="updated" data-i="s_updated">Recently updated</option>
         <option value="stars" data-i="s_stars">Most stars</option>
         <option value="hits" data-i="s_hits">Most opened</option>
@@ -533,7 +534,7 @@ var T = {
     tagline:"Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.",
     browse:"Browse projects", profile:"GitHub profile",
     projects:"Projects", projects_sub:"Every public repository, newest first. Click a card to open its site or source.",
-    search:"Search projects…", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most viewed", s_name:"Name A–Z",
+    search:"Search projects…", s_pinned:"Pinned first", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most viewed", s_name:"Name A–Z",
     all:"All", st_projects:"projects", st_stars:"stars", st_langs:"languages", st_updated:"last update",
     site:"Website", repo:"Source", featured:"Latest update", nodesc:"No description yet.",
     opened:"views", st_views:"total views", archived:"archived", fork:"fork",
@@ -557,7 +558,7 @@ var T = {
     tagline:"ابزارهای متن‌باز برای <b>سرور، DNS، SSL، مانیتورینگ و بازی</b>، با نصب یک‌مرحله‌ای.",
     browse:"دیدن پروژه‌ها", profile:"پروفایل گیت‌هاب",
     projects:"پروژه‌ها", projects_sub:"همهٔ ریپوهای عمومی، جدیدترین اول. روی هر کارت بزنید تا سایت یا سورسش باز شود.",
-    search:"جستجوی پروژه…", s_updated:"آخرین به‌روزرسانی", s_stars:"بیشترین ستاره", s_hits:"بیشترین بازدید", s_name:"نام (A–Z)",
+    search:"جستجوی پروژه…", s_pinned:"پین‌شده‌ها اول", s_updated:"آخرین به‌روزرسانی", s_stars:"بیشترین ستاره", s_hits:"بیشترین بازدید", s_name:"نام (A–Z)",
     all:"همه", st_projects:"پروژه", st_stars:"ستاره", st_langs:"زبان برنامه‌نویسی", st_updated:"آخرین به‌روزرسانی",
     site:"وب‌سایت", repo:"سورس", featured:"آخرین به‌روزرسانی", nodesc:"هنوز توضیحی ندارد.",
     opened:"بازدید", st_views:"بازدید کل", archived:"بایگانی", fork:"فورک",
@@ -807,7 +808,7 @@ function paintHits(){
 /* =====================================================================
    data
    ===================================================================== */
-var REPOS = [], FILTER = "", LANG = "", SORT = "updated";
+var REPOS = [], FILTER = "", LANG = "", SORT = "pinned";
 var CACHE_KEY = "p98_repos_v2", CACHE_TTL = 6 * 60 * 1000;
 
 function targetUrl(r){
@@ -1011,8 +1012,9 @@ function visible(){
                ((r.topics || []).join(" "))).toLowerCase();
     return hay.indexOf(q) !== -1;
   }).sort(function(a,b){
-    // pinned projects always lead, in the order they were pinned
-    var pa = pinIdx(a.name), pb = pinIdx(b.name);
+    // "pinned first" (the default): pinned projects lead in their pinned order, the rest newest first.
+    // Every other sort orders all projects alike.
+    var pa = SORT === "pinned" ? pinIdx(a.name) : -1, pb = SORT === "pinned" ? pinIdx(b.name) : -1;
     if (pa !== pb) return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb);
     if (SORT === "stars") return (b.stargazers_count||0) - (a.stargazers_count||0);
     if (SORT === "name")  return a.name.localeCompare(b.name);
