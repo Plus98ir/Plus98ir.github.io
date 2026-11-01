@@ -109,9 +109,9 @@ button{font:inherit}
 
 /* ===== hero: red ribbon with the name, pointing at a screen of rotating project covers ===== */
 .hero{position:relative;padding:clamp(18px,3vw,36px) 0 clamp(16px,2.4vw,26px)}
-.hgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center}
+.hgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,min(760px,50%));align-items:center}
 .hl{position:relative;z-index:2;min-width:0}
-.rwrap{margin-inline:calc(-1*clamp(16px,4vw,32px)) -56px;filter:drop-shadow(0 18px 30px rgba(220,38,38,.35))}
+.rwrap{margin-inline:calc(-1*clamp(16px,4vw,32px)) -34px;filter:drop-shadow(0 18px 30px rgba(220,38,38,.35))}
 .ribbon{position:relative;padding-block:clamp(14px,1.8vw,22px);padding-inline:clamp(16px,4vw,32px) 96px;color:#fff;
   background:linear-gradient(100deg,#7f1d1d,#c81e1e 40%,#ef3b3b 75%,#ff7a45);
   clip-path:polygon(0 0,calc(100% - 64px) 0,100% 50%,calc(100% - 64px) 100%,0 100%)}
@@ -154,7 +154,7 @@ html[dir="rtl"] .cta .arr{transform:scaleX(-1)}
 html[lang="fa"] .sig p{font-family:"Noto Nastaliq Urdu",Vazirmatn,serif;font-style:normal;line-height:2.3}
 html[lang="fa"] .sig cite{font-family:"Noto Nastaliq Urdu",Vazirmatn,serif;font-size:20px;line-height:2.3}
 /* the screen */
-.screen{position:relative;z-index:1;display:block;text-decoration:none;color:inherit;width:100%;max-width:780px;justify-self:end}
+.screen{position:relative;z-index:1;display:block;text-decoration:none;color:inherit;width:100%}
 .bezel{position:relative;border-radius:22px;padding:0 10px 10px;background:linear-gradient(160deg,#1c2230,#07090f);border:1px solid rgba(255,255,255,.1);
   box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 70px -24px color-mix(in srgb,var(--a1) 70%,transparent);transition:transform .35s}
 .screen:hover .bezel{transform:translateY(-4px)}
@@ -174,13 +174,19 @@ html[lang="fa"] .sig cite{font-family:"Noto Nastaliq Urdu",Vazirmatn,serif;font-
 .scap{position:absolute;bottom:12px;inset-inline-start:12px;z-index:3;padding:4px 12px;border-radius:999px;color:#fff;
   background:rgba(5,8,15,.72);backdrop-filter:blur(6px);font:600 12.5px/1.6 var(--font);direction:ltr}
 .scap:empty{display:none}
-.sdots{display:flex;gap:6px;justify-content:center;margin-top:12px}
-.sdots i{width:7px;height:7px;border-radius:99px;background:var(--line2);transition:.3s}
-.sdots i.on{width:22px;background:var(--a1)}
+.snav{position:absolute;top:50%;z-index:3;width:38px;height:38px;margin-top:-19px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  color:#fff;background:rgba(5,8,15,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);opacity:0;transition:opacity .25s,background .2s}
+.snav:hover{background:var(--a1)}
+.snav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.snav.prev{left:12px}.snav.next{right:12px}
+.screen:hover .snav,.snav:focus-visible{opacity:1}
+@media(hover:none){.snav{opacity:.85}}
+.sdots{display:flex;gap:4px;justify-content:center;margin-top:8px}
+.sdots i{width:7px;height:7px;border-radius:99px;background:var(--line2);transition:.3s;cursor:pointer;box-sizing:content-box;padding:6px 2px;background-clip:content-box}
+.sdots i.on{width:22px;background-color:var(--a1)}
 @media(max-width:900px){
   .hgrid{grid-template-columns:1fr;gap:22px}
   .rwrap{margin-inline-end:calc(-1*clamp(16px,4vw,32px))}
-  .screen{justify-self:stretch;max-width:none}
 }
 
 /* ===== section head + toolbar ===== */
@@ -268,12 +274,7 @@ html[dir="rtl"] .more svg{transform:scaleX(-1)}
 .tray .kind{color:var(--a1)}
 .tray .d{width:9px;height:9px;border-radius:50%}
 .tray svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
-/* first card (top pin, else newest) takes the whole row, hero-sized */
-.card.feat{grid-column:1/-1;padding:clamp(18px,2.4vw,34px)}
-.card.feat .shot{flex-basis:48%}
-.card.feat .name{font-size:clamp(22px,2.6vw,34px)}
-.card.feat .sub{font-size:clamp(16px,1.7vw,23px)}
-.card.feat .desc{font-size:15px;-webkit-line-clamp:4;max-width:70ch}
+
 
 /* admin: pin controls on cards + bottom bar (only with ?admin) */
 .pinctl{position:absolute;top:10px;inset-inline-start:24px;z-index:3;display:none;gap:6px}
@@ -425,7 +426,7 @@ footer a:hover{color:var(--a2)}
     <a class="screen" id="screen" href="#projects" target="_blank" rel="noopener">
       <div class="bezel">
         <div class="sbar"><i></i><i></i><i></i><span id="scr-url">plus98ir.dpdns.org</span></div>
-        <div class="slides" id="slides"><span class="scap" id="scr-cap"></span></div>
+        <div class="slides" id="slides"><span class="scap" id="scr-cap"></span><span class="snav prev" role="button" tabindex="0" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></span><span class="snav next" role="button" tabindex="0" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span></div>
       </div>
       <div class="sdots" id="sdots"></div>
     </a>
@@ -877,16 +878,18 @@ function ready(list){
 }
 
 function buildStats(){
-  var stars = 0, langs = {}, i;
+  var stars = 0, langs = {}, last = 0, i;
   for (i = 0; i < REPOS.length; i++){
     stars += REPOS[i].stargazers_count || 0;
     if (REPOS[i].language) langs[REPOS[i].language] = 1;
+    last = Math.max(last, new Date(REPOS[i].pushed_at || REPOS[i].updated_at || 0).getTime());
   }
   function pill(n, k, id){
     return '<div class="stat"' + (id || "") + '><i class="ck">' + ICON_CHECK + "</i><b>" + n + "</b><span>" + t(k) + "</span></div>";
   }
   $("#stats").innerHTML =
     pill(REPOS.length, "st_projects") + pill(stars, "st_stars") + pill(Object.keys(langs).length, "st_langs") +
+    pill(last ? esc(ago(new Date(last).toISOString())) : "–", "st_updated") +
     pill(fmt(HITS.TOTAL || 0), "st_views", ' id="st-views"' + (HITS.TOTAL > 0 ? "" : " hidden"));
 }
 var ICON_CHECK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
@@ -924,6 +927,33 @@ function buildScreen(){
   });
 }
 function nextSlide(){ if (!$("#screen").matches(":hover")) showSlide((SLIDE_I + 1) % SLIDES.length); }
+function stepSlide(d){
+  if (SLIDES.length < 2) return;
+  showSlide((SLIDE_I + d + SLIDES.length) % SLIDES.length);
+  clearInterval(SLIDE_T); SLIDE_T = setInterval(nextSlide, SLIDE_MS);   // give the picked slide its full time
+}
+(function(){
+  var scr = $("#screen"), x0 = null, swiped = false;
+  // arrows and dots live inside the link: they page, they do not open it
+  scr.addEventListener("click", function(ev){
+    var nav = ev.target.closest(".snav"), dot = ev.target.closest(".sdots i");
+    if (!nav && !dot && !swiped) return;
+    ev.preventDefault(); swiped = false;
+    if (nav) stepSlide(nav.classList.contains("prev") ? -1 : 1);
+    else if (dot) stepSlide([].indexOf.call(dot.parentNode.children, dot) - SLIDE_I);
+  });
+  scr.addEventListener("keydown", function(ev){
+    if ((ev.key === "Enter" || ev.key === " ") && ev.target.classList.contains("snav")){
+      ev.preventDefault(); stepSlide(ev.target.classList.contains("prev") ? -1 : 1);
+    }
+  });
+  scr.addEventListener("touchstart", function(ev){ x0 = ev.touches[0].clientX; swiped = false; }, {passive:true});
+  scr.addEventListener("touchend", function(ev){
+    if (x0 === null) return;
+    var dx = ev.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40){ swiped = true; stepSlide(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+})();
 function showSlide(i){
   SLIDE_I = i;
   var s = SLIDES[i], url = targetUrl(s.r), dots = $("#sdots").children, scr = $("#screen");
@@ -986,10 +1016,8 @@ function render(){
   grid.innerHTML = "";
   $("#state").innerHTML = rows.length ? "" :
     '<div class="msg"><b>' + t("none_b") + "</b>" + t("none") + "</div>";
-  // the first card (top pin, else newest project) is wide while nothing is filtered
-  var feature = (SORT === "updated" || PINS.length) && !LANG && !FILTER.trim() && rows.length > 2;
   for (var i = 0; i < rows.length; i++){
-    var c = cardFor(rows[i], feature && i === 0);
+    var c = cardFor(rows[i], false);
     c.style.animationDelay = Math.min(i, 8) * 45 + "ms";
     grid.appendChild(c);
   }
