@@ -232,6 +232,35 @@ html[dir="rtl"] .name{text-align:right}
 html[lang="fa"] .badge{text-transform:none;letter-spacing:0}
 .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--a1)}
 
+.badge.pin::before{display:none}
+.badge.pin svg{width:13px;height:13px;fill:currentColor}
+
+/* admin: pin controls on cards + bottom bar (only with ?admin) */
+.pinctl{position:absolute;top:12px;inset-inline-start:12px;z-index:3;display:none;gap:6px}
+.admin .pinctl{display:flex}
+.pinctl span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:#fff;
+  background:rgba(5,8,15,.62);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);transition:.18s}
+.pinctl span:hover{background:rgba(5,8,15,.85)}
+.pinctl span.on{background:var(--grad);border:0}
+.pinctl svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pinctl .on svg{fill:currentColor}
+html[dir="rtl"] .pinctl .mv svg{transform:scaleX(-1)}
+#adminbar{position:fixed;inset:auto 16px 16px 16px;z-index:60;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 14px;border-radius:16px;border:1px solid var(--line2);background:color-mix(in srgb,var(--surface) 88%,transparent);
+  backdrop-filter:blur(14px);box-shadow:var(--shadow-h);font-size:13.5px}
+#adminbar[hidden]{display:none}
+#adminbar b{font-family:var(--display);margin-inline-end:4px}
+#adminbar input{flex:1 1 220px;min-width:0;height:38px;padding:0 12px;border-radius:10px;border:1px solid var(--line2);
+  background:var(--surface);color:var(--fg);font:inherit}
+#adminbar button{height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--line2);background:var(--surface);color:var(--fg);
+  font:inherit;font-weight:600;cursor:pointer}
+#adminbar button.primary{background:var(--grad);border:0;color:#fff}
+#adminbar button:disabled{opacity:.5;cursor:default}
+#adminbar .st{color:var(--mut);flex:1 1 200px}
+#adminbar .st.err{color:#ef4444}
+#adminbar .st.ok{color:var(--a1)}
+body.admin footer{padding-bottom:120px}
+
 /* skeletons + states */
 .sk{border-radius:20px;border:1px solid var(--line);background:var(--surface);overflow:hidden}
 .sk .a{aspect-ratio:16/9;background:var(--chip)}
@@ -382,6 +411,14 @@ footer a:hover{color:var(--a2)}
   </div>
 </footer>
 
+<div id="adminbar" hidden>
+  <b data-i="ad_title">Admin</b>
+  <input id="ad-token" type="password" autocomplete="off" spellcheck="false" data-ph="ad_token">
+  <span class="st" id="ad-st"></span>
+  <button id="ad-save" class="primary" data-i="ad_save">Save pins</button>
+  <button id="ad-exit" data-i="ad_exit">Exit</button>
+</div>
+
 <script>
 (function(){var NS="http://www.w3.org/2000/svg",defs=document.getElementById("flagdefs"),made={};
 function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
@@ -440,7 +477,12 @@ var T = {
     rate:"Unauthenticated requests are capped at 60 per hour per IP. Try again in a few minutes, or open ",
     err_b:"Could not load the project list", err:"Check the connection, then reload. Everything is still at ",
     built:"Built by", covers:"project covers are picked up automatically from each repository", top:"Back to top",
-    light:"Light mode", dark:"Dark mode"
+    light:"Light mode", dark:"Dark mode",
+    pinned:"Pinned", pin:"Pin / unpin", move:"Move earlier",
+    ad_title:"Admin", ad_token:"GitHub token (contents: write on " + OWNER + ".github.io)", ad_save:"Save pins", ad_exit:"Exit",
+    ad_hint:"Pin cards with the pin button, then save.", ad_dirty:"Unsaved changes", ad_saving:"Saving…",
+    ad_saved:"Saved — visitors see it within ~10 minutes.", ad_notoken:"Enter a token first.",
+    ad_fail:"Save failed: ", ad_live:"Loaded the live pins from GitHub."
   },
   fa: {
     eyebrow:"متن‌باز · ساخت ایران",
@@ -457,7 +499,12 @@ var T = {
     rate:"درخواست بدون ورود، ساعتی ۶۰ بار برای هر IP مجاز است. چند دقیقهٔ دیگر امتحان کنید یا مستقیم بروید به ",
     err_b:"فهرست پروژه‌ها بارگذاری نشد", err:"اتصال را بررسی کنید و صفحه را دوباره باز کنید. همه‌چیز در این آدرس هست: ",
     built:"ساخته‌شده توسط", covers:"تصویر هر پروژه خودکار از ریپوی خودش برداشته می‌شود", top:"بازگشت به بالا",
-    light:"حالت روشن", dark:"حالت تیره"
+    light:"حالت روشن", dark:"حالت تیره",
+    pinned:"پین‌شده", pin:"پین / برداشتن پین", move:"جابه‌جایی به جلو",
+    ad_title:"مدیریت", ad_token:"توکن گیت‌هاب (دسترسی contents: write روی " + OWNER + ".github.io)", ad_save:"ذخیرهٔ پین‌ها", ad_exit:"خروج",
+    ad_hint:"با دکمهٔ پین روی کارت‌ها پین کنید، بعد ذخیره کنید.", ad_dirty:"تغییرات ذخیره نشده", ad_saving:"در حال ذخیره…",
+    ad_saved:"ذخیره شد — تا حدود ۱۰ دقیقه برای بازدیدکننده‌ها هم دیده می‌شود.", ad_notoken:"اول توکن را وارد کنید.",
+    ad_fail:"ذخیره نشد: ", ad_live:"پین‌های فعلی از گیت‌هاب خوانده شد."
   }
 };
 
@@ -511,6 +558,7 @@ function applyLang(){
     if (els[i].getAttribute("data-html")) els[i].innerHTML = t(k); else els[i].textContent = t(k);
   }
   $("#q").placeholder = t("search");
+  $("#ad-token").placeholder = t("ad_token");
   var b = document.querySelectorAll(".seg button");
   for (i = 0; i < b.length; i++) b[i].classList.toggle("on", b[i].getAttribute("data-lang") === LANG_UI);
   paintTheme();
@@ -817,6 +865,9 @@ function visible(){
                ((r.topics || []).join(" "))).toLowerCase();
     return hay.indexOf(q) !== -1;
   }).sort(function(a,b){
+    // pinned projects always lead, in the order they were pinned
+    var pa = pinIdx(a.name), pb = pinIdx(b.name);
+    if (pa !== pb) return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb);
     if (SORT === "stars") return (b.stargazers_count||0) - (a.stargazers_count||0);
     if (SORT === "name")  return a.name.localeCompare(b.name);
     if (SORT === "hits")  return hitsOf(b.name) - hitsOf(a.name);
@@ -829,8 +880,8 @@ function render(){
   grid.innerHTML = "";
   $("#state").innerHTML = rows.length ? "" :
     '<div class="msg"><b>' + t("none_b") + "</b>" + t("none") + "</div>";
-  // the newest project gets a wide card while nothing is filtered
-  var feature = SORT === "updated" && !LANG && !FILTER.trim() && rows.length > 2;
+  // the first card (top pin, else newest project) is wide while nothing is filtered
+  var feature = (SORT === "updated" || PINS.length) && !LANG && !FILTER.trim() && rows.length > 2;
   for (var i = 0; i < rows.length; i++){
     var c = cardFor(rows[i], feature && i === 0);
     c.style.animationDelay = Math.min(i, 8) * 45 + "ms";
@@ -842,9 +893,12 @@ var ICON_SITE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 var ICON_CODE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>';
 var ICON_GO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>';
 
+var ICON_PIN = '<svg viewBox="0 0 24 24"><path d="M9 3h6l-1 6 4 4v2H6v-2l4-4zM12 15v6"/></svg>';
+var ICON_BACK = '<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>';
+
 function cardFor(r, feat){
   var url = targetUrl(r), initials = r.name.replace(/[^A-Za-z0-9]/g,"").slice(0,2).toUpperCase();
-  var isSite = url !== r.html_url;
+  var isSite = url !== r.html_url, pinned = pinIdx(r.name) >= 0;
 
   var a = document.createElement("a");
   a.className = "card rise" + (feat ? " feat" : "");
@@ -868,9 +922,14 @@ function cardFor(r, feat){
     '<div class="shot"><div class="ph">' + esc(initials) + '</div>' + (feat ? '<div class="bg"></div>' : "") +
       '<img alt="' + esc(r.name) + '" loading="lazy" decoding="async">' +
       '<span class="go">' + ICON_GO + "</span>" +
+      '<span class="pinctl">' +
+        '<span class="pb' + (pinned ? " on" : "") + '" role="button" title="' + t("pin") + '">' + ICON_PIN + "</span>" +
+        (pinIdx(r.name) > 0 ? '<span class="mv" role="button" title="' + t("move") + '">' + ICON_BACK + "</span>" : "") +
+      "</span>" +
     "</div>" +
     '<div class="body">' +
-      (feat ? '<span class="badge">' + t("featured") + "</span>" : "") +
+      (pinned ? '<span class="badge pin">' + ICON_PIN + t("pinned") + "</span>" :
+       feat ? '<span class="badge">' + t("featured") + "</span>" : "") +
       '<div class="name" title="' + esc(r.name) + '">' + esc(r.name) + "</div>" +
       '<div class="desc" dir="auto">' + esc(r.description || t("nodesc")) + "</div>" +
       (topics ? '<div class="topics">' + topics + "</div>" : "") +
@@ -898,6 +957,18 @@ function cardFor(r, feat){
   a.addEventListener("click", track);
   a.addEventListener("auxclick", function(ev){ if (ev.button === 1) track(); });
 
+  // admin pin controls live inside the link: stop them from opening it
+  a.querySelector(".pinctl").addEventListener("click", function(ev){
+    ev.preventDefault(); ev.stopPropagation();
+    var b = ev.target.closest("[role=button]");
+    if (!b) return;
+    var i = pinIdx(r.name);
+    if (b.classList.contains("pb")){ if (i >= 0) PINS.splice(i, 1); else PINS.push(r.name); }
+    else if (i > 0){ PINS.splice(i, 1); PINS.splice(i - 1, 0, r.name); }
+    adminDirty();
+    render();
+  }, true);
+
   return a;
 }
 
@@ -912,8 +983,95 @@ $("#q").addEventListener("input", function(){
 });
 $("#sort").addEventListener("change", function(){ SORT = this.value; render(); });
 
+/* =====================================================================
+   pins: pins.json in this repo lists the pinned repos, in order.
+   Admin mode (open the page with ?admin) edits it through the GitHub API
+   with a token typed into the browser — never stored in the code.
+   ===================================================================== */
+var PINS = [], PINS_FILE = "pins.json", SITE_REPO = OWNER + "/" + OWNER + ".github.io";
+var ADMIN = /[?&]admin\b/.test(location.search), TOKEN_KEY = "p98_gh_token", DIRTY = false;
+
+function pinIdx(name){ return PINS.indexOf(name); }
+
+function setPins(list){
+  PINS = Array.isArray(list) ? list.filter(function(x){ return typeof x === "string"; }) : [];
+  if (REPOS.length) render();
+}
+
+function loadPins(){
+  fetch(PINS_FILE + "?t=" + Math.floor(Date.now() / 60000), {cache:"no-cache"})
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(j){ if (j && !DIRTY) setPins(j.pins); })
+    .catch(function(){});
+}
+
+function gh(path, opt){
+  opt = opt || {};
+  opt.headers = {"Accept":"application/vnd.github+json", "Authorization":"Bearer " + $("#ad-token").value.trim()};
+  return fetch("https://api.github.com/repos/" + SITE_REPO + "/contents/" + path, opt);
+}
+
+function adminSay(k, cls, extra){
+  var s = $("#ad-st");
+  s.textContent = t(k) + (extra || "");
+  s.className = "st" + (cls ? " " + cls : "");
+}
+function adminDirty(){ DIRTY = true; adminSay("ad_dirty"); }
+
+// read the committed file through the API: the Pages copy can lag ~10 minutes
+function adminLive(){
+  if (!$("#ad-token").value.trim()) return;
+  gh(PINS_FILE + "?ref=main&t=" + Date.now()).then(function(res){
+    if (res.status === 404) return {pins:[]};
+    if (!res.ok) throw new Error(res.status);
+    return res.json().then(function(f){
+      return JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\s/g, "")))));
+    });
+  }).then(function(j){
+    if (DIRTY) return;
+    setPins(j.pins); adminSay("ad_live", "ok");
+  }).catch(function(e){ adminSay("ad_fail", "err", e.message); });
+}
+
+function adminSave(){
+  if (!$("#ad-token").value.trim()){ adminSay("ad_notoken", "err"); return; }
+  var btn = $("#ad-save"), body = JSON.stringify({pins:PINS}, null, 2) + "\n";
+  btn.disabled = true; adminSay("ad_saving");
+  gh(PINS_FILE + "?ref=main&t=" + Date.now()).then(function(res){
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(res.status);
+    return res.json().then(function(f){ return f.sha; });
+  }).then(function(sha){
+    var req = {message:"Update pinned projects", content:btoa(unescape(encodeURIComponent(body))), branch:"main"};
+    if (sha) req.sha = sha;
+    return gh(PINS_FILE, {method:"PUT", body:JSON.stringify(req)});
+  }).then(function(res){
+    if (!res.ok) return res.json().catch(function(){ return {}; }).then(function(j){ throw new Error(res.status + " " + (j.message || "")); });
+    DIRTY = false; adminSay("ad_saved", "ok");
+  }).catch(function(e){ adminSay("ad_fail", "err", e.message); })
+    .then(function(){ btn.disabled = false; });
+}
+
+function initAdmin(){
+  if (!ADMIN) return;
+  document.body.classList.add("admin");
+  $("#adminbar").hidden = false;
+  $("#ad-token").value = ls(TOKEN_KEY) || "";
+  adminSay("ad_hint");
+  $("#ad-token").addEventListener("change", function(){ ls(TOKEN_KEY, this.value.trim()); adminLive(); });
+  $("#ad-save").addEventListener("click", adminSave);
+  $("#ad-exit").addEventListener("click", function(){
+    if (DIRTY && !window.confirm(t("ad_dirty") + " — " + t("ad_exit") + "?")) return;
+    location.href = location.pathname;
+  });
+  window.addEventListener("beforeunload", function(ev){ if (DIRTY){ ev.preventDefault(); ev.returnValue = ""; } });
+  adminLive();
+}
+
 applyLang();
 onScroll();
+initAdmin();
+loadPins();
 load();
 </script>
 </body>
