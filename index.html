@@ -457,7 +457,6 @@ footer a:hover{color:var(--a2)}
         <kbd>/</kbd>
       </label>
       <select id="sort" aria-label="Sort">
-        <option value="pinned" data-i="s_pinned">Pinned first</option>
         <option value="updated" data-i="s_updated">Recently updated</option>
         <option value="stars" data-i="s_stars">Most stars</option>
         <option value="hits" data-i="s_hits">Most opened</option>
@@ -534,7 +533,7 @@ var T = {
     tagline:"Open-source tooling for <b>servers, DNS, SSL, monitoring and games</b>, made to install in one step.",
     browse:"Browse projects", profile:"GitHub profile",
     projects:"Projects", projects_sub:"Every public repository, newest first. Click a card to open its site or source.",
-    search:"Search projects…", s_pinned:"Pinned first", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most viewed", s_name:"Name A–Z",
+    search:"Search projects…", s_updated:"Recently updated", s_stars:"Most stars", s_hits:"Most viewed", s_name:"Name A–Z",
     all:"All", st_projects:"projects", st_stars:"stars", st_langs:"languages", st_updated:"last update",
     site:"Website", repo:"Source", featured:"Latest update", nodesc:"No description yet.",
     opened:"views", st_views:"total views", archived:"archived", fork:"fork",
@@ -558,7 +557,7 @@ var T = {
     tagline:"ابزارهای متن‌باز برای <b>سرور، DNS، SSL، مانیتورینگ و بازی</b>، با نصب یک‌مرحله‌ای.",
     browse:"دیدن پروژه‌ها", profile:"پروفایل گیت‌هاب",
     projects:"پروژه‌ها", projects_sub:"همهٔ ریپوهای عمومی، جدیدترین اول. روی هر کارت بزنید تا سایت یا سورسش باز شود.",
-    search:"جستجوی پروژه…", s_pinned:"پین‌شده‌ها اول", s_updated:"آخرین به‌روزرسانی", s_stars:"بیشترین ستاره", s_hits:"بیشترین بازدید", s_name:"نام (A–Z)",
+    search:"جستجوی پروژه…", s_updated:"آخرین به‌روزرسانی", s_stars:"بیشترین ستاره", s_hits:"بیشترین بازدید", s_name:"نام (A–Z)",
     all:"همه", st_projects:"پروژه", st_stars:"ستاره", st_langs:"زبان برنامه‌نویسی", st_updated:"آخرین به‌روزرسانی",
     site:"وب‌سایت", repo:"سورس", featured:"آخرین به‌روزرسانی", nodesc:"هنوز توضیحی ندارد.",
     opened:"بازدید", st_views:"بازدید کل", archived:"بایگانی", fork:"فورک",
@@ -1008,12 +1007,12 @@ function visible(){
   return REPOS.filter(function(r){
     if (LANG && r.language !== LANG) return false;
     if (!q) return true;
-    var hay = (r.name + " " + (r.description || "") + " " + (r.language || "") + " " +
+    var hay = (r.name + " " + (r.description || "") + " " + descOf(r) + " " + (r.language || "") + " " +
                ((r.topics || []).join(" "))).toLowerCase();
     return hay.indexOf(q) !== -1;
   }).sort(function(a,b){
-    // "pinned first" (the default): pinned projects lead in their pinned order, the rest newest first.
-    // Every other sort orders all projects alike.
+    // the opening view ("pinned", not in the menu) quietly puts pinned projects first, the rest newest
+    // first; once a visitor picks a sort, everything is ordered alike. Visitors never see what is pinned.
     var pa = SORT === "pinned" ? pinIdx(a.name) : -1, pb = SORT === "pinned" ? pinIdx(b.name) : -1;
     if (pa !== pb) return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb);
     if (SORT === "stars") return (b.stargazers_count||0) - (a.stargazers_count||0);
@@ -1076,7 +1075,7 @@ function cardFor(r, feat){
     '<div class="body">' +
       '<div class="name" title="' + esc(r.name) + '"><span class="nm">' + esc(r.name) + "</span></div>" +
       '<div class="sub">' + sub + "</div>" +
-      '<div class="desc" dir="auto">' + esc(r.description || t("nodesc")) + "</div>" +
+      '<div class="desc" dir="auto">' + esc(descOf(r) || t("nodesc")) + "</div>" +
       (topics ? '<div class="topics">' + topics + "</div>" : "") +
       '<span class="more">' + (isSite ? t("open_site") : t("open_src")) + "<i>" + ICON_GO + "</i></span>" +
       '<div class="tray">' + tags +
@@ -1136,6 +1135,27 @@ var PINS = [], PINS_FILE = "pins.json", SITE_REPO = OWNER + "/" + OWNER + ".gith
 var ADMIN = /[?&]admin\b/.test(location.search), TOKEN_KEY = "p98_gh_token", DIRTY = false;
 
 function pinIdx(name){ return PINS.indexOf(name); }
+
+/* descriptions.json holds an English and a Persian description per repo; the page shows the one
+   for the current language. Repos missing there fall back to their GitHub description, split by
+   script when it mixes both ("English text. متن فارسی"). */
+var DESCS = {};
+function descOf(r){
+  var d = DESCS[r.name];
+  if (d && d[LANG_UI]) return d[LANG_UI];
+  var raw = String(r.description || "").trim(), i = raw.search(/[\u0600-\u06FF]/);
+  if (i <= 0) return raw;                              // all one language (or empty)
+  while (i > 0 && /\S/.test(raw[i - 1])) i--;         // start of that Persian word
+  var en = raw.slice(0, i).replace(/[\s|\-—·]+$/, ""), fa = raw.slice(i).trim();
+  if (!/[A-Za-z]/.test(en)) return raw;
+  return LANG_UI === "fa" ? fa : en;
+}
+function loadDescs(){
+  fetch("descriptions.json?t=" + Math.floor(Date.now() / 60000), {cache:"no-cache"})
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(j){ if (j){ DESCS = j; if (REPOS.length) render(); } })
+    .catch(function(){});
+}
 
 function setPins(list){
   PINS = Array.isArray(list) ? list.filter(function(x){ return typeof x === "string"; }) : [];
@@ -1216,6 +1236,7 @@ applyLang();
 onScroll();
 initAdmin();
 loadPins();
+loadDescs();
 load();
 </script>
 </body>

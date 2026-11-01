@@ -1,0 +1,90 @@
+{
+  "3x-ui": {
+    "en": "Multi-protocol, multi-user panel (VMess, VLESS, Trojan, Shadowsocks, WireGuard, Hysteria, Tunnel, Mixed, HTTP, TUN, MTProto, AmneziaWG).",
+    "fa": "پنل چندپروتکلی و چندکاربره (VMess، VLESS، Trojan، Shadowsocks، WireGuard، Hysteria، Tunnel، Mixed، HTTP، TUN، MTProto، AmneziaWG)."
+  },
+  "AdGuard_Rules": {
+    "en": "Lists of sanctioned domains for AdGuard and similar services, to get around sanctions.",
+    "fa": "دامنه‌های تحریم برای استفاده در AdGuard و سرویس‌های مشابه، برای رفع تحریم."
+  },
+  "Auto_SSL": {
+    "en": "Get an SSL certificate with automatic renewal, plus a Telegram bot.",
+    "fa": "دریافت گواهی SSL با تمدید خودکار، همراه با ربات تلگرام."
+  },
+  "CDN-Clean-Scanner": {
+    "en": "Professional clean-IP scanner for Cloudflare / Fastly / Gcore / CloudFront: real upload test, per-ISP results, TLS fragment finder, Hiddify & 3x-ui panels. Windows + Android.",
+    "fa": "اسکنر حرفه‌ای IP تمیز برای Cloudflare / Fastly / Gcore / CloudFront: تست آپلود واقعی، نتیجه به تفکیک اپراتور، یافتن TLS fragment، پنل‌های Hiddify و 3x-ui. ویندوز و اندروید."
+  },
+  "CryptoNotify": {
+    "en": "Simple Chrome extension that shows real-time crypto prices from the Nobitex API on its badge, with notifications.",
+    "fa": "افزونهٔ ساده کروم که قیمت لحظه‌ای ارزهای دیجیتال را از API نوبیتکس روی آیکون نشان می‌دهد و اعلان می‌فرستد."
+  },
+  "DNS-Tunnel-Scanner": {
+    "en": "Finds the DNS resolvers your StormDNS / WhiteDNS tunnel really works through on your network — Android APK + Windows EXE.",
+    "fa": "پیدا کردن DNS هایی که تونل StormDNS / WhiteDNS شما واقعاً در شبکه‌تان از طریقشان کار می‌کند — اندروید و ویندوز."
+  },
+  "Filter-Checker": {
+    "en": "Is a website filtered? Find out where: DNS, IP, SNI, TLS or HTTP. FA/EN, PWA.",
+    "fa": "بررسی فیلترینگ سایت و محل اختلال: DNS، IP، SNI، TLS یا HTTP. فارسی/انگلیسی، قابل نصب (PWA)."
+  },
+  "Fortnite_Missions": {
+    "en": "Fortnite V-Bucks & 160PL mission notifier 🚀",
+    "fa": "ربات هشدار لحظه‌ای ماموریت‌های فورتنایت (V-Bucks و 160PL) 🚀"
+  },
+  "hiddify-user-page": {
+    "en": "A one-file custom user page for Hiddify panels (Settings > User page URL).",
+    "fa": "صفحهٔ کاربری سفارشی تک‌فایلی برای پنل‌های Hiddify (تنظیمات > آدرس صفحهٔ کاربر)."
+  },
+  "MagiskOnWSA": {
+    "en": "Integrate Magisk root and Google Apps (OpenGApps) into WSA (Windows Subsystem for Android).",
+    "fa": "افزودن روت Magisk و سرویس‌های گوگل (OpenGApps) به WSA (زیرسیستم اندروید ویندوز)."
+  },
+  "Ping": {
+    "en": "Ping from your server to your game.",
+    "fa": "پینگ از سرور شما به سرورهای بازی."
+  },
+  "Reality-Scanner": {
+    "en": "Find Xray REALITY targets (dest / SNI) next to your server that are open on your internet. Windows + Android.",
+    "fa": "پیدا کردن مقصدهای REALITY (dest / SNI) نزدیک سرور خودتان که روی اینترنت شما باز هستند. ویندوز و اندروید."
+  },
+  "Remote-Server-Control": {
+    "en": "A mini remote server control panel.",
+    "fa": "پنل کوچک کنترل سرور از راه دور."
+  },
+  "Saila": {
+    "en": "Saila — simple Android VPN client (Xray) with auto-switch, based on v2rayNG.",
+    "fa": "سایلا — کلاینت VPN ساده برای اندروید (Xray) با سوییچ خودکار، بر پایهٔ v2rayNG."
+  },
+  "Saila-Windows": {
+    "en": "Saila for Windows — simple VPN client (Xray) with auto-switch, based on v2rayN.",
+    "fa": "سایلا برای ویندوز — کلاینت VPN ساده (Xray) با سوییچ خودکار، بر پایهٔ v2rayN."
+  },
+  "serverless-dns": {
+    "en": "The RethinkDNS resolver that deploys to Cloudflare Workers, Deno Deploy, Fastly and Fly.io.",
+    "fa": "ریزالور RethinkDNS که روی Cloudflare Workers، Deno Deploy، Fastly و Fly.io اجرا می‌شود."
+  },
+  "Smart-Caddy": {
+    "en": "Smart reverse proxy management for Caddy, in one script.",
+    "fa": "مدیریت هوشمند ریورس پراکسی Caddy، در یک اسکریپت."
+  },
+  "Smart-Cam-Releases": {
+    "en": "Smart-Cam Android app releases (APK).",
+    "fa": "دریافت نسخه‌های اپ اندروید Smart-Cam (APK)."
+  },
+  "Smart-Screen": {
+    "en": "Modern replacement for the UsbMonitor app of 3.5-inch USB system-monitor screens (Turing Smart Screen rev A and clones). 4 pages, 7 themes, landscape + portrait. FA/EN.",
+    "fa": "جایگزین مدرن برنامهٔ UsbMonitor برای نمایشگرهای ۳.۵ اینچی USB مانیتور سیستم (Turing Smart Screen rev A و مشابه‌ها). ۴ صفحه، ۷ تم، افقی و عمودی. فارسی/انگلیسی."
+  },
+  "Wake-on-LAN-Bot": {
+    "en": "Wake your PC from your phone with a Bale/Telegram bot, then start v2rayN/VS Code. Works behind any modem.",
+    "fa": "روشن کردن کامپیوتر از گوشی با بات بله/تلگرام و اجرای v2rayN/VS Code. پشت هر مودمی کار می‌کند."
+  },
+  "WindowsToolbox": {
+    "en": "A powerful but simple, easy-to-use toolbox for Windows 10 / 11.",
+    "fa": "جعبه‌ابزار قدرتمند ولی ساده و راحت برای ویندوز ۱۰ و ۱۱."
+  },
+  "XUI-Manager": {
+    "en": "Android app to manage 3X-UI, Alireza X-UI and Marzban panels.",
+    "fa": "مدیریت پنل‌های 3X-UI، علیرضا X-UI و مرزبان از روی گوشی."
+  }
+}
