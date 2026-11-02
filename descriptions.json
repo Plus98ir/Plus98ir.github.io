@@ -76,8 +76,8 @@
     "fa": "جایگزین مدرن برنامهٔ UsbMonitor برای نمایشگرهای ۳.۵ اینچی USB مانیتور سیستم (Turing Smart Screen rev A و مشابه‌ها). ۴ صفحه، ۷ تم، افقی و عمودی. فارسی/انگلیسی."
   },
   "Wake-on-LAN-Bot": {
-    "en": "Wake your PC from your phone with a Bale/Telegram bot, then start v2rayN/VS Code. Works behind any modem.",
-    "fa": "روشن کردن کامپیوتر از گوشی با بات بله/تلگرام و اجرای v2rayN/VS Code. پشت هر مودمی کار می‌کند."
+    "en": "Wake and control your PC from your phone with a Bale/Telegram bot. Every button confirmed with your fingerprint (passkey), plus a kill switch. Works behind any modem.",
+    "fa": "روشن کردن و کنترل کامپیوتر از گوشی با بات بله/تلگرام. هر دکمه با اثر انگشت تأیید می‌شود و کیل‌سوییچ دارد. پشت هر مودمی کار می‌کند."
   },
   "WindowsToolbox": {
     "en": "A powerful but simple, easy-to-use toolbox for Windows 10 / 11.",
