@@ -124,7 +124,7 @@ html[dir=rtl] .nm{justify-content:flex-end}
 .tx h3 span{font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(255,59,74,.15);color:#ff8a94}
 
 /* stats */
-.stats-frame{width:100%;height:calc(100vh - 210px);min-height:600px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.stats-frame{width:100%;height:900px;border:0;display:block;background:#05070d;border-radius:var(--r)}
 
 /* save bar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 32px;
@@ -211,7 +211,7 @@ html[dir=rtl] .nm{justify-content:flex-end}
     </div>
 
     <div id="p-stats" hidden>
-      <iframe class="stats-frame" id="statsf" title="Stats" loading="lazy"></iframe>
+      <iframe class="stats-frame" id="statsf" title="Stats" scrolling="no"></iframe>
     </div>
   </section>
 </main>
@@ -323,6 +323,7 @@ function applyLang(){
   $$(".seg button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-lang") === LANG); });
   if (REPOS.length) renderGrid();
   status();
+  statsLang();
 }
 $$(".seg button").forEach(function(b){
   b.addEventListener("click", function(){ LANG = b.getAttribute("data-lang"); ls("p98_lang", LANG); applyLang(); });
@@ -611,9 +612,27 @@ $$(".tabs button").forEach(function(b){
     CUR_TAB = b.getAttribute("data-tab");
     $$(".tabs button").forEach(function(x){ x.classList.toggle("on", x === b); });
     ["projects","texts","stats"].forEach(function(n){ $("#p-" + n).hidden = n !== CUR_TAB; });
-    if (CUR_TAB === "stats" && !$("#statsf").src) $("#statsf").src = "../stats/";
+    if (CUR_TAB === "stats" && !$("#statsf").src) openStats();
   });
 });
+
+/* ---------------- stats (GoatCounter dashboard, embedded) ---------------- */
+function openStats(){
+  var f = $("#statsf");
+  f.onload = function(){
+    try {
+      statsLang();
+      var d = f.contentDocument, fit = function(){ f.style.height = Math.max(600, d.documentElement.scrollHeight) + "px"; };
+      fit();
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(d.body);
+      setInterval(fit, 1500);
+    } catch(e){}
+  };
+  f.src = "stats.html";
+}
+function statsLang(){
+  try { var w = $("#statsf").contentWindow; if (w && w.applyLang){ w.LANG = LANG; w.applyLang(); } } catch(e){}
+}
 
 /* ---------------- save: one commit through the Git Data API ---------------- */
 function changes(){

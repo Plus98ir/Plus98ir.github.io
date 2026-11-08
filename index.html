@@ -514,10 +514,10 @@ var PAGES_FILE = "index-en.html";
 var GC = "https://plus98.goatcounter.com";
 var SITE_HOSTS = ["corenetbase.com", "www.corenetbase.com", "plus98ir.dpdns.org", "plus98ir.github.io"];
 
-/* Repos to leave out of the grid (more can be hidden from /admin/, saved in site.json). */
+/* Repos to leave out of the grid (more can be hidden from the admin panel, saved in site.json). */
 var HIDE = ["plus98ir.github.io", "plus98ir", "saila-windows", ".github"];
 
-/* site.json (edited at /admin/): {hide:[...], covers:{Repo:"url|path"}, texts:{en:{tagline,quote,sign}, fa:{...}}, slides:N} */
+/* site.json (edited in the admin panel): {hide:[...], covers:{Repo:"url|path"}, texts:{en:{tagline,quote,sign}, fa:{...}}, slides:N} */
 var SITE = {}, SLIDE_N = 8;
 function isHidden(name){
   var n = String(name).toLowerCase(), extra = SITE.hide || [];
@@ -721,7 +721,7 @@ function coverCandidates(repo){
   function push(p){ list.push(RAW + OWNER + "/" + n + "/" + br + "/" + p); }
 
   var ov = coverOverride(n);
-  if (ov) list.push(ov);                              // set at /admin/ (upload or address)
+  if (ov) list.push(ov);                              // set in the admin panel (upload or address)
 
   if (COVER[n]) push(COVER[n]);                       // explicit override first
 
@@ -1242,7 +1242,7 @@ function adminSave(){
 
 function initAdmin(){
   if (!ADMIN) return;
-  location.replace("admin/"); return;                  // the admin panel moved to /admin/
+  return;                                              // the admin panel lives on its own private path
   document.body.classList.add("admin");
   $("#adminbar").hidden = false;
   $("#ad-token").value = ls(TOKEN_KEY) || "";
