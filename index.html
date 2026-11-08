@@ -354,6 +354,8 @@ footer a:hover{color:var(--a2)}
   .sk{flex-direction:column}
   .sk .a{flex:none;width:100%}
 }
+.btn.sup{border-color:rgba(255,59,74,.55);color:#fff;background:linear-gradient(135deg,#ff3b4a,#b3121f);box-shadow:0 4px 16px rgba(255,40,60,.3)}
+.btn.sup:hover{filter:brightness(1.1)}
 </style>
 </head>
 <body>
@@ -402,6 +404,10 @@ footer a:hover{color:var(--a2)}
     </div>
     <button class="btn icon" id="theme" type="button" aria-label="Toggle theme">
       <svg id="themeicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg>
+    </button>
+    <button class="btn sup" type="button" data-support aria-label="Support">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg>
+      <span class="lbl" data-support-label>Support</span>
     </button>
     <a class="btn" href="https://github.com/Plus98ir" target="_blank" rel="noopener" aria-label="GitHub">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1a2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C16.9 4.7 18 5 18 5c.6 1.7.2 2.9.1 3.2.7.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
@@ -473,7 +479,7 @@ footer a:hover{color:var(--a2)}
 <footer>
   <div class="wrap footin">
     <div><span data-i="built">Built by</span> <a href="https://github.com/Plus98ir" target="_blank" rel="noopener">Plus98ir</a> · <span data-i="covers">project covers are picked up automatically from each repository</span></div>
-    <div class="foot-links"><a href="https://github.com/Plus98ir" target="_blank" rel="noopener">GitHub</a><a href="#" id="totop" data-i="top">Back to top</a></div>
+    <div class="foot-links"><a href="https://github.com/Plus98ir" target="_blank" rel="noopener">GitHub</a><a href="#" data-support data-support-label>Support</a><a href="#" id="totop" data-i="top">Back to top</a></div>
   </div>
 </footer>
 
@@ -509,7 +515,7 @@ var GC = "https://plus98.goatcounter.com";
 var SITE_HOSTS = ["corenetbase.com", "www.corenetbase.com", "plus98ir.dpdns.org", "plus98ir.github.io"];
 
 /* Repos to leave out of the grid. */
-var HIDE = ["plus98ir.github.io", "plus98ir", "saila-windows"];
+var HIDE = ["plus98ir.github.io", "plus98ir", "saila-windows", ".github"];
 
 /* Cover images are found automatically: the page looks for a file named
    after the repository in that repository's default branch. Save the cover
@@ -1240,5 +1246,6 @@ loadPins();
 loadDescs();
 load();
 </script>
+<script src="support.js" data-float="0" defer></script>
 </body>
 </html>
