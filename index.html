@@ -142,13 +142,21 @@ html[dir="rtl"] .ribbon{background:linear-gradient(260deg,#7f1d1d,#c81e1e 40%,#e
 .cta svg{width:1.15em;height:1.15em}
 html[dir="rtl"] .cta .arr{transform:scaleX(-1)}
 /* stats as check pills */
-.stats{display:flex;flex-wrap:wrap;gap:.55em;margin-bottom:1.4em}
-.stat{display:inline-flex;align-items:center;gap:.55em;padding-block:.35em;padding-inline:.35em 1em;border-radius:999px;font-size:1em;
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55em;margin-bottom:1.4em;margin-inline-end:1.6em}
+.stats:has(.stat[hidden]){grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:.4em;row-gap:.2em;
+  padding:.6em .6em .55em;border-radius:1em;font-size:1em;min-width:0;
   background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line2)}
-.stat .ck{width:1.6em;height:1.6em;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--bg);flex:0 0 auto}
-.stat .ck svg{width:.9em;height:.9em;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-.stat b{font-weight:700}
-.stat span{color:var(--mut)}
+.stat .ck{width:1.3em;height:1.3em;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--bg)}
+.stat .ck svg{width:.8em;height:.8em;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.stat b{font-weight:700;font-size:1.12em;line-height:1.1;white-space:nowrap}
+.stat span{grid-column:1 / -1;color:var(--mut);font-size:.88em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px),(min-width:901px) and (max-width:1180px){
+  .stats{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .stats .stat{grid-column:span 2}
+  .stats .stat:nth-child(n+4){grid-column:span 3}
+  .stats:has(.stat[hidden]) .stat{grid-column:span 3}
+}
 /* a classic signed line */
 .sig{padding-inline-start:1.1em;border-inline-start:2px solid var(--a1);max-width:34em}
 .sig p{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-size:1.35em;line-height:1.5;opacity:.92}
@@ -195,6 +203,7 @@ html[lang="fa"] .sig cite{font-family:"Noto Nastaliq Urdu",Vazirmatn,serif;font-
 .sdots i{width:7px;height:7px;border-radius:99px;background:var(--line2);transition:.3s;cursor:pointer;box-sizing:content-box;padding:6px 2px;background-clip:content-box}
 .sdots i.on{width:22px;background-color:var(--a1)}
 @media(max-width:900px){
+  .stats{margin-inline-end:0}
   .hgrid{grid-template-columns:1fr;gap:22px}
   .rwrap{margin-inline-end:calc(-1*clamp(16px,4vw,32px))}
 }
@@ -914,7 +923,7 @@ function buildStats(){
     return '<div class="stat"' + (id || "") + '><i class="ck">' + ICON_CHECK + "</i><b>" + n + "</b><span>" + t(k) + "</span></div>";
   }
   $("#stats").innerHTML =
-    pill(REPOS.length, "st_projects") + pill(stars, "st_stars") + pill(Object.keys(langs).length, "st_langs") +
+    pill(fmt(REPOS.length), "st_projects") + pill(fmt(stars), "st_stars") + pill(fmt(Object.keys(langs).length), "st_langs") +
     pill(last ? esc(ago(new Date(last).toISOString())) : "–", "st_updated") +
     pill(fmt(HITS.TOTAL || 0), "st_views", ' id="st-views"' + (HITS.TOTAL > 0 ? "" : " hidden"));
 }
