@@ -459,7 +459,7 @@ footer a:hover{color:var(--a2)}
     <div class="bar"><div class="barin">
       <label class="search">
         <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-        <input id="q" type="search" placeholder="Search projects…" autocomplete="off" data-ph="search">
+        <input id="q" type="search" name="p98-project-filter" placeholder="Search projects…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-form-type="other" data-ph="search">
         <kbd>/</kbd>
       </label>
       <select id="sort" aria-label="Sort">
@@ -483,13 +483,6 @@ footer a:hover{color:var(--a2)}
   </div>
 </footer>
 
-<div id="adminbar" hidden>
-  <b data-i="ad_title">Admin</b>
-  <input id="ad-token" type="password" autocomplete="off" spellcheck="false" data-ph="ad_token">
-  <span class="st" id="ad-st"></span>
-  <button id="ad-save" class="primary" data-i="ad_save">Save pins</button>
-  <button id="ad-exit" data-i="ad_exit">Exit</button>
-</div>
 
 <script>
 (function(){var NS="http://www.w3.org/2000/svg",defs=document.getElementById("flagdefs"),made={};
@@ -648,7 +641,6 @@ function applyLang(){
     if (els[i].getAttribute("data-html")) els[i].innerHTML = t(k); else els[i].textContent = t(k);
   }
   $("#q").placeholder = t("search");
-  $("#ad-token").placeholder = t("ad_token");
   var b = document.querySelectorAll(".seg button");
   for (i = 0; i < b.length; i++) b[i].classList.toggle("on", b[i].getAttribute("data-lang") === LANG_UI);
   paintTheme();
