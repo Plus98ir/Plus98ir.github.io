@@ -514,8 +514,22 @@ var PAGES_FILE = "index-en.html";
 var GC = "https://plus98.goatcounter.com";
 var SITE_HOSTS = ["corenetbase.com", "www.corenetbase.com", "plus98ir.dpdns.org", "plus98ir.github.io"];
 
-/* Repos to leave out of the grid. */
+/* Repos to leave out of the grid (more can be hidden from /admin/, saved in site.json). */
 var HIDE = ["plus98ir.github.io", "plus98ir", "saila-windows", ".github"];
+
+/* site.json (edited at /admin/): {hide:[...], covers:{Repo:"url|path"}, texts:{en:{tagline,quote,sign}, fa:{...}}, slides:N} */
+var SITE = {}, SLIDE_N = 8;
+function isHidden(name){
+  var n = String(name).toLowerCase(), extra = SITE.hide || [];
+  if (HIDE.indexOf(n) !== -1) return true;
+  for (var i = 0; i < extra.length; i++) if (String(extra[i]).toLowerCase() === n) return true;
+  return false;
+}
+function coverOverride(name){
+  var c = SITE.covers && SITE.covers[name];
+  if (!c) return "";
+  try { return new URL(c, location.href).href; } catch(e){ return ""; }
+}
 
 /* Cover images are found automatically: the page looks for a file named
    after the repository in that repository's default branch. Save the cover
@@ -706,6 +720,9 @@ function coverCandidates(repo){
 
   function push(p){ list.push(RAW + OWNER + "/" + n + "/" + br + "/" + p); }
 
+  var ov = coverOverride(n);
+  if (ov) list.push(ov);                              // set at /admin/ (upload or address)
+
   if (COVER[n]) push(COVER[n]);                       // explicit override first
 
   var exts = ["png","jpg","jpeg","webp","svg"];
@@ -725,7 +742,7 @@ function coverCandidates(repo){
 }
 
 function findCover(repo, onFound){
-  var key = "p98_img_" + repo.name + "_" + (repo.pushed_at || "");
+  var key = "p98_img_" + repo.name + "_" + (repo.pushed_at || "") + (coverOverride(repo.name) ? "_" + coverOverride(repo.name) : "");
   var hit = ls(key);
   if (hit){ onFound(hit); return; }
 
@@ -855,7 +872,7 @@ function load(){
     .then(function(list){
       if (!Array.isArray(list)) throw new Error("shape");
       var keep = list.filter(function(r){
-        return HIDE.indexOf(String(r.name).toLowerCase()) === -1;
+        return !isHidden(r.name);
       }).map(function(r){
         return {
           name:r.name, description:r.description, html_url:r.html_url,
@@ -886,7 +903,7 @@ function load(){
 }
 
 function ready(list){
-  REPOS = list;
+  REPOS = list.filter(function(r){ return !isHidden(r.name); });
   buildStats();
   buildChips();
   render();
@@ -923,7 +940,7 @@ function buildScreen(){
     var pa = pinIdx(a.name), pb = pinIdx(b.name);
     if (pa !== pb) return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb);
     return new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at);
-  }).slice(0, 8);
+  }).slice(0, SLIDE_N);
   var gen = buildScreen.gen = (buildScreen.gen || 0) + 1;
   rows.forEach(function(r){
     findCover(r, function(src){
@@ -1225,6 +1242,7 @@ function adminSave(){
 
 function initAdmin(){
   if (!ADMIN) return;
+  location.replace("admin/"); return;                  // the admin panel moved to /admin/
   document.body.classList.add("admin");
   $("#adminbar").hidden = false;
   $("#ad-token").value = ls(TOKEN_KEY) || "";
@@ -1244,7 +1262,21 @@ onScroll();
 initAdmin();
 loadPins();
 loadDescs();
-load();
+function applySite(j){
+  SITE = j && typeof j === "object" ? j : {};
+  var tx = SITE.texts || {};
+  ["en", "fa"].forEach(function(l){
+    var o = tx[l] || {};
+    ["tagline", "quote", "sign"].forEach(function(k){ if (o[k]) T[l][k] = o[k]; });
+  });
+  var n = parseInt(SITE.slides, 10);
+  if (n >= 1 && n <= 20) SLIDE_N = n;
+  applyLang();
+}
+fetch("site.json?t=" + Math.floor(Date.now() / 60000), {cache:"no-cache"})
+  .then(function(res){ return res.ok ? res.json() : null; })
+  .catch(function(){ return null; })
+  .then(function(j){ applySite(j); load(); });
 </script>
 <script src="support.js" data-float="0" defer></script>
 </body>
