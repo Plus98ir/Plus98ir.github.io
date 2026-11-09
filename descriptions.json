@@ -86,5 +86,9 @@
   "XUI-Manager": {
     "en": "Android app to manage 3X-UI, Alireza X-UI and Marzban panels.",
     "fa": "مدیریت پنل‌های 3X-UI، علیرضا X-UI و مرزبان از روی گوشی."
+  },
+  "SSH-Servers": {
+    "en": "One click into your SSH servers on Windows. The same list on your phone (Android / iPhone), synced and encrypted through your own GitHub.",
+    "fa": "با یک کلیک روی ویندوز به سرورهای SSH وصل شو. همون لیست روی گوشی (اندروید / آیفون) هم هست و رمزنگاری‌شده از طریق GitHub خودت سینک می‌شه."
   }
 }
