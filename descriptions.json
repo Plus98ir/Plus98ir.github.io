@@ -88,7 +88,7 @@
     "fa": "مدیریت پنل‌های 3X-UI، علیرضا X-UI و مرزبان از روی گوشی."
   },
   "SSH-Servers": {
-    "en": "One click into your SSH servers on Windows. The same list on your phone (Android / iPhone), synced and encrypted through your own GitHub.",
-    "fa": "با یک کلیک روی ویندوز به سرورهای SSH وصل شو. همون لیست روی گوشی (اندروید / آیفون) هم هست و رمزنگاری‌شده از طریق GitHub خودت سینک می‌شه."
+    "en": "One click into your SSH servers on Windows, plus an Android SSH app with a built-in terminal. The same list on both, synced and encrypted through your own GitHub.",
+    "fa": "با یک کلیک روی ویندوز به سرورهای SSH وصل شو، به‌همراه اپ اندروید با ترمینال SSH داخلی. همون لیست روی هر دو، رمزنگاری‌شده و سینک‌شده از طریق GitHub خودت."
   }
 }
