@@ -123,6 +123,39 @@ html[dir=rtl] .nm{justify-content:flex-end}
 .tx h3{margin:0 0 12px;font-size:15px;display:flex;align-items:center;gap:8px}
 .tx h3 span{font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(255,59,74,.15);color:#ff8a94}
 
+/* theme */
+.th{display:grid;grid-template-columns:minmax(330px,420px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1000px){.th{grid-template-columns:1fr}}
+.thc{display:flex;flex-direction:column;gap:16px}
+.th h3{margin:0 0 12px;font-size:15px}
+.skins{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.skin{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:14px;border:1.5px solid var(--line2);background:#070a12;cursor:pointer;text-align:start;color:var(--fg)}
+.skin.on{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,59,74,.15)}
+.skin b{font-size:14px}.skin small{color:var(--mut);font-size:11.5px;line-height:1.45}
+.mini{position:relative;display:block;aspect-ratio:16/10;border-radius:9px;overflow:hidden;background:#05070d;border:1px solid var(--line)}
+.mini i{position:absolute;display:block;border-radius:3px}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.presets button{width:34px;height:34px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;outline:2px solid transparent;outline-offset:1px}
+.presets button.on{outline-color:#fff}
+.presets button.def{display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff}
+.crow{display:grid;grid-template-columns:minmax(0,1fr) 40px 96px 32px;gap:8px;align-items:center;margin:0 0 9px}
+.crow label{font-size:12.5px;color:#c6cddb;font-weight:600}
+.crow input[type=color]{width:40px;height:34px;padding:2px;border-radius:9px;border:1px solid var(--line2);background:#070a12;cursor:pointer}
+.crow .inp{min-height:34px;padding:5px 9px;font-size:12.5px;direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace}
+.crow button{width:32px;height:32px;border-radius:9px;border:1px solid var(--line2);background:#070a12;cursor:pointer;color:var(--mut)}
+.crow.unset input[type=color]{opacity:.45}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--line2);background:#070a12;cursor:pointer}
+.sw b{font-size:13px;display:block}.sw small{color:var(--mut);font-size:11.5px}
+.sw input{appearance:none;width:42px;height:24px;border-radius:99px;background:#2a3142;position:relative;cursor:pointer;flex:0 0 auto;transition:.2s}
+.sw input::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked{background:var(--red)}
+.sw input:checked::after{inset-inline-start:21px}
+.prev{position:sticky;top:84px;padding:14px}
+.prevbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+.prevbar h3{margin:0}
+.pvwrap{position:relative;height:calc(100vh - 230px);min-height:420px;border-radius:12px;overflow:hidden;background:#000;border:1px solid var(--line2)}
+.pvwrap iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;background:#05070d}
+
 /* stats */
 .stats-frame{width:100%;height:900px;border:0;display:block;background:#05070d;border-radius:var(--r)}
 
@@ -177,6 +210,7 @@ html[dir=rtl] .nm{justify-content:flex-end}
     <div class="tabs" role="tablist">
       <button type="button" data-tab="projects" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span data-i="t_projects">Projects</span></button>
       <button type="button" data-tab="texts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg><span data-i="t_texts">Page texts</span></button>
+      <button type="button" data-tab="theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></svg><span data-i="t_theme">Theme &amp; colors</span></button>
       <button type="button" data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span data-i="t_stats">Visit stats</span></button>
     </div>
 
@@ -195,17 +229,62 @@ html[dir=rtl] .nm{justify-content:flex-end}
           <div class="field"><label data-i="f_tagline">Tagline (use &lt;b&gt;…&lt;/b&gt; for the red words)</label><textarea class="inp ltr" data-t="en.tagline"></textarea></div>
           <div class="field"><label data-i="f_quote">Signed quote</label><input class="inp ltr" data-t="en.quote"></div>
           <div class="field"><label data-i="f_sign">Signature</label><input class="inp ltr" data-t="en.sign"></div>
+          <div class="field"><label data-i="f_welcome">Studio: welcome badge</label><input class="inp ltr" data-t="en.welcome"></div>
+          <div class="field"><label data-i="f_headline">Studio: headline (use &lt;b&gt;…&lt;/b&gt; for the colored word)</label><input class="inp ltr" data-t="en.headline"></div>
+          <div class="field"><label data-i="f_lead">Studio: text under the headline</label><textarea class="inp ltr" data-t="en.lead"></textarea></div>
         </div>
         <div class="panel">
           <h3>فارسی <span>FA</span></h3>
           <div class="field"><label data-i="f_tagline">Tagline</label><textarea class="inp" dir="rtl" data-t="fa.tagline"></textarea></div>
           <div class="field"><label data-i="f_quote">Signed quote</label><input class="inp" dir="rtl" data-t="fa.quote"></div>
           <div class="field"><label data-i="f_sign">Signature</label><input class="inp" dir="rtl" data-t="fa.sign"></div>
+          <div class="field"><label data-i="f_welcome">Studio: welcome badge</label><input class="inp" dir="rtl" data-t="fa.welcome"></div>
+          <div class="field"><label data-i="f_headline">Studio: headline</label><input class="inp" dir="rtl" data-t="fa.headline"></div>
+          <div class="field"><label data-i="f_lead">Studio: text under the headline</label><textarea class="inp" dir="rtl" data-t="fa.lead"></textarea></div>
         </div>
         <div class="panel">
           <h3 data-i="f_screen">Hero screen</h3>
           <div class="field"><label data-i="f_slides">How many covers rotate on the screen (1–20)</label><input class="inp ltr" id="slides" type="number" min="1" max="20" placeholder="8"></div>
           <p class="hint" data-i="f_empty">Leave a box empty to keep the built-in text.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="p-theme" hidden>
+      <div class="th">
+        <div class="thc">
+          <div class="panel">
+            <h3 data-i="th_skin">Design</h3>
+            <div class="skins">
+              <button type="button" class="skin" data-skin="neon">
+                <span class="mini"><i style="left:0;top:14%;width:44%;height:16%;background:linear-gradient(90deg,#7f1d1d,#ef3b3b);clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%)"></i><i style="left:6%;top:36%;width:30%;height:4%;background:#2a3142"></i><i style="left:6%;top:43%;width:24%;height:4%;background:#2a3142"></i><i style="left:50%;top:10%;width:44%;height:38%;background:#1c2230;border:1px solid #ef3b3b"></i><i style="left:6%;top:60%;width:42%;height:32%;background:#101727;border:1px solid rgba(255,59,59,.5)"></i><i style="left:52%;top:60%;width:42%;height:32%;background:#101727;border:1px solid rgba(255,59,59,.5)"></i></span>
+                <b data-i="sk_neon">Neon</b><small data-i="sk_neon_d">Red ribbon with flags, big showcase cards (current look)</small>
+              </button>
+              <button type="button" class="skin" data-skin="studio">
+                <span class="mini" style="background:#09090b"><i style="left:0;top:0;width:15%;height:100%;background:#131316;border-radius:0"></i><i style="left:3%;top:22%;width:9%;height:5%;background:#ff2d3d"></i><i style="left:20%;top:12%;width:28%;height:7%;background:#e5e5e5"></i><i style="left:20%;top:22%;width:22%;height:7%;background:#ff2d3d"></i><i style="left:20%;top:34%;width:12%;height:6%;background:#ff2d3d;border-radius:5px"></i><i style="left:56%;top:8%;width:38%;height:36%;background:#1c1c22;border:1px solid #333;transform:perspective(80px) rotateY(-14deg)"></i><i style="left:20%;top:58%;width:23%;height:34%;background:#18181c;border:1px solid #2a2a30"></i><i style="left:46%;top:58%;width:23%;height:34%;background:#18181c;border:1px solid #2a2a30"></i><i style="left:72%;top:58%;width:23%;height:34%;background:#18181c;border:1px solid #2a2a30"></i></span>
+                <b data-i="sk_studio">Studio</b><small data-i="sk_studio_d">Side menu, big headline, tilted screen, 3 cards a row</small>
+              </button>
+            </div>
+          </div>
+          <div class="panel">
+            <h3 data-i="th_colors">Colors</h3>
+            <div class="presets" id="presets"></div>
+            <div id="crows"></div>
+            <label class="sw" style="margin-top:12px"><span><b data-i="th_rand">New color on every visit</b><small data-i="th_rand_d">Each load / refresh picks a random palette from the circles above.</small></span><input type="checkbox" id="th-rand"></label>
+            <p class="hint" data-i="th_hint" style="margin:10px 0 0">Background and card colors apply in dark mode only. Empty = the design's own color.</p>
+          </div>
+          <div class="panel">
+            <h3 data-i="th_view">Default project view</h3>
+            <div class="seg" id="th-view" style="display:inline-flex"><button type="button" data-v="cards" data-i="v_cards">Cards</button><button type="button" data-v="compact" data-i="v_compact">Compact</button></div>
+            <p class="hint" data-i="th_view_d" style="margin:10px 0 0">Visitors can switch it on the site; their own pick is remembered.</p>
+          </div>
+        </div>
+        <div class="panel prev">
+          <div class="prevbar">
+            <h3 data-i="th_prev">Live preview</h3><span class="sp"></span>
+            <div class="seg" id="pv-size"><button type="button" data-w="1440" class="on" data-i="desk">Desktop</button><button type="button" data-w="390" data-i="mob">Mobile</button></div>
+          </div>
+          <div class="pvwrap" id="pvwrap"><iframe id="pvf" title="Preview"></iframe></div>
         </div>
       </div>
     </div>
@@ -271,7 +350,15 @@ var T = {
     s_loading:"Loading…", s_ready:"Everything is up to date.", s_dirty:" unsaved change(s)", s_saving:"Saving (one commit)…",
     s_saved:"Saved. The site updates in about a minute.", s_err:"Error: ", s_badtok:"The token was rejected (needs Contents: read and write on Plus98ir.github.io).",
     s_big:"Image is larger than 5 MB.", s_type:"Not an image file.", s_leave:"You have unsaved changes.",
-    s_conflict:"The site changed on GitHub while you were editing. Press Reload, then make the change again."
+    s_conflict:"The site changed on GitHub while you were editing. Press Reload, then make the change again.",
+    t_theme:"Theme & colors", th_skin:"Design", sk_neon:"Neon", sk_neon_d:"Red ribbon with flags, big showcase cards (current look)",
+    sk_studio:"Studio", sk_studio_d:"Side menu, big headline, tilted screen, 3 cards a row", th_colors:"Colors",
+    th_rand:"New color on every visit", th_rand_d:"Each load / refresh picks a random palette from the circles above.",
+    th_hint:"Background and card colors apply in dark mode only. Empty = the design's own color.",
+    th_view:"Default project view", v_cards:"Cards", v_compact:"Compact", th_view_d:"Visitors can switch it on the site; their own pick is remembered.",
+    th_prev:"Live preview", desk:"Desktop", mob:"Mobile", def:"Design default",
+    c_a1:"Main color", c_a2:"Second color", c_a3:"Gradient end", c_bg:"Background", c_surface:"Cards", c_reset:"Reset",
+    f_welcome:"Studio: welcome badge", f_headline:"Studio: headline (use <b>…</b> for the colored word)", f_lead:"Studio: text under the headline"
   },
   fa: {
     admin:"مدیریت", view_site:"مشاهده سایت", logout:"خروج",
@@ -294,7 +381,15 @@ var T = {
     s_loading:"در حال بارگذاری…", s_ready:"همه چیز به‌روز است.", s_dirty:" تغییر ذخیره‌نشده", s_saving:"در حال ذخیره (یک commit)…",
     s_saved:"ذخیره شد. سایت حدود یک دقیقه دیگر به‌روز می‌شود.", s_err:"خطا: ", s_badtok:"توکن رد شد (باید روی Plus98ir.github.io دسترسی Contents: Read and write داشته باشد).",
     s_big:"حجم عکس بیشتر از ۵ مگابایت است.", s_type:"این فایل عکس نیست.", s_leave:"تغییرات ذخیره‌نشده داری.",
-    s_conflict:"وقتی داشتی ویرایش می‌کردی سایت در گیت‌هاب تغییر کرد. «بارگذاری دوباره» را بزن و تغییر را دوباره انجام بده."
+    s_conflict:"وقتی داشتی ویرایش می‌کردی سایت در گیت‌هاب تغییر کرد. «بارگذاری دوباره» را بزن و تغییر را دوباره انجام بده.",
+    t_theme:"تم و رنگ‌ها", th_skin:"طرح صفحه", sk_neon:"نئون", sk_neon_d:"روبان قرمز با پرچم و کارت‌های بزرگ (طرح فعلی)",
+    sk_studio:"استودیو", sk_studio_d:"منوی کناری، تیتر بزرگ، صفحهٔ کج و ۳ کارت در هر ردیف", th_colors:"رنگ‌ها",
+    th_rand:"هر بازدید یک رنگ تازه", th_rand_d:"با هر بار باز شدن یا رفرش، یکی از پالت‌های دایره‌ای بالا تصادفی انتخاب می‌شود.",
+    th_hint:"رنگ پس‌زمینه و کارت‌ها فقط در حالت تیره اعمال می‌شود. خالی = رنگ خود طرح.",
+    th_view:"نمای پیش‌فرض پروژه‌ها", v_cards:"کارتی", v_compact:"فشرده", th_view_d:"بازدیدکننده خودش هم می‌تواند عوض کند و انتخابش یادش می‌ماند.",
+    th_prev:"پیش‌نمایش زنده", desk:"دسکتاپ", mob:"موبایل", def:"پیش‌فرض طرح",
+    c_a1:"رنگ اصلی", c_a2:"رنگ دوم", c_a3:"انتهای گرادیان", c_bg:"پس‌زمینه", c_surface:"کارت‌ها", c_reset:"بازنشانی",
+    f_welcome:"استودیو: نشان خوش‌آمد", f_headline:"استودیو: تیتر (کلمهٔ رنگی را داخل <b>…</b> بگذار)", f_lead:"استودیو: متن زیر تیتر"
   }
 };
 var LANG = (function(){ try { return localStorage.getItem("p98_lang") || "fa"; } catch(e){ return "fa"; } })();
@@ -320,12 +415,12 @@ function applyLang(){
     if (el.getAttribute("data-html")) el.innerHTML = t(k); else el.textContent = t(k);
   });
   $$("[data-ph]").forEach(function(el){ el.placeholder = t(el.getAttribute("data-ph")); });
-  $$(".seg button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-lang") === LANG); });
-  if (REPOS.length) renderGrid();
+  $$(".seg button[data-lang]").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-lang") === LANG); });
+  if (REPOS.length){ renderGrid(); fillTheme(); }
   status();
   statsLang();
 }
-$$(".seg button").forEach(function(b){
+$$(".seg button[data-lang]").forEach(function(b){
   b.addEventListener("click", function(){ LANG = b.getAttribute("data-lang"); ls("p98_lang", LANG); applyLang(); });
 });
 
@@ -385,7 +480,7 @@ function loadAll(){
     DESCS = r[2] || {}; SITE = r[3] || {};
     ORIG.pins = JSON.stringify(PINS); ORIG.descs = JSON.stringify(DESCS); ORIG.site = JSON.stringify(SITE);
     UPLOADS = {};
-    fillTexts(); renderGrid(); status();
+    fillTexts(); fillTheme(); pushPreview(); renderGrid(); status();
   }).catch(function(e){ say(t("s_err") + e.message, "err"); });
 }
 $("#reload").addEventListener("click", function(){
@@ -606,13 +701,119 @@ $("#p-texts").addEventListener("input", function(e){
   status();
 });
 
+/* ---------------- theme & colors (site.json "theme"), shown live in the preview ---------------- */
+var PRESETS = [
+  ["#ff3b3b","#ff4d6d","#ff8a3d"], ["#e11d48","#f43f5e","#fb7185"], ["#14b8a6","#06b6d4","#3b82f6"],
+  ["#3b82f6","#6366f1","#8b5cf6"], ["#a855f7","#ec4899","#f43f5e"], ["#f97316","#f59e0b","#ef4444"],
+  ["#22c55e","#10b981","#14b8a6"], ["#eab308","#f59e0b","#f97316"]
+];
+var SKIN_DEF = {
+  neon:   {a1:"#ff3b3b", a2:"#ff4d6d", a3:"#ff8a3d", bg:"#05070d", surface:"#0c111c"},
+  studio: {a1:"#ff2d3d", a2:"#ff3b5c", a3:"#ff6a3d", bg:"#09090b", surface:"#131316"}
+};
+var CKEYS = ["a1", "a2", "a3", "bg", "surface"];
+function TH(){ return SITE.theme || {}; }
+function setTH(fn, keepForm){
+  var th = JSON.parse(JSON.stringify(SITE.theme || {}));
+  fn(th);
+  if (th.colors){ CKEYS.forEach(function(k){ if (!th.colors[k]) delete th.colors[k]; }); if (!Object.keys(th.colors).length) delete th.colors; }
+  if (th.skin !== "studio") delete th.skin;
+  if (!th.random) delete th.random;
+  if (th.view !== "compact") delete th.view;
+  if (Object.keys(th).length) SITE.theme = th; else delete SITE.theme;
+  if (!keepForm) fillTheme();
+  pushPreview(); status();
+}
+function fillTheme(){
+  var th = TH(), c = th.colors || {}, skin = th.skin === "studio" ? "studio" : "neon", def = SKIN_DEF[skin];
+  $$(".skin").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-skin") === skin); });
+  $("#presets").innerHTML = '<button type="button" class="def' + (c.a1 ? "" : " on") + '" data-p="-1" title="' + esc(t("def")) +
+    '" style="background:linear-gradient(135deg,' + def.a1 + "," + def.a3 + ')">' + "</button>" +
+    PRESETS.map(function(p, i){
+      var on = c.a1 === p[0] && c.a2 === p[1] && c.a3 === p[2];
+      return '<button type="button" data-p="' + i + '"' + (on ? ' class="on"' : "") + ' style="background:linear-gradient(135deg,' + p[0] + "," + p[1] + "," + p[2] + ')"></button>';
+    }).join("");
+  $("#crows").innerHTML = CKEYS.map(function(k){
+    var v = c[k] || "";
+    return '<div class="crow' + (v ? "" : " unset") + '" data-k="' + k + '"><label>' + t("c_" + k) + "</label>" +
+      '<input type="color" value="' + (v || def[k]) + '"><input class="inp" maxlength="7" placeholder="' + def[k] + '" value="' + v + '">' +
+      '<button type="button" title="' + esc(t("c_reset")) + '">↺</button></div>';
+  }).join("");
+  $("#th-rand").checked = !!th.random;
+  $$("#th-view button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-v") === (th.view === "compact" ? "compact" : "cards")); });
+}
+$$(".skin").forEach(function(b){ b.addEventListener("click", function(){ setTH(function(th){ th.skin = b.getAttribute("data-skin"); }); }); });
+$("#presets").addEventListener("click", function(e){
+  var b = e.target.closest("[data-p]"); if (!b) return;
+  var i = +b.getAttribute("data-p");
+  setTH(function(th){
+    th.colors = th.colors || {};
+    if (i < 0){ delete th.colors.a1; delete th.colors.a2; delete th.colors.a3; }
+    else { th.colors.a1 = PRESETS[i][0]; th.colors.a2 = PRESETS[i][1]; th.colors.a3 = PRESETS[i][2]; }
+  });
+});
+function setColor(k, v){ setTH(function(th){ th.colors = th.colors || {}; th.colors[k] = v; }); }
+// the colour picker moves live (preview only), the value is kept when it is released
+$("#crows").addEventListener("input", function(e){
+  var row = e.target.closest(".crow"), k = row.getAttribute("data-k"), v = e.target.value.trim();
+  if (e.target.type === "color"){
+    $(".inp", row).value = v; row.classList.remove("unset");
+    var th = JSON.parse(JSON.stringify(TH())); th.colors = th.colors || {}; th.colors[k] = v; pushPreview(th);
+  } else if (/^#[0-9a-f]{6}$/i.test(v) || !v){
+    // typing a hex value: keep the box focused, just update the swatch + preview
+    v = v.toLowerCase(); if (v){ $("input[type=color]", row).value = v; row.classList.remove("unset"); } else row.classList.add("unset");
+    setTH(function(th){ th.colors = th.colors || {}; th.colors[k] = v; }, true);
+  }
+});
+$("#crows").addEventListener("change", function(e){
+  var row = e.target.closest(".crow"); if (e.target.type === "color") setColor(row.getAttribute("data-k"), e.target.value);
+});
+$("#crows").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if (b) setColor(b.closest(".crow").getAttribute("data-k"), "");
+});
+$("#th-rand").addEventListener("change", function(){ var on = this.checked; setTH(function(th){ th.random = on; }); });
+$$("#th-view button").forEach(function(b){ b.addEventListener("click", function(){ setTH(function(th){ th.view = b.getAttribute("data-v"); }); }); });
+
+/* preview: the real main page in an iframe, scaled to fit, fed the unsaved theme */
+var PV_W = 1440;
+function pushPreview(th){
+  try { var w = $("#pvf").contentWindow; if (w) w.postMessage({type:"p98-theme", theme:th || TH()}, location.origin); } catch(e){}
+}
+function fitPreview(){
+  var wrap = $("#pvwrap"), f = $("#pvf"), W = wrap.clientWidth, H = wrap.clientHeight;
+  if (!W) return;
+  var s = Math.min(1, W / PV_W);
+  f.style.width = PV_W + "px"; f.style.height = Math.ceil(H / s) + "px";
+  f.style.transform = "scale(" + s + ")";
+  f.style.left = Math.max(0, (W - PV_W * s) / 2) + "px";
+}
+function openPreview(){
+  var f = $("#pvf");
+  f.onload = function(){ pushPreview(); setTimeout(pushPreview, 600); setTimeout(pushPreview, 2500); };
+  f.src = "../?lang=" + LANG;
+  fitPreview();
+}
+if (window.ResizeObserver) new ResizeObserver(fitPreview).observe($("#pvwrap"));
+// the page in the preview says when its script is ready; answer with the current (unsaved) theme
+window.addEventListener("message", function(e){
+  if (e.origin === location.origin && e.data && e.data.type === "p98-ready" && e.source === $("#pvf").contentWindow) pushPreview();
+});
+$$("#pv-size button").forEach(function(b){
+  b.addEventListener("click", function(){
+    PV_W = +b.getAttribute("data-w");
+    $$("#pv-size button").forEach(function(x){ x.classList.toggle("on", x === b); });
+    fitPreview();
+  });
+});
+
 /* ---------------- tabs ---------------- */
 $$(".tabs button").forEach(function(b){
   b.addEventListener("click", function(){
     CUR_TAB = b.getAttribute("data-tab");
     $$(".tabs button").forEach(function(x){ x.classList.toggle("on", x === b); });
-    ["projects","texts","stats"].forEach(function(n){ $("#p-" + n).hidden = n !== CUR_TAB; });
+    ["projects","texts","theme","stats"].forEach(function(n){ $("#p-" + n).hidden = n !== CUR_TAB; });
     if (CUR_TAB === "stats" && !$("#statsf").src) openStats();
+    if (CUR_TAB === "theme"){ if (!$("#pvf").src) openPreview(); else fitPreview(); }
   });
 });
 
@@ -651,6 +852,7 @@ function dirtyCount(){
   var a = JSON.parse(ORIG.site);
   if (JSON.stringify(a.texts || null) !== JSON.stringify(SITE.texts || null)) n++;
   if ((a.slides || null) !== (SITE.slides || null)) n++;
+  if (JSON.stringify(a.theme || null) !== JSON.stringify(SITE.theme || null)) n++;
   return n;
 }
 function say(msg, cls){ var s = $("#st"); s.innerHTML = msg; s.className = "st" + (cls ? " " + cls : ""); }
