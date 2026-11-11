@@ -1,5 +1,10 @@
 {
   "covers": {
     "Smart-Caddy": "covers/Smart-Caddy.png?v=mw7idwz2"
+  },
+  "theme": {
+    "skin": "studio",
+    "random": true,
+    "view": "compact"
   }
 }
