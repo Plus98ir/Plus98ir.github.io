@@ -651,6 +651,8 @@ html[dir="rtl"][data-skin="studio"] .card::after{-webkit-mask:radial-gradient(ci
   .hl .headline{font-size:clamp(32px,8.5vw,52px)}
   .hl .lead{font-size:clamp(14.5px,3.8vw,17px)}
   .hl .welcome{font-size:13px}
+  /* one column: the name card sits under the screen instead of covering the picture */
+  [data-skin="studio"] .scard{position:relative;inset:auto;width:auto;margin:14px 0 0;padding:12px 12px 12px 16px}
 }
 @media(max-width:700px){
   [data-skin="studio"] .hsearch{display:none}
@@ -659,8 +661,6 @@ html[dir="rtl"][data-skin="studio"] .card::after{-webkit-mask:radial-gradient(ci
   [data-skin="studio"] .btn{height:38px}
   [data-skin="studio"] .btn.icon{width:38px}
   [data-skin="studio"] .seg{height:38px}
-  [data-skin="studio"] .scard{width:auto;inset-inline:6% 6%;bottom:16%;padding:10px 10px 10px 14px}
-  [data-skin="studio"] .scard small{display:none}
   [data-skin="studio"] .stat{padding-inline:.9em}
 }
 </style>
