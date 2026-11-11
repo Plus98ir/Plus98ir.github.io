@@ -247,6 +247,13 @@ html[dir=rtl] .nm{justify-content:flex-end}
           <div class="field"><label data-i="f_slides">How many covers rotate on the screen (1–20)</label><input class="inp ltr" id="slides" type="number" min="1" max="20" placeholder="8"></div>
           <p class="hint" data-i="f_empty">Leave a box empty to keep the built-in text.</p>
         </div>
+        <div class="panel">
+          <h3 data-i="f_social">Social links (Studio side menu)</h3>
+          <div class="field"><label>Telegram</label><input class="inp ltr" data-s="telegram" type="url" placeholder="https://t.me/…"></div>
+          <div class="field"><label>YouTube</label><input class="inp ltr" data-s="youtube" type="url" placeholder="https://youtube.com/@…"></div>
+          <div class="field"><label>Instagram</label><input class="inp ltr" data-s="instagram" type="url" placeholder="https://instagram.com/…"></div>
+          <p class="hint" data-i="f_social_d">Empty = the icon is not shown. GitHub and Support are always there.</p>
+        </div>
       </div>
     </div>
 
@@ -358,7 +365,7 @@ var T = {
     th_view:"Default project view", v_cards:"Cards", v_compact:"Compact", th_view_d:"Visitors can switch it on the site; their own pick is remembered.",
     th_prev:"Live preview", desk:"Desktop", mob:"Mobile", def:"Design default",
     c_a1:"Main color", c_a2:"Second color", c_a3:"Gradient end", c_bg:"Background", c_surface:"Cards", c_reset:"Reset",
-    f_welcome:"Studio: welcome badge", f_headline:"Studio: headline (use <b>…</b> for the colored word)", f_lead:"Studio: text under the headline"
+    f_social:"Social links (Studio side menu)", f_social_d:"Empty = the icon is not shown. GitHub and Support are always there.", f_welcome:"Studio: welcome badge", f_headline:"Studio: headline (use <b>…</b> for the colored word)", f_lead:"Studio: text under the headline"
   },
   fa: {
     admin:"مدیریت", view_site:"مشاهده سایت", logout:"خروج",
@@ -389,7 +396,7 @@ var T = {
     th_view:"نمای پیش‌فرض پروژه‌ها", v_cards:"کارتی", v_compact:"فشرده", th_view_d:"بازدیدکننده خودش هم می‌تواند عوض کند و انتخابش یادش می‌ماند.",
     th_prev:"پیش‌نمایش زنده", desk:"دسکتاپ", mob:"موبایل", def:"پیش‌فرض طرح",
     c_a1:"رنگ اصلی", c_a2:"رنگ دوم", c_a3:"انتهای گرادیان", c_bg:"پس‌زمینه", c_surface:"کارت‌ها", c_reset:"بازنشانی",
-    f_welcome:"استودیو: نشان خوش‌آمد", f_headline:"استودیو: تیتر (کلمهٔ رنگی را داخل <b>…</b> بگذار)", f_lead:"استودیو: متن زیر تیتر"
+    f_social:"لینک شبکه‌های اجتماعی (منوی کناری استودیو)", f_social_d:"خالی = آیکنش نشان داده نمی‌شود. گیت‌هاب و حمایت همیشه هستند.", f_welcome:"استودیو: نشان خوش‌آمد", f_headline:"استودیو: تیتر (کلمهٔ رنگی را داخل <b>…</b> بگذار)", f_lead:"استودیو: متن زیر تیتر"
   }
 };
 var LANG = (function(){ try { return localStorage.getItem("p98_lang") || "fa"; } catch(e){ return "fa"; } })();
@@ -684,12 +691,18 @@ function fillTexts(){
     el.value = (tx[k[0]] && tx[k[0]][k[1]]) || "";
   });
   $("#slides").value = SITE.slides || "";
+  $$("[data-s]").forEach(function(el){ el.value = (SITE.social || {})[el.getAttribute("data-s")] || ""; });
 }
 $("#p-texts").addEventListener("input", function(e){
   var el = e.target;
   if (el.id === "slides"){
     var n = parseInt(el.value, 10);
     if (n >= 1 && n <= 20) SITE.slides = n; else delete SITE.slides;
+  } else if (el.hasAttribute("data-s")){
+    var sv = el.value.trim();
+    SITE.social = SITE.social || {};
+    if (/^https?:\/\/\S+$/i.test(sv)) SITE.social[el.getAttribute("data-s")] = sv; else delete SITE.social[el.getAttribute("data-s")];
+    if (!Object.keys(SITE.social).length) delete SITE.social;
   } else if (el.hasAttribute("data-t")){
     var k = el.getAttribute("data-t").split("."), v = el.value.trim();
     SITE.texts = SITE.texts || {};
@@ -853,6 +866,7 @@ function dirtyCount(){
   if (JSON.stringify(a.texts || null) !== JSON.stringify(SITE.texts || null)) n++;
   if ((a.slides || null) !== (SITE.slides || null)) n++;
   if (JSON.stringify(a.theme || null) !== JSON.stringify(SITE.theme || null)) n++;
+  if (JSON.stringify(a.social || null) !== JSON.stringify(SITE.social || null)) n++;
   return n;
 }
 function say(msg, cls){ var s = $("#st"); s.innerHTML = msg; s.className = "st" + (cls ? " " + cls : ""); }
