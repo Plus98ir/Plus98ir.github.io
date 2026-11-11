@@ -3,6 +3,10 @@
     "en": "Multi-protocol, multi-user panel (VMess, VLESS, Trojan, Shadowsocks, WireGuard, Hysteria, Tunnel, Mixed, HTTP, TUN, MTProto, AmneziaWG).",
     "fa": "پنل چندپروتکلی و چندکاربره (VMess، VLESS، Trojan، Shadowsocks، WireGuard، Hysteria، Tunnel، Mixed، HTTP، TUN، MTProto، AmneziaWG)."
   },
+  "3X-UI-Sub-Theme": {
+    "en": "A modern one-file subscription page for 3x-ui panels: usage ring, live status, one-tap import into VPN apps, QR codes. FA/EN, dark/light.",
+    "fa": "صفحهٔ اشتراک مدرن و تک‌فایلی برای پنل‌های 3x-ui: حلقهٔ مصرف، وضعیت زنده، افزودن با یک لمس به برنامه‌های VPN و کد QR. فارسی/انگلیسی، تیره/روشن."
+  },
   "AdGuard_Rules": {
     "en": "Lists of sanctioned domains for AdGuard and similar services, to get around sanctions.",
     "fa": "دامنه‌های تحریم برای استفاده در AdGuard و سرویس‌های مشابه، برای رفع تحریم."
