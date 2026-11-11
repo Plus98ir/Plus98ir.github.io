@@ -90,5 +90,9 @@
   "SSH-Servers": {
     "en": "One click into your SSH servers on Windows, plus an Android SSH app with a built-in terminal. The same list on both, synced and encrypted through your own GitHub.",
     "fa": "با یک کلیک روی ویندوز به سرورهای SSH وصل شو، به‌همراه اپ اندروید با ترمینال SSH داخلی. همون لیست روی هر دو، رمزنگاری‌شده و سینک‌شده از طریق GitHub خودت."
+  },
+  "IDM-Theme": {
+    "en": "A modern dark look for Internet Download Manager: a new UI with Windows-style window buttons, plus a toolbar icon theme for IDM itself. Unofficial.",
+    "fa": "ظاهر مدرن و تیره برای Internet Download Manager: رابط کاربری جدید با دکمه‌های پنجره‌ی ویندوزی، به‌همراه تم آیکون تولبار برای خود IDM. غیررسمی."
   }
 }
