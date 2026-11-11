@@ -466,11 +466,11 @@ html[lang="fa"] .headline{letter-spacing:0;line-height:1.3}
 [data-skin="studio"] .ctas{margin-bottom:2em}
 .stat .ic{display:none}
 [data-skin="studio"] .stats{display:flex;flex-wrap:wrap;row-gap:1em;margin:0}
-[data-skin="studio"] .stat{grid-template-columns:auto auto;column-gap:.75em;row-gap:0;padding:.1em 1.05em;background:none;border:0;border-radius:0;
+[data-skin="studio"] .stat{grid-template-columns:auto auto;column-gap:.55em;row-gap:0;padding:.1em .8em;background:none;border:0;border-radius:0;
   border-inline-start:1px solid var(--line2)}
 [data-skin="studio"] .stat:first-child{padding-inline-start:0;border:0}
 [data-skin="studio"] .stat .ck{display:none}
-[data-skin="studio"] .stat .ic{display:block;grid-row:1 / 3;width:1.75em;height:1.75em;color:var(--mut)}
+[data-skin="studio"] .stat .ic{display:block;grid-row:1 / 3;width:1.55em;height:1.55em;color:var(--mut)}
 [data-skin="studio"] .stat .ic svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 [data-skin="studio"] .stat b{font-size:1.4em}
 [data-skin="studio"] .stat span{grid-column:2;font-size:.9em}
@@ -550,6 +550,56 @@ html[dir="rtl"][data-skin="studio"] .card::after{-webkit-mask:linear-gradient(13
 [data-skin="studio"] .grid.compact .sub{padding:0}
 [data-skin="studio"] .grid.compact .card::after{width:24%}
 [data-skin="studio"] footer{margin-top:28px}
+
+/* ---- studio: glass + light ---- */
+/* soft red light behind everything, so the glass has something to show through */
+[data-skin="studio"] body{background-image:
+  radial-gradient(1100px 650px at 78% 6%,color-mix(in srgb,var(--a1) 17%,transparent),transparent 62%),
+  radial-gradient(900px 600px at 8% 72%,color-mix(in srgb,var(--a1) 8%,transparent),transparent 60%),
+  radial-gradient(900px 600px at 96% 88%,color-mix(in srgb,var(--a3) 7%,transparent),transparent 60%)}
+/* hero sits in one big glass panel, with a red glow in its lower right and a dot grid in the corner */
+[data-skin="studio"] .hero{margin-top:6px;padding:clamp(20px,2.6vw,48px);border-radius:28px;overflow:hidden;isolation:isolate;
+  border:1px solid color-mix(in srgb,var(--fg) 9%,transparent);
+  background:
+    radial-gradient(55% 75% at 82% 78%,color-mix(in srgb,var(--a1) 24%,transparent),transparent 70%),
+    linear-gradient(150deg,color-mix(in srgb,var(--fg) 6%,transparent),color-mix(in srgb,var(--fg) 1.5%,transparent) 45%,transparent),
+    color-mix(in srgb,var(--surface) 55%,transparent);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--fg) 10%,transparent),0 30px 80px -40px rgba(0,0,0,.8)}
+[data-skin="studio"] .hero::after{content:"";position:absolute;z-index:-1;top:22px;inset-inline-end:26px;width:96px;height:72px;pointer-events:none;
+  background-image:radial-gradient(color-mix(in srgb,var(--fg) 28%,transparent) 1.2px,transparent 1.6px);background-size:14px 14px}
+/* the red neon arc that sweeps under the screen */
+[data-skin="studio"] .screen::after{inset:auto -34% -5% -4%;height:62%;z-index:-1;background:none;opacity:1;
+  border-bottom:4px solid color-mix(in srgb,var(--a1) 75%,#fff);border-radius:0 0 50% 50% / 0 0 100% 100%;transform:rotate(-8deg);
+  filter:drop-shadow(0 0 4px var(--a1)) drop-shadow(0 0 14px var(--a1)) drop-shadow(0 6px 34px var(--a1));
+  -webkit-mask:linear-gradient(90deg,transparent 4%,#000 30%,#000 80%,transparent 98%);mask:linear-gradient(90deg,transparent 4%,#000 30%,#000 80%,transparent 98%)}
+html[dir="rtl"][data-skin="studio"] .screen::after{inset:auto -4% -5% -34%;transform:rotate(8deg);
+  -webkit-mask:linear-gradient(270deg,transparent 4%,#000 30%,#000 80%,transparent 98%);mask:linear-gradient(270deg,transparent 4%,#000 30%,#000 80%,transparent 98%)}
+[data-skin="studio"] .hsearch svg,[data-skin="studio"] .search svg{z-index:2}
+/* a wide red pool of light on the floor under the screen */
+[data-skin="studio"] .sdots{position:relative}
+[data-skin="studio"] .sdots::before{content:"";position:absolute;z-index:-1;left:5%;right:5%;top:-60px;height:90px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--a1) 45%,transparent),transparent);filter:blur(18px)}
+/* glass cards, sidebar, search */
+[data-skin="studio"] .card{
+  background:linear-gradient(160deg,color-mix(in srgb,var(--fg) 7%,transparent),color-mix(in srgb,var(--fg) 1.5%,transparent) 40%,transparent),
+    color-mix(in srgb,var(--surface) 62%,transparent);
+  backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+  border:1px solid color-mix(in srgb,var(--fg) 10%,transparent);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--fg) 12%,transparent),0 20px 50px -30px rgba(0,0,0,.9)}
+[data-skin="studio"] .card:hover{box-shadow:inset 0 1px 0 color-mix(in srgb,var(--fg) 14%,transparent),0 0 0 1px color-mix(in srgb,var(--a1) 35%,transparent),var(--shadow-h)}
+[data-skin="studio"] .side{background:linear-gradient(180deg,color-mix(in srgb,var(--fg) 4%,transparent),transparent 40%),color-mix(in srgb,var(--surface) 55%,transparent);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-inline-end:1px solid color-mix(in srgb,var(--fg) 8%,transparent)}
+[data-skin="studio"] .sbox{background:linear-gradient(180deg,color-mix(in srgb,var(--fg) 6%,transparent),color-mix(in srgb,var(--bg) 70%,transparent));
+  border-color:color-mix(in srgb,var(--fg) 10%,transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--fg) 10%,transparent)}
+[data-skin="studio"] .hsearch input,[data-skin="studio"] .search input,[data-skin="studio"] select,[data-skin="studio"] .vseg{
+  background-color:color-mix(in srgb,var(--surface) 55%,transparent);border-color:color-mix(in srgb,var(--fg) 10%,transparent);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+[data-skin="studio"] .bar{background:color-mix(in srgb,var(--bg) 70%,transparent)}
+@media(max-width:700px){
+  [data-skin="studio"] .hero{padding:18px 16px 22px;border-radius:20px}
+  [data-skin="studio"] .hero::after{display:none}
+}
 @media(max-width:1000px){
   [data-skin="studio"] body{padding-inline-start:0}
   [data-skin="studio"] .side{display:none}
