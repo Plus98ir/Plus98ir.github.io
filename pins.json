@@ -1,18 +1,3 @@
 {
-  "pins": [
-    "Reality-Scanner",
-    "CDN-Clean-Scanner",
-    "DNS-Tunnel-Scanner",
-    "Filter-Checker",
-    "Saila",
-    "Smart-Caddy",
-    "SSH-Servers",
-    "Fortnite_Missions",
-    "Wake-on-LAN-Bot",
-    "Smart-Screen",
-    "Auto_SSL",
-    "Remote-Server-Control",
-    "XUI-Manager",
-    "Ping"
-  ]
+  "pins": []
 }
