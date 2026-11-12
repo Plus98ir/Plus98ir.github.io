@@ -18,6 +18,8 @@
 <!-- GoatCounter: privacy-friendly visit stats, one row per page/project -->
 <script>window.goatcounter={path:function(){var p=location.pathname.replace(/[^\/]*\.html?$/,"");return /\/$/.test(p)?p:p+"/"}};</script>
 <script data-goatcounter="https://plus98.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- Own stats (Cloudflare Worker + D1, same domain, works from Iran); Zaraz loads the same script on all other pages -->
+<script src="/api/t.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&family=Great+Vibes&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
@@ -1214,14 +1216,16 @@ function findCover(repo, onFound){
 }
 
 /* =====================================================================
-   visit counts (GoatCounter)
+   visit counts
    ---------------------------------------------------------------------
-   Each project page reports itself as "/<Repo>/". The cards read those
-   counts back from the public counter API; TOTAL is the whole site.
-   Counts are cached for 10 minutes. If the API is unreachable the
-   numbers are simply hidden.
+   Each project page reports itself as "/<Repo>/". The cards read the
+   counts from our own /api/counts (Cloudflare Worker, one request for
+   everything, GoatCounter history included). Until that history is
+   imported, or if the Worker is down, they fall back to GoatCounter's
+   public counter API; TOTAL is the whole site. Cached for 10 minutes.
+   If nothing answers the numbers are simply hidden.
    ===================================================================== */
-var HITS = {}, HITS_KEY = "p98_gc_v2", HITS_TTL = 10 * 60 * 1000;
+var HITS = {}, HITS_KEY = "p98_hits_v3", HITS_TTL = 10 * 60 * 1000;
 
 function gcPath(url){
   try {
@@ -1242,16 +1246,37 @@ function gcCount(path){
     });
 }
 
+/* a card that opens a page on this site counts that page's views;
+   any other card (GitHub repo, raw file) counts its card clicks */
+function hitKey(r){ return gcPath(targetUrl(r)) || ("open-" + r.name); }
+
+function saveHits(h){
+  HITS = h;
+  ls(HITS_KEY, JSON.stringify({at:Date.now(), hits:h}));
+  paintHits();
+}
+
 function loadHits(){
   var c = null;
   try { c = JSON.parse(ls(HITS_KEY) || "null"); } catch(e){}
   if (c && c.at && Date.now() - c.at < HITS_TTL && c.hits){ HITS = c.hits; paintHits(); return; }
 
+  fetch("/api/counts").then(function(res){
+    if (!res.ok) throw new Error("counts " + res.status);
+    return res.json();
+  }).then(function(j){
+    if (!j || !j.ready || !j.counts) throw new Error("not ready");
+    var h = {};
+    for (var i = 0; i < REPOS.length; i++) h[REPOS[i].name] = j.counts[hitKey(REPOS[i])] || 0;
+    h.TOTAL = j.counts.TOTAL || 0;
+    saveHits(h);
+  }).catch(loadHitsGC);
+}
+
+function loadHitsGC(){
   var jobs = [], names = [];
   for (var i = 0; i < REPOS.length; i++){
-    /* a card that opens a page on this site counts that page's views;
-       any other card (GitHub repo, raw file) counts its card clicks */
-    var p = gcPath(targetUrl(REPOS[i])) || ("open-" + REPOS[i].name);
+    var p = hitKey(REPOS[i]);
     names.push(REPOS[i].name);
     jobs.push(gcCount(p).catch(function(){ return -1; }));
   }
@@ -1262,9 +1287,7 @@ function loadHits(){
     var h = {}, ok = false;
     for (var j = 0; j < vals.length; j++){ if (vals[j] >= 0){ h[names[j]] = vals[j]; ok = true; } }
     if (!ok) return;                                   // counter API off or blocked
-    HITS = h;
-    ls(HITS_KEY, JSON.stringify({at:Date.now(), hits:h}));
-    paintHits();
+    saveHits(h);
   });
 }
 
@@ -1535,6 +1558,7 @@ function cardFor(r, feat){
   a.className = "card rise" + (feat ? " feat" : "");
   a.href = url;
   a.target = "_blank"; a.rel = "noopener";
+  a.setAttribute("data-notrack", "");               // card clicks are counted as open-<Repo> below
 
   var tags = "";
   if (r.language){
@@ -1578,10 +1602,11 @@ function cardFor(r, feat){
     if (img.complete && img.naturalWidth) img.classList.add("in");
   });
 
-  // record which card was opened (listed as an event in GoatCounter)
+  // record which card was opened (event "open-<Repo>" in GoatCounter and in our own stats)
   function track(){
     if (window.goatcounter && window.goatcounter.count)
       window.goatcounter.count({path:"open-" + r.name, title:r.name, event:true});
+    if (window.p98track) window.p98track("open-" + r.name);
   }
   a.addEventListener("click", track);
   a.addEventListener("auxclick", function(ev){ if (ev.button === 1) track(); });
