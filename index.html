@@ -1310,10 +1310,39 @@ function paintHits(){
 var REPOS = [], FILTER = "", LANG = "", SORT = "pinned";
 var CACHE_KEY = "p98_repos_v2", CACHE_TTL = 6 * 60 * 1000;
 
+/* Some repos use GitHub Pages for files only (e.g. CoreNet's OpenWrt package feed),
+   with no web page. Each site is checked once (HEAD, same origin) and remembered
+   for 12 h: SITEURL[name] = the page that answers, or "" = no page -> link the source. */
+var SITE_KEY = "p98_siteurl_v1", SITE_TTL = 12 * 60 * 60 * 1000, SITEURL = {};
+try { var sc = JSON.parse(ls(SITE_KEY) || "null"); if (sc && sc.at && Date.now() - sc.at < SITE_TTL) SITEURL = sc.map || {}; } catch(e){}
+
 function targetUrl(r){
   if (r.homepage) return r.homepage;
-  if (r.has_pages) return PAGES_BASE + "/" + r.name + "/" + PAGES_FILE;
+  if (r.has_pages){
+    var s = SITEURL[r.name];
+    if (s === "") return r.html_url;
+    return s || PAGES_BASE + "/" + r.name + "/" + PAGES_FILE;
+  }
   return r.html_url;
+}
+
+function checkSites(){
+  if (location.origin !== PAGES_BASE) return;            // HEAD status is only readable on our own origin
+  function ok(u){ return fetch(u, { method:"HEAD", cache:"no-store" }).then(function(res){ return res.ok; }, function(){ return null; }); }
+  var todo = REPOS.filter(function(r){ return r.has_pages && !r.homepage && !(r.name in SITEURL); });
+  if (!todo.length) return;
+  Promise.all(todo.map(function(r){
+    var base = PAGES_BASE + "/" + r.name + "/";
+    return ok(base + PAGES_FILE).then(function(a){
+      if (a === null) return null;
+      if (a) return base + PAGES_FILE;
+      return ok(base).then(function(b){ return b === null ? null : b ? base : ""; });
+    }).then(function(u){ if (u !== null) SITEURL[r.name] = u; return u; });
+  })).then(function(res){
+    ls(SITE_KEY, JSON.stringify({ at:Date.now(), map:SITEURL }));
+    var changed = res.some(function(u, i){ return u !== null && u !== PAGES_BASE + "/" + todo[i].name + "/" + PAGES_FILE; });
+    if (changed){ render(); ls(HITS_KEY, null); loadHits(); }
+  });
 }
 
 function skeletons(n){
@@ -1385,6 +1414,7 @@ function ready(list){
   render();
   buildScreen();
   loadHits();
+  checkSites();
 }
 
 function buildStats(){
