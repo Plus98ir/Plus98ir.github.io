@@ -376,7 +376,7 @@ table.cmp th{color:var(--dim);font-weight:600}
           <li data-i="imp_3" data-html="1">Pick it here. Importing again later only replaces the same days.</li>
         </ol>
         <div class="row">
-          <span class="btn primary file"><span data-i="imp_pick">Choose export file</span><input type="file" id="gcfile" accept=".csv,.gz,text/csv,application/gzip"></span>
+          <span class="btn primary file"><span data-i="imp_pick">Choose export file</span><input type="file" id="gcfile" multiple accept=".zip,.jsonl,.csv,.gz,application/zip,text/csv,application/gzip"></span>
         </div>
         <div class="bar" id="impbar" hidden><i></i></div>
         <div class="msg" id="impmsg"></div>
@@ -476,11 +476,11 @@ var T = {
     e_net:"Could not reach the stats API. Check the connection and press Refresh.",
     imp_t:"Import GoatCounter history",
     imp_1:"In GoatCounter open <b>Settings → Export</b> and press <b>Start export</b>.",
-    imp_2:"Download the <b>.csv.gz</b> file (link on that page or in the e-mail).",
-    imp_3:"Pick it here. Importing again later only replaces the same days.",
-    imp_pick:"Choose export file", imp_read:"Reading file…", imp_parse:"Counting {n} rows…",
+    imp_2:"Download the file it makes (<b>.zip</b>; older exports are <b>.csv.gz</b>).",
+    imp_3:"Pick it here as it is (or the <b>.jsonl</b> files from the unzipped folder). Importing again later only replaces the same days.",
+    imp_pick:"Choose export file", imp_read:"Reading file…", imp_count:"Counting…",
     imp_up:"Uploading {a} / {b}…", imp_done:"Imported {n} visits from {from} to {to}.",
-    imp_bad:"This does not look like a GoatCounter CSV export (version 2).", imp_empty:"No visits found in the file.",
+    imp_bad:"This does not look like a GoatCounter export (.zip with .jsonl files, or .csv / .csv.gz).", imp_empty:"No visits found in the file.",
     cmp_t:"GoatCounter vs Cloudflare", cmp_p:"Days where both counted. Shows how many visits GoatCounter missed (blocked script from Iran).",
     cmp_none:"No overlap yet. Keep GoatCounter on for 2–4 weeks, then import its export again.",
     cmp_more:"Cloudflare sees {p} more page views", cmp_less:"Cloudflare sees {p} fewer page views", cmp_days:"over {n} full days",
@@ -522,11 +522,11 @@ var T = {
     e_net:"به API آمار وصل نشد. اتصال را بررسی کن و به‌روزرسانی را بزن.",
     imp_t:"ورود تاریخچهٔ GoatCounter",
     imp_1:"در GoatCounter برو به <b>Settings ← Export</b> و <b>Start export</b> را بزن.",
-    imp_2:"فایل <b>.csv.gz</b> را دانلود کن (لینکش همان‌جا یا در ایمیل است).",
-    imp_3:"این‌جا انتخابش کن. اگر بعداً دوباره وارد کنی، فقط همان روزها جایگزین می‌شوند.",
-    imp_pick:"انتخاب فایل خروجی", imp_read:"در حال خواندن فایل…", imp_parse:"در حال شمردن {n} ردیف…",
+    imp_2:"فایلی را که می‌سازد دانلود کن (<b>.zip</b>؛ خروجی‌های قدیمی <b>.csv.gz</b> بودند).",
+    imp_3:"همان فایل را این‌جا انتخاب کن (یا فایل‌های <b>.jsonl</b> پوشهٔ بازشده). اگر بعداً دوباره وارد کنی، فقط همان روزها جایگزین می‌شوند.",
+    imp_pick:"انتخاب فایل خروجی", imp_read:"در حال خواندن فایل…", imp_count:"در حال شمردن…",
     imp_up:"در حال ارسال {a} از {b}…", imp_done:"{n} بازدید از {from} تا {to} وارد شد.",
-    imp_bad:"این فایل شبیه خروجی CSV نسخهٔ ۲ GoatCounter نیست.", imp_empty:"در فایل بازدیدی پیدا نشد.",
+    imp_bad:"این فایل شبیه خروجی GoatCounter نیست (zip با فایل‌های jsonl، یا csv / csv.gz).", imp_empty:"در فایل بازدیدی پیدا نشد.",
     cmp_t:"GoatCounter در برابر Cloudflare", cmp_p:"روزهایی که هر دو شمرده‌اند. نشان می‌دهد GoatCounter چند بازدید را از دست داده (اسکریپتش از ایران بسته بود).",
     cmp_none:"هنوز روز مشترکی نیست. GoatCounter را ۲ تا ۴ هفته روشن نگه دار، بعد دوباره خروجی‌اش را وارد کن.",
     cmp_more:"Cloudflare {p} بازدید بیشتر می‌بیند", cmp_less:"Cloudflare {p} بازدید کمتر می‌بیند", cmp_days:"در {n} روز کامل",
@@ -1135,23 +1135,119 @@ function aggregateGC(rows){
   return { rows:out, from:minD, to:maxD, total:total };
 }
 
-function readFile(file){
-  return file.slice(0, 2).arrayBuffer().then(function(b){
-    var u = new Uint8Array(b), gz = u[0] === 0x1f && u[1] === 0x8b;
-    if (!gz) return file.text();
-    if (!window.DecompressionStream) throw new Error("This browser cannot unzip .gz files - unzip it first and pick the .csv");
-    return new Response(file.stream().pipeThrough(new DecompressionStream("gzip"))).text();
+/* GoatCounter's newer export: a .zip of JSON-lines tables that are already
+   summed (per hour / per day and page). No single visits, so no unique
+   visitors either: "visitors" = page views for these days. */
+function jsonl(text){
+  return String(text || "").split(/\r?\n/).filter(function(l){ return l.trim(); }).map(function(l){ return JSON.parse(l); });
+}
+function aggregateGCJson(f){
+  if (!f["hit_stats"] || !f["paths"]) throw new Error(t("imp_bad"));
+  var paths = {}, refs = {}, browsers = {}, systems = {};
+  jsonl(f.paths).forEach(function(p){ paths[p.id] = p; });
+  jsonl(f.refs).forEach(function(r){ refs[r.id] = r.ref || ""; });
+  jsonl(f.browsers).forEach(function(b){ browsers[b.id] = b.name; });
+  jsonl(f.systems).forEach(function(s){ systems[s.id] = s.name; });
+  var acc = {}, minD = null, maxD = null, total = 0;
+  function add(day, dim, key, c){
+    var k = day + "\t" + dim + "\t" + key;
+    (acc[k] = acc[k] || { day:day, dim:dim, key:key, n:0 }).n += c;
+  }
+  function page(id){ var p = paths[id]; return p && !p.event ? p : null; }
+  jsonl(f.hit_stats).forEach(function(h){
+    var p = paths[h.path_id], c = h.count || 0, ts = Date.parse(h.hour);
+    if (!p || !c || isNaN(ts)) return;
+    var day = dayOfTs(ts);
+    if (minD === null || day < minD) minD = day;
+    if (maxD === null || day > maxD) maxD = day;
+    total += c;
+    if (p.event){ add(day, "event", String(p.path).replace(/^\//, "").slice(0, 80), c); return; }
+    add(day, "all", "", c);
+    add(day, "path", normPath(p.path), c);
+    add(day, "ref", refHost(refs[h.ref_id]) || "(direct)", c);
+  });
+  /* the per-day tables use UTC days */
+  jsonl(f.browser_stats).forEach(function(s){ if (page(s.path_id)) add(s.day, "browser", browsers[s.browser_id] || "Other", s.count); });
+  jsonl(f.system_stats).forEach(function(s){ if (page(s.path_id)) add(s.day, "os", systems[s.system_id] || "Other", s.count); });
+  jsonl(f.location_stats).forEach(function(s){
+    if (!page(s.path_id)) return;
+    var cc = String(s.location || "").slice(0, 2).toUpperCase();
+    add(s.day, "country", /^[A-Z]{2}$/.test(cc) ? cc : "??", s.count);
+  });
+  jsonl(f.size_stats).forEach(function(s){
+    if (!page(s.path_id)) return;
+    var w = s.width || 0;
+    add(s.day, "device", w ? deviceOf("", w) : "Other", s.count);
+    add(s.day, "screen", w ? w + "px" : "?", s.count);
+  });
+  var out = Object.keys(acc).sort().map(function(k){ var a = acc[k]; return { day:a.day, dim:a.dim, key:a.key, n:a.n, u:a.n }; })
+    .filter(function(r){ return r.day >= minD && r.day <= maxD; });
+  return { rows:out, from:minD, to:maxD, total:total };
+}
+
+/* minimal .zip reader (central directory + deflate via DecompressionStream) */
+function unzip(buf){
+  var dv = new DataView(buf), u8 = new Uint8Array(buf), e = -1, td = new TextDecoder();
+  for (var i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 66000); i--) if (dv.getUint32(i, true) === 0x06054b50){ e = i; break; }
+  if (e < 0) throw new Error(t("imp_bad"));
+  var count = dv.getUint16(e + 10, true), p = dv.getUint32(e + 16, true), jobs = [];
+  for (var k = 0; k < count; k++){
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    var method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true);
+    var nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), lho = dv.getUint32(p + 42, true);
+    var name = td.decode(u8.subarray(p + 46, p + 46 + nl));
+    var start = lho + 30 + dv.getUint16(lho + 26, true) + dv.getUint16(lho + 28, true);
+    var data = u8.slice(start, start + csize);
+    jobs.push((function(name, method, data){
+      if (method === 0) return Promise.resolve({ name:name, bytes:data });
+      if (method !== 8 || !window.DecompressionStream) return Promise.resolve(null);
+      return new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer()
+        .then(function(b){ return { name:name, bytes:new Uint8Array(b) }; });
+    })(name, method, data));
+    p += 46 + nl + xl + cl;
+  }
+  return Promise.all(jobs).then(function(list){ return list.filter(Boolean); });
+}
+function gunzipText(bytes){
+  if (!window.DecompressionStream) throw new Error("This browser cannot unzip .gz files - unzip it first and pick the .csv");
+  return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+}
+function baseName(n){ return String(n).split(/[\\\/]/).pop(); }
+
+/* any of: GoatCounter .zip (JSON), the .jsonl files from it, .csv, .csv.gz */
+function readExport(files){
+  var td = new TextDecoder();
+  return Promise.all(files.map(function(f){
+    return f.arrayBuffer().then(function(b){ return { name:f.name, bytes:new Uint8Array(b), buf:b }; });
+  })).then(function(list){
+    var one = list[0];
+    if (list.length === 1 && one.bytes[0] === 0x50 && one.bytes[1] === 0x4b) return unzip(one.buf);
+    return list;
+  }).then(function(entries){
+    var json = {}, csv = null;
+    return Promise.all(entries.map(function(en){
+      var n = baseName(en.name);
+      if (/\.jsonl$/i.test(n)) json[n.replace(/\.jsonl$/i, "")] = td.decode(en.bytes);
+      else if (/\.csv\.gz$/i.test(n) || (en.bytes[0] === 0x1f && en.bytes[1] === 0x8b)) return gunzipText(en.bytes).then(function(s){ csv = s; });
+      else if (/\.csv$/i.test(n)) csv = td.decode(en.bytes);
+    })).then(function(){
+      if (Object.keys(json).length) return { kind:"json", files:json };
+      if (csv !== null) return { kind:"csv", text:csv };
+      throw new Error(t("imp_bad"));
+    });
   });
 }
 
 $("#gcfile").addEventListener("change", function(){
-  var file = this.files && this.files[0], input = this; if (!file) return;
+  var files = Array.prototype.slice.call(this.files || []), input = this; if (!files.length) return;
   var msg = $("#impmsg"), bar = $("#impbar"), fill = bar.querySelector("i");
   msg.className = "msg"; msg.textContent = t("imp_read"); bar.hidden = false; fill.style.width = "4%";
-  readFile(file).then(function(text){
-    var rows = parseCSV(text);
-    msg.textContent = t("imp_parse", { n:fmt(rows.length - 1) });
-    return new Promise(function(ok){ setTimeout(function(){ ok(aggregateGC(rows)); }, 20); });
+  readExport(files).then(function(ex){
+    msg.textContent = t("imp_count");
+    /* give the browser a frame to paint, and pass errors on (not swallow them) */
+    return new Promise(function(ok, no){ setTimeout(function(){
+      try { ok(ex.kind === "json" ? aggregateGCJson(ex.files) : aggregateGC(parseCSV(ex.text))); } catch(e){ no(e); }
+    }, 20); });
   }).then(function(agg){
     if (!agg.total) throw new Error(t("imp_empty"));
     var size = 1000, chunks = [];
@@ -1172,7 +1268,7 @@ $("#gcfile").addEventListener("change", function(){
     META = null; load();
   }).catch(function(e){
     if (fail(e)) return;
-    msg.className = "msg err"; msg.textContent = e.message;
+    msg.className = "msg err"; msg.textContent = e.message || String(e);
   }).then(function(){ input.value = ""; setTimeout(function(){ bar.hidden = true; fill.style.width = "0"; }, 1500); });
 });
 
