@@ -98,5 +98,9 @@
   "IDM-Theme": {
     "en": "A modern dark look for Internet Download Manager: a new UI with Windows-style window buttons, plus a toolbar icon theme for IDM itself. Unofficial.",
     "fa": "ظاهر مدرن و تیره برای Internet Download Manager: رابط کاربری جدید با دکمه‌های پنجره‌ی ویندوزی، به‌همراه تم آیکون تولبار برای خود IDM. غیررسمی."
+  },
+  "3X-UI-Accent": {
+    "en": "Accent colors and a glassy style for the 3x-ui panel. A browser extension, so panel updates never undo it. 7 colors, light/dark/ultra-dark.",
+    "fa": "رنگ اصلی و ظاهر شیشه‌ای برای پنل 3x-ui. افزونه‌ی مرورگر است، پس با آپدیت پنل از بین نمی‌رود. ۷ رنگ، روشن/تیره/خیلی‌تیره."
   }
 }
