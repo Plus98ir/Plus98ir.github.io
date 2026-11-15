@@ -1162,48 +1162,32 @@ document.addEventListener("keydown", function(e){
 /* =====================================================================
    automatic cover discovery
    ---------------------------------------------------------------------
-   For each repo, candidate paths are probed in order on the repo's own
-   default branch. The first one that loads wins and is remembered, so a
-   repeat visit costs nothing. GitHub's social-preview image is the last
-   resort, and it always exists — so a repo is never left blank.
+   raw.githubusercontent.com is blocked in Iran, so the browser never asks
+   GitHub directly: our Worker (/api/cover/<Repo>) finds <Repo>.png & co.
+   in the repo on Cloudflare's side and serves it from this domain, edge
+   cached; v= changes on every push so a new cover shows up by itself.
+   A cover set in the admin panel always wins. GitHub's social preview is
+   the last resort if the Worker is down.
    ===================================================================== */
-var RAW = "https://raw.githubusercontent.com/";
-
 function coverCandidates(repo){
-  var n = repo.name, l = n.toLowerCase(), br = repo.default_branch || "main";
-  var list = [], i;
-
-  function push(p){ list.push(RAW + OWNER + "/" + n + "/" + br + "/" + p); }
-
+  var n = repo.name, br = repo.default_branch || "main", list = [];
   var ov = coverOverride(n);
   if (ov) list.push(ov);                              // set in the admin panel (upload or address)
-
-  if (COVER[n]) push(COVER[n]);                       // explicit override first
-
-  var exts = ["png","jpg","jpeg","webp","svg"];
-  for (i = 0; i < exts.length; i++) push(n + "." + exts[i]);        // <Repo>.png
-  if (l !== n) for (i = 0; i < 3; i++) push(l + "." + exts[i]);     // <repo>.png
-
-  var dirs = ["assets/","images/","img/","docs/",".github/"];
-  for (i = 0; i < dirs.length; i++){ push(dirs[i] + n + ".png"); }
-
-  var generic = ["cover.png","banner.png","preview.png","screenshot.png","og.png"];
-  for (i = 0; i < generic.length; i++) push(generic[i]);
-  for (i = 0; i < 2; i++) push(dirs[i] + "cover.png");
-
-  // always-available fallback: the repository's social preview card
+  list.push("/api/cover/" + encodeURIComponent(n) + "?b=" + encodeURIComponent(br) +
+            (COVER[n] ? "&f=" + encodeURIComponent(COVER[n]) : "") +
+            "&v=" + encodeURIComponent(repo.pushed_at || ""));
   list.push("https://opengraph.githubassets.com/1/" + OWNER + "/" + n);
   return list;
 }
 
 function findCover(repo, onFound){
-  var key = "p98_img_" + repo.name + "_" + (repo.pushed_at || "") + (coverOverride(repo.name) ? "_" + coverOverride(repo.name) : "");
+  var key = "p98_img2_" + repo.name + "_" + (repo.pushed_at || "") + (coverOverride(repo.name) ? "_" + coverOverride(repo.name) : "");
   var hit = ls(key);
   if (hit){ onFound(hit); return; }
 
   var list = coverCandidates(repo), i = 0;
   (function attempt(){
-    if (i >= list.length) return;                      // cannot happen: last is opengraph
+    if (i >= list.length) return;
     var url = list[i++], img = new Image();
     img.onload = function(){
       if (img.naturalWidth < 8) { attempt(); return; } // 1x1 trackers / empty files

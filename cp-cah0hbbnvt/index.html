@@ -329,7 +329,7 @@ html[dir=rtl] .nm{justify-content:flex-end}
 <script>
 "use strict";
 var OWNER = "Plus98ir", REPO = OWNER + "/" + OWNER + ".github.io", BRANCH = "main";
-var TOKEN_KEY = "p98_gh_token", RAW = "https://raw.githubusercontent.com/";
+var TOKEN_KEY = "p98_gh_token";
 var BUILTIN_HIDE = ["plus98ir.github.io", "plus98ir", "saila-windows", ".github"];
 var LEGACY = {"Fortnite_Missions":"fortnite_mission.png","DNS-Server-Config":"dns_server.png","Remote-Server-Control":"rs.png",
   "Auto_SSL":"ssl.png","Smart-Caddy":"caddy.png","AdGuard_Rules":"adguard-cover.png"};
@@ -517,11 +517,10 @@ function coverOf(r){
   return {src:"", kind:"auto"};
 }
 function autoCover(r, img){
-  var br = r.default_branch || "main", base = RAW + OWNER + "/" + r.name + "/" + br + "/", list = [];
-  if (LEGACY[r.name]) list.push(base + LEGACY[r.name]);
-  ["png","jpg","jpeg","webp"].forEach(function(x){ list.push(base + r.name + "." + x); });
-  list.push(base + r.name.toLowerCase() + ".png", base + "docs/" + r.name + ".png", base + "assets/" + r.name + ".png", base + "cover.png");
-  list.push("https://opengraph.githubassets.com/1/" + OWNER + "/" + r.name);
+  // same source as the main page: our Worker (raw.githubusercontent.com is blocked in Iran)
+  var list = ["/api/cover/" + encodeURIComponent(r.name) + "?b=" + encodeURIComponent(r.default_branch || "main") +
+              (LEGACY[r.name] ? "&f=" + encodeURIComponent(LEGACY[r.name]) : "") + "&v=" + encodeURIComponent(r.pushed_at || ""),
+              "https://opengraph.githubassets.com/1/" + OWNER + "/" + r.name];
   var i = 0;
   (function next(){ if (i >= list.length) return; img.onerror = next; img.src = list[i++]; })();
 }
