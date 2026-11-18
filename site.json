@@ -13,5 +13,8 @@
     "skin": "studio",
     "random": true,
     "view": "compact"
-  }
+  },
+  "hide": [
+    "MagiskOnWSA"
+  ]
 }
