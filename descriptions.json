@@ -102,5 +102,25 @@
   "3X-UI-Accent": {
     "en": "Accent colors and a glassy style for the 3x-ui panel. A browser extension, so panel updates never undo it. 7 colors, light/dark/ultra-dark.",
     "fa": "رنگ اصلی و ظاهر شیشه‌ای برای پنل 3x-ui. افزونه‌ی مرورگر است، پس با آپدیت پنل از بین نمی‌رود. ۷ رنگ، روشن/تیره/خیلی‌تیره."
+  },
+  "serverless-dns2": {
+    "en": "A self-hosted, Pi-hole style DoH / DoT resolver that runs serverless on the edge (Cloudflare Workers, Deno Deploy, Fastly, Fly.io).",
+    "fa": "ریزالور DoH / DoT شخصی به سبک Pi-hole که بدون سرور روی لبهٔ شبکه اجرا می‌شود (Cloudflare Workers، Deno Deploy، Fastly، Fly.io)."
+  },
+  "FPS": {
+    "en": "Magisk on WSA: build the Windows Subsystem for Android with root and Google Apps in a few clicks.",
+    "fa": "Magisk روی WSA: ساخت زیرسیستم اندروید ویندوز با روت و سرویس‌های گوگل در چند کلیک."
+  },
+  "hiddifypanel": {
+    "en": "Hiddify admin panel: manage users, domains and many proxy protocols (Xray, Sing-box, REALITY, MTProxy).",
+    "fa": "پنل مدیریت Hiddify: مدیریت کاربران، دامنه‌ها و پروتکل‌های مختلف پروکسی (Xray، Sing-box، REALITY، MTProxy)."
+  },
+  "hiddify-user-front": {
+    "en": "The user-facing page of Hiddify panels: usage, QR code and app links, ready to fork and customize.",
+    "fa": "صفحهٔ کاربری پنل‌های Hiddify: مصرف، QR و لینک اپ‌ها، آمادهٔ فورک و شخصی‌سازی."
+  },
+  "yujincheng08": {
+    "en": "Fork of a GitHub profile README: a stats card and a top-languages bar.",
+    "fa": "فورک یک README پروفایل گیت‌هاب: کارت آمار و نوار زبان‌های پرکاربرد."
   }
 }
