@@ -1209,7 +1209,7 @@ function findCover(repo, onFound){
    public counter API; TOTAL is the whole site. Cached for 10 minutes.
    If nothing answers the numbers are simply hidden.
    ===================================================================== */
-var HITS = {}, HITS_KEY = "p98_hits_v3", HITS_TTL = 10 * 60 * 1000;
+var HITS = {}, HITS_KEY = "p98_hits_v4", HITS_TTL = 10 * 60 * 1000;
 
 function gcPath(url){
   try {
@@ -1234,6 +1234,14 @@ function gcCount(path){
    any other card (GitHub repo, raw file) counts its card clicks */
 function hitKey(r){ return gcPath(targetUrl(r)) || ("open-" + r.name); }
 
+/* a site card counts its page plus its sub pages (/Repo/ + /Repo/app/ …) */
+function siteCount(counts, key){
+  if (key.charAt(0) !== "/" || key === "/") return counts[key] || 0;
+  var n = 0;
+  for (var k in counts) if (k.indexOf(key) === 0) n += counts[k];
+  return n;
+}
+
 function saveHits(h){
   HITS = h;
   ls(HITS_KEY, JSON.stringify({at:Date.now(), hits:h}));
@@ -1245,13 +1253,14 @@ function loadHits(){
   try { c = JSON.parse(ls(HITS_KEY) || "null"); } catch(e){}
   if (c && c.at && Date.now() - c.at < HITS_TTL && c.hits){ HITS = c.hits; paintHits(); return; }
 
-  fetch("/api/counts").then(function(res){
+  // cache:"no-cache" — old responses sat in browsers for 4 h (zone Browser Cache TTL)
+  fetch("/api/counts", {cache: "no-cache"}).then(function(res){
     if (!res.ok) throw new Error("counts " + res.status);
     return res.json();
   }).then(function(j){
     if (!j || !j.ready || !j.counts) throw new Error("not ready");
     var h = {};
-    for (var i = 0; i < REPOS.length; i++) h[REPOS[i].name] = j.counts[hitKey(REPOS[i])] || 0;
+    for (var i = 0; i < REPOS.length; i++) h[REPOS[i].name] = siteCount(j.counts, hitKey(REPOS[i]));
     h.TOTAL = j.counts.TOTAL || 0;
     saveHits(h);
   }).catch(loadHitsGC);
