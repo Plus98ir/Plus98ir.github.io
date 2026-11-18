@@ -1,6 +1,13 @@
 {
   "covers": {
-    "Smart-Caddy": "covers/Smart-Caddy.png?v=mw7idwz2"
+    "Smart-Caddy": "covers/Smart-Caddy.png?v=mw7idwz2",
+    "3x-ui": "covers/3x-ui.png?v=w6yb3teq",
+    "hiddifypanel": "covers/hiddifypanel.png?v=spm6s8m6",
+    "hiddify-user-front": "covers/hiddify-user-front.png?v=difq9iht",
+    "serverless-dns": "covers/serverless-dns.png?v=245i31a4",
+    "WindowsToolbox": "covers/WindowsToolbox.png?v=e1i1s2tn",
+    "yujincheng08": "covers/yujincheng08.png?v=blrchd2z",
+    "CryptoNotify": "covers/CryptoNotify.png?v=ssm5yr93"
   },
   "theme": {
     "skin": "studio",
